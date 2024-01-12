@@ -1,0 +1,39 @@
+.login-form{
+    padding: 20px;
+}
+
+.login-card {
+    width: 300px;
+    margin: 20px;
+    padding: 20px;
+    box-sizing: border-box;
+    border-radius: 10px;
+    background-color: white;
+    transition: transform 0.3s, box-shadow 0.3s;
+    transform: translateY(0);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  }
+  
+.login-card:hover {
+    transform: translateY(-5px);
+}
+  
+.mat-toolbar{
+    border-radius: 8px;
+}
+
+.login-button:hover {
+    background-color: #1565C0;
+
+}
+
+@media only screen and (max-width: 600px) {
+    .login-card {
+      width: 90%;
+    }
+  
+    .mat-toolbar {
+      font-size: 18px;
+    }
+  }

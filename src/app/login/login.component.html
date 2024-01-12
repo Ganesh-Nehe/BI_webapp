@@ -1,1 +1,18 @@
-<p>login works!</p>
+<div fxLayout="column" fxLayout.gt-sm="row" fxLayoutAlign="center center" fxFlexFill>
+    <mat-card fxFlex.gt-sm="25" fxFlex.sm="75" fxFlex.xs="90" fxFlex="25" class="login-card">
+        <mat-toolbar color="primary" class="mat-toolbar">
+            Login page
+        </mat-toolbar>
+        <form fxLayoutAlign="stretch" fxLayout="column" class="login-form">
+            <mat-form-field fxFlex>
+                <mat-label>Email</mat-label>
+              <input matInput name="Email" [(ngModel)]="loginObj.email_Id" placeholder="" required>
+            </mat-form-field>
+            <mat-form-field fxFlex>
+                <mat-label>password</mat-label>
+                <input matInput type="password" name="password" [(ngModel)]="loginObj.password" placeholder="" required>
+            </mat-form-field>
+            <button mat-raised-button type="submit" (click)="onLogin()" class="login-button" >login</button>
+        </form>
+    </mat-card>
+</div>
