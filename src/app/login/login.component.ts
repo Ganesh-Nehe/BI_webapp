@@ -1,7 +1,6 @@
 import { HttpClient, HttpHeaders  } from '@angular/common/http';
 import { Component, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { InactivityService } from '../inactivity-service.service';
 import { APIService } from '../api.service';
 
 @Component({
@@ -16,12 +15,7 @@ export class LoginComponent {
     "password": ""
   };
 
-  constructor(private http: HttpClient, private router: Router, private inactivityService: InactivityService, private apiService: APIService) {}
-
-  ngOnInit() {
-    // Reset inactivity timeout on component initialization
-    this.inactivityService.resetInactivityTimeout();
-  }
+  constructor(private http: HttpClient, private router: Router, private apiService: APIService) {}
 
   onLogin() {
     const baseApi = this.apiService.getBaseApi();
@@ -32,13 +26,13 @@ export class LoginComponent {
       withCredentials: true, // Include credentials in the request
     };
 
-    this.http.post(`${baseApi}/API/users/login`, this.loginObj, httpOptions)
+    this.http.post(`${baseApi}/API/login`, this.loginObj, httpOptions)
       .subscribe((res: any) => {
+        // console.log('API Response:', res);
         if (res.success === 1) {
           // debugger;
           this.router.navigate(['/dashboard']);
-          localStorage.setItem("loginToken", res.data.loginToken);
-          this.inactivityService.resetInactivityTimeout();
+          localStorage.setItem("loginToken", res.token);
         } else {
           // alert(res.message);
           console.log('Login failed:', res.message);

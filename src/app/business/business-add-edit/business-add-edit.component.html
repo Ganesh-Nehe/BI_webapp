@@ -1,0 +1,72 @@
+<div mat-dialog-title>Business Form</div>
+<form [formGroup]="businessForm">
+    <div mat-dialog-content class="content">
+        <div fxLayout="row" fxLayoutGap="10px">
+            <mat-form-field fxFlex="50%" appearance="outline">
+                <mat-label>Company Name</mat-label>
+                <input matInput placeholder="" type="text" formControlName="businessName">
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" fxFlex="50%">
+                <mat-label>CIN no</mat-label>
+                <input matInput placeholder="" type="number" formControlName="CIN_no">
+                <mat-hint>ABCD</mat-hint>
+            </mat-form-field>
+        </div>
+        <div fxLayout="row" fxLayoutGap="10px">
+            <mat-form-field fxFlex="50%" appearance="outline">
+                <mat-label>PAN no</mat-label>
+                <input matInput placeholder="" type="text" formControlName="PAN_no">
+            </mat-form-field>
+            <mat-form-field fxFlex="50%" appearance="outline">
+                <mat-label>Logo</mat-label>
+                <input matInput placeholder="" formControlName="logoFileLocation" >
+            </mat-form-field>
+        </div>
+            <h3>
+                Enter address
+            </h3>
+
+            <div fxLayout="row" fxLayoutGap="10px">
+                <mat-form-field fxFlex="50%" appearance="outline">
+                    <mat-label>addressTypeId</mat-label>
+                    <input matInput placeholder="" type="text" formControlName="addressTypeId">
+                </mat-form-field>
+                <mat-form-field fxFlex="50%" appearance="outline">
+                    <mat-label>addressLine_1</mat-label>
+                    <input matInput placeholder="" formControlName="addressLine_1">
+                </mat-form-field>
+            </div>
+
+            <div fxLayout="row" fxLayoutGap="10px">
+                <mat-form-field fxFlex="50%" appearance="outline">
+                    <mat-label>addressLine_2</mat-label>
+                    <input matInput placeholder="" type="text" formControlName="addressLine_2">
+                </mat-form-field>
+                <mat-form-field fxFlex="50%" appearance="outline">
+                    <mat-label>city</mat-label>
+                    <input matInput placeholder="" formControlName="city">
+                </mat-form-field>
+            </div>
+
+            <div fxLayout="row" fxLayoutGap="10px">
+                <mat-form-field fxFlex="50%" appearance="outline">
+                    <mat-label>state</mat-label>
+                    <input matInput placeholder="" type="text" formControlName="state">
+                </mat-form-field>
+                <mat-form-field fxFlex="50%" appearance="outline">
+                    <mat-label>isoCountryCode</mat-label>
+                    <input matInput placeholder="" formControlName="isoCountryCode">
+                </mat-form-field>
+                <mat-form-field fxFlex="50%" appearance="outline">
+                    <mat-label>pinCode</mat-label>
+                    <input matInput placeholder="" type="text" formControlName="pinCode">
+                </mat-form-field>
+            </div>
+    </div>
+
+    <div mat-dialog-actions class="action">
+        <button class="btn btn-outline-dark" mat-raised-button>Cancel</button>
+        <button class="btn btn-outline-dark" mat-raised-button (click)="addBusinessData()">Save</button>
+    </div>
+</form>
