@@ -23,7 +23,7 @@ export class BusinessAddEditComponent {
       businessName: '',
       CIN_no: '',
       PAN_no: '',
-      logoFileLocation: new FormControl(null),
+      logoFileLocation: '',
       addressTypeId: '',
       addressLine_1: '',
       addressLine_2: '',
