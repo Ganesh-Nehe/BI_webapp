@@ -6,6 +6,7 @@ import { BusinessService } from './business.service';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatTable } from '@angular/material/table';
@@ -16,7 +17,8 @@ import { MatTable } from '@angular/material/table';
   styleUrls: ['./business.component.css']
 })
 export class BusinessComponent implements OnInit {
-  displayedColumns: string[] = ['businessID', 'businessName', 'CIN_no', 'PAN_no', 'logoFileLocation', 'action'];
+  displayedColumns: string[] = ['serialNumber', 'businessName', 'CIN_no', 'PAN_no', 'city', 'state', 'pinCode', 'action'];
+
   dataSource!: MatTableDataSource<any>;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -39,17 +41,64 @@ export class BusinessComponent implements OnInit {
   }
 
   openAddEditDialog() {
-    this.dialog.open(BusinessAddEditComponent);
+    const dialogRef = this.dialog.open(BusinessAddEditComponent);
+    dialogRef.afterClosed().subscribe({
+      next: (val) => {
+        if (val) {
+          this.getBusinessList();
+        }
+      }
+    })
   }
+
+  openEditForm(data: any){
+    const dialogRef = this.dialog.open(BusinessAddEditComponent,{
+      data,
+    })
+    dialogRef.afterClosed().subscribe({
+      next: (val) => {
+        if (val) {
+          this.getBusinessList();
+        }
+      }
+    })
+    // console.log(data);
+  }
+
+  toggleBusiness(row: any) {
+  // Update the toggle state in the UI immediately
+  row.isActive = !row.isActive;
+
+  // Determine the live_sleep value to send to the API
+  const live_sleepValue = row.isActive ? 1 : 0;
+
+  // Call the API to update the business status
+  this.businessService.updateBusinessStatus(row.businessID, live_sleepValue).subscribe(
+    (response) => {
+      console.log('Business status updated successfully:', response);
+    },
+    (error) => {
+      console.error('Error updating business status:', error);
+      // If the API call fails, revert the UI toggle state to the original value
+      row.isActive = !row.isActive;
+    }
+  );
+  }
+
   ngOnInit() {
     this.getBusinessList();
   }
   getBusinessList() {
     this.businessService.getBusinessList().subscribe({
       next: (res) => {
-        console.log(res);
         const dataArray = Array.isArray(res.data) ? res.data : [];
         this.dataSource = new MatTableDataSource(dataArray);
+  
+        // Iterate through the data and set the initial toggle state
+        dataArray.forEach((item: any) => {
+          item.isActive = item.live_sleep === 1;
+        });
+  
         this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
       },

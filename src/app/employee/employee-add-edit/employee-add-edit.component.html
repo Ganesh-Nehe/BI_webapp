@@ -1,0 +1,53 @@
+<div mat-dialog-title>Employee Form</div>
+<form [formGroup]="employeeForm">
+    <div mat-dialog-content class="content">
+        <div fxLayout="row" fxLayoutGap="10px">
+            <mat-form-field appearance="outline" fxFlex="50%">
+                <mat-label> First Name</mat-label>
+                <input matInput formControlName="userFirstName" required>
+            </mat-form-field>
+            <mat-form-field appearance="outline" fxFlex="50%">
+                <mat-label> Middle Name</mat-label>
+                <input matInput formControlName="userMiddleName" required>
+            </mat-form-field>
+            <mat-form-field appearance="outline" fxFlex="50%">
+                <mat-label> Last Name</mat-label>
+                <input matInput formControlName="userLastName" required>
+            </mat-form-field>
+        </div>
+        <div fxLayout="row" fxLayoutGap="10px">
+            <mat-form-field appearance="outline" fxFlex="50%">
+                <mat-label> Designation</mat-label>
+                <input matInput formControlName="designation" required>
+            </mat-form-field>
+            <mat-form-field appearance="outline" fxFlex="50%">
+                <mat-label> Telephone no.</mat-label>
+                <input matInput type="number" formControlName="telephone_no" required>
+            </mat-form-field>
+            <mat-form-field appearance="outline" fxFlex="50%">
+                <mat-label> mobile no.</mat-label>
+                <input matInput type="number" formControlName="mobile_no" required>
+            </mat-form-field>
+        </div>
+        <div fxLayout="row" fxLayoutGap="10px">
+            <mat-form-field appearance="outline" fxFlex="50%">
+                <mat-label> Email</mat-label>
+                <input matInput formControlName="emailId" type="email" required>
+            </mat-form-field>
+            <mat-form-field *ngIf="!data" appearance="outline" fxFlex="50%">
+                <mat-label> Password</mat-label>
+                <input matInput formControlName="password" type="password" required>
+            </mat-form-field>
+        </div>
+        <div *ngIf="data" fxLayout="row" fxLayoutGap="10px">
+            <mat-form-field fxFlex="100%" appearance="outline">
+                <mat-label>Description</mat-label>
+                <input matInput formControlName="auditDetail" type="text" required>
+            </mat-form-field>
+        </div>
+    </div>
+    <div mat-dialog-actions class="action">
+        <button class="btn btn-outline-dark" mat-raised-button (click)="dialogclose()">Cancel</button>
+        <button class="btn btn-outline-dark" mat-raised-button [disabled]="employeeForm.invalid" (click)="addEmployeeData()">{{data? 'update': 'save'}}</button>
+    </div>
+</form>

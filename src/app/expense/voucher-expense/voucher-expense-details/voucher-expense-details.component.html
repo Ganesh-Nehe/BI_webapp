@@ -1,0 +1,42 @@
+<h2 mat-dialog-title>Voucher Expense Details</h2>
+<div mat-dialog-content #dialogContent>
+  <table mat-table [dataSource]="data.voucherDetails" class="mat-elevation-z8">
+
+    <ng-container matColumnDef="expenseDate">
+      <th mat-header-cell *matHeaderCellDef> Expense Date </th>
+      <td mat-cell *matCellDef="let element"> {{element.expenseDate | date:'medium'}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="miscExpenseCatId">
+      <th mat-header-cell *matHeaderCellDef> Expense Category </th>
+      <td mat-cell *matCellDef="let element"> {{element.miscExpenseCatId}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="expenseDescription">
+      <th mat-header-cell *matHeaderCellDef> Description </th>
+      <td mat-cell *matCellDef="let element"> {{element.expenseDescription}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="miscExpenseAmount">
+      <th mat-header-cell *matHeaderCellDef> Amount </th>
+      <td mat-cell *matCellDef="let element"> {{element.miscExpenseAmount}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="currencyId">
+      <th mat-header-cell *matHeaderCellDef> Currency ID </th>
+      <td mat-cell *matCellDef="let element"> {{element.currencyId}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="billLocation">
+      <th mat-header-cell *matHeaderCellDef> Bill Location </th>
+      <td mat-cell *matCellDef="let element"> {{element.billLocation}} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="print()">Print</button>
+  <button mat-button mat-dialog-close>Close</button>
+</div>

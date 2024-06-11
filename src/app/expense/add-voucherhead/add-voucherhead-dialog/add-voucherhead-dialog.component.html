@@ -1,0 +1,14 @@
+<div mat-dialog-title>Add Voucher Head</div>
+<form [formGroup]="voucherHeadForm">
+    <div mat-dialog-content class="content">
+        <mat-form-field fxFlex="100%" appearance="outline">
+            <mat-label>Voucher Head</mat-label>
+            <input matInput type="text" formControlName="miscExpenseCatName" required="" >
+        </mat-form-field>
+    </div>
+    <div mat-dialog-actions class="action">
+        <button class="btn btn-outline-dark" mat-raised-button (click)="dialogclose()">Cancel</button>
+        <button class="btn btn-outline-dark" mat-raised-button (click)="addVoucherHead()">Save</button>
+    </div>
+</form>
+

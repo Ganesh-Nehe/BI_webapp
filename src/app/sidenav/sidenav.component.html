@@ -1,11 +1,51 @@
 <div class="side-nav-content">
     <ul class="nav-list" [ngClass]="{'nav-list-open': sideNavStatus}">
-        <li class = "nav-list-item " *ngFor="let item of list" (click)="navigateTo(item.path)">
-            <i class="{{item.icon}} "></i>
+        <li class="nav-list-item" (click)="navigateTo('/dashboard')">
+            <i class="fa-solid fa-house"></i>
             <span>
-                <a [routerLink]="item.path">{{item.name}}</a>
+                <a [routerLink]="'/dashboard'">Dashboard</a>
+            </span>
+        </li>
+        <li class="nav-list-item" (click)="navigateTo('/business')">
+            <i class="fa-solid fa-briefcase"></i>
+            <span>
+                <a [routerLink]="'/business'">Business</a>
+            </span>
+        </li>
+        <li class="nav-list-item" (click)="navigateTo('/users')">
+            <i class="fa-solid fa-user"></i>
+            <span>
+                <a [routerLink]="'/users'">User</a>
+            </span>
+        </li>
+        <li class="nav-list-item" (click)="navigateTo('/employee')">
+            <i class="fa-solid fa-user-tie"></i>
+            <span>
+                <a [routerLink]="'/employee'">Employee</a>
+            </span>
+        </li>
+        <li class="nav-list-item dropstart" mat-menu-trigger [matMenuTriggerFor]="expenseMenu">
+            <i class="fa-solid fa-comments-dollar"></i>
+            <span>
+                <a [routerLink]="">Expense</a>
+            </span>
+        </li>
+        <mat-menu #expenseMenu="matMenu" xPosition="before" class="custom-menu">
+            <button mat-menu-item [routerLink]="'/expense/travel'">Travel</button>
+            <button mat-menu-item [routerLink]="'/expense/voucher'">Voucher</button>
+        </mat-menu>
+        
+        <li class="nav-list-item" (click)="navigateTo('/expense-master')">
+            <i class="fa-solid fa-file-invoice"></i>
+            <span>
+                <a [routerLink]="'/expense-master'">Expense Master</a>
+            </span>
+        </li>
+        <li class="nav-list-item" (click)="navigateTo('/voucher-head')">
+            <i class="fa-solid fa-briefcase"></i>
+            <span>
+                <a [routerLink]="'/business'">Voucher Head</a>
             </span>
         </li>
     </ul>
 </div>
-  

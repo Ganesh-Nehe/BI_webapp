@@ -1,4 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -9,9 +10,14 @@ export class HeaderComponent implements OnInit {
   @Output() sideNavToggled = new EventEmitter<boolean>();
   menuStatus: boolean = false;
 
-  constructor() {}
+  constructor(private router: Router) {}
 
   ngOnInit(): void {}
+
+  logout() {
+    localStorage.removeItem("loginToken");
+    this.router.navigate(['/login']);
+  }
 
   SideNavToggle() {
     // console.log('SideNav button clicked!');

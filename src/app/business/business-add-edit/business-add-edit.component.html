@@ -4,27 +4,23 @@
         <div fxLayout="row" fxLayoutGap="10px">
             <mat-form-field fxFlex="50%" appearance="outline">
                 <mat-label>Company Name</mat-label>
-                <input matInput placeholder="" type="text" formControlName="businessName">
+                <input matInput placeholder="" type="text" formControlName="businessName" required>
             </mat-form-field>
 
             <mat-form-field appearance="outline" fxFlex="50%">
                 <mat-label>CIN no</mat-label>
-                <input matInput placeholder="" type="number" formControlName="CIN_no">
-                <mat-hint>ABCD</mat-hint>
+                <input matInput placeholder="" type="number" formControlName="CIN_no" required>
+                <!-- <mat-hint>ABCD</mat-hint> -->
             </mat-form-field>
         </div>
         <div fxLayout="row" fxLayoutGap="10px">
             <mat-form-field fxFlex="50%" appearance="outline">
                 <mat-label>PAN no</mat-label>
-                <input matInput placeholder="" type="text" formControlName="PAN_no">
+                <input matInput placeholder="" type="text" formControlName="PAN_no" required>
             </mat-form-field>
             <mat-form-field fxFlex="50%" appearance="outline">
                 <mat-label>Logo</mat-label>
-                <input matInput placeholder="" formControlName="logoFileLocation" >
-            </mat-form-field>
-            <mat-form-field fxFlex="50%" appearance="outline">
-                <mat-label>Upload File</mat-label>
-                <input type="file" formControlName="fileUpload">
+                <input matInput placeholder="" type="text" formControlName="logoFileLocation" required>
             </mat-form-field>
         </div>
             <h3>
@@ -33,44 +29,51 @@
 
             <div fxLayout="row" fxLayoutGap="10px">
                 <mat-form-field fxFlex="50%" appearance="outline">
-                    <mat-label>addressTypeId</mat-label>
-                    <input matInput placeholder="" type="text" formControlName="addressTypeId">
+                    <mat-label>Address Type</mat-label>
+                    <input matInput placeholder="Enter Address Type" formControlName="addressTypeId" required>
                 </mat-form-field>
                 <mat-form-field fxFlex="50%" appearance="outline">
                     <mat-label>addressLine_1</mat-label>
-                    <input matInput placeholder="" formControlName="addressLine_1">
+                    <input matInput placeholder="" formControlName="addressLine_1" required>
                 </mat-form-field>
             </div>
 
             <div fxLayout="row" fxLayoutGap="10px">
                 <mat-form-field fxFlex="50%" appearance="outline">
                     <mat-label>addressLine_2</mat-label>
-                    <input matInput placeholder="" type="text" formControlName="addressLine_2">
+                    <input matInput placeholder="" type="text" formControlName="addressLine_2" required>
                 </mat-form-field>
                 <mat-form-field fxFlex="50%" appearance="outline">
                     <mat-label>city</mat-label>
-                    <input matInput placeholder="" formControlName="city">
+                    <input matInput placeholder="" formControlName="city" required>
                 </mat-form-field>
             </div>
 
             <div fxLayout="row" fxLayoutGap="10px">
                 <mat-form-field fxFlex="50%" appearance="outline">
                     <mat-label>state</mat-label>
-                    <input matInput placeholder="" type="text" formControlName="state">
+                    <input matInput placeholder="" type="text" formControlName="state" required>
                 </mat-form-field>
                 <mat-form-field fxFlex="50%" appearance="outline">
                     <mat-label>isoCountryCode</mat-label>
-                    <input matInput placeholder="" formControlName="isoCountryCode">
+                    <input matInput placeholder="" formControlName="isoCountryCode" required>
                 </mat-form-field>
                 <mat-form-field fxFlex="50%" appearance="outline">
                     <mat-label>pinCode</mat-label>
-                    <input matInput placeholder="" type="text" formControlName="pinCode">
+                    <input matInput placeholder="" type="text" formControlName="pinCode" required>
+                </mat-form-field>
+            </div>
+
+            <div *ngIf="data" fxLayout="row" fxLayoutGap="10px">
+                <mat-form-field fxFlex="100%" appearance="outline">
+                    <mat-label>Description</mat-label>
+                    <input matInput placeholder="minimum 20 characters" formControlName="auditDetail" required>
                 </mat-form-field>
             </div>
     </div>
 
     <div mat-dialog-actions class="action">
-        <button class="btn btn-outline-dark" mat-raised-button>Cancel</button>
-        <button class="btn btn-outline-dark" mat-raised-button (click)="addBusinessData()">Save</button>
+        <button class="btn btn-outline-dark" mat-raised-button (click)="dialogclose()">Cancel</button>
+        <button class="btn btn-outline-dark" mat-raised-button [disabled]="businessForm.invalid" (click)="addBusinessData()">{{data? 'update': 'save'}}</button>
     </div>
 </form>

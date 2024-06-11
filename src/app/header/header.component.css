@@ -10,6 +10,6 @@ nav{
     cursor: pointer;
 }
 .side-nav-button:hover{
-    background-color: gray;
+    background-color: rgb(210, 220, 228);
     border-radius: 30%;
 }

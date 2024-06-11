@@ -4,11 +4,11 @@
             Login page
         </mat-toolbar>
         <form fxLayoutAlign="stretch" fxLayout="column" class="login-form">
-            <mat-form-field fxFlex>
+            <mat-form-field fxFlex appearance="outline">
                 <mat-label>Email</mat-label>
               <input matInput name="Email" [(ngModel)]="loginObj.email_Id" placeholder="" required>
             </mat-form-field>
-            <mat-form-field fxFlex>
+            <mat-form-field fxFlex appearance="outline">
                 <mat-label>password</mat-label>
                 <input matInput type="password" name="password" [(ngModel)]="loginObj.password" placeholder="" required>
             </mat-form-field>

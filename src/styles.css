@@ -2,3 +2,6 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: "Poppins", sans-serif; }
+.mat-menu-panel {
+    background-color: blue;
+}

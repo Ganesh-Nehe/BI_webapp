@@ -2,6 +2,9 @@
     padding: 20px;
 }
 
+body {
+  background-color: #837f7f;
+}
 .login-card {
     width: 300px;
     margin: 20px;

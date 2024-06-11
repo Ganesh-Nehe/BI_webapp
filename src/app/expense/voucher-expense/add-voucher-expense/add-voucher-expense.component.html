@@ -1,0 +1,95 @@
+<div mat-dialog-title>Add Voucher Expense</div>
+<form [formGroup]="voucherExpenseData" (ngSubmit)="addVoucherexpense()">
+    <div mat-dialog-content class="content">
+        <div fxLayout="row" fxLayoutGap="10px">
+            <mat-form-field appearance="outline" fxFlex="50%">
+                <mat-label>Voucher Name</mat-label>
+                <input matInput formControlName="mischeadname" required>
+                <mat-error *ngIf="voucherExpenseData.get('mischeadname')?.invalid && voucherExpenseData.get('mischeadname')?.touched">
+                    Voucher Name is required
+                </mat-error>
+            </mat-form-field>
+        </div>
+
+        <div formArrayName="expenses">
+            <div *ngFor="let expense of expenses.controls; let i = index" [formGroupName]="i">
+                <div fxLayout="row" fxLayoutGap="10px">
+                    <!-- Expense Description -->
+                    <mat-form-field appearance="outline">
+                        <mat-label>Expense Description</mat-label>
+                        <input matInput formControlName="expenseDescription" required>
+                        <mat-error *ngIf="expense.get('expenseDescription')?.invalid && expense.get('expenseDescription')?.touched">
+                            Expense Description is required
+                        </mat-error>
+                    </mat-form-field>
+
+                    <!-- Misc Expense Category -->
+                    <mat-form-field appearance="outline">
+                        <mat-label>Voucher Head</mat-label>
+                        <mat-select formControlName="miscExpenseCatId" required>
+                            <mat-option *ngFor="let head of voucherHeads" [value]="head.idmiscExpenseCat">{{ head.miscExpenseCatName }}</mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="expense.get('miscExpenseCatId')?.invalid && expense.get('miscExpenseCatId')?.touched">
+                            Voucher Head is required
+                        </mat-error>
+                    </mat-form-field>
+
+                    <!-- Expense Date -->
+                    <mat-form-field appearance="outline">
+                        <mat-label>Expense Date</mat-label>
+                        <input matInput [matDatepicker]="picker" formControlName="expenseDate" required>
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                        <mat-error *ngIf="expense.get('expenseDate')?.invalid && expense.get('expenseDate')?.touched">
+                            Expense Date is required
+                        </mat-error>
+                    </mat-form-field>
+
+                    <!-- Expense Amount -->
+                    <mat-form-field appearance="outline">
+                        <mat-label>Expense Amount</mat-label>
+                        <input matInput formControlName="miscExpenseAmount" type="number" required>
+                        <mat-error *ngIf="expense.get('miscExpenseAmount')?.invalid && expense.get('miscExpenseAmount')?.touched">
+                            Valid Amount is required
+                        </mat-error>
+                    </mat-form-field>
+
+                    <!-- Currency ID -->
+                    <mat-form-field appearance="outline">
+                        <mat-label>Currency</mat-label>
+                        <input matInput formControlName="currencyId" type="number" required>
+                        <mat-error *ngIf="expense.get('currencyId')?.invalid && expense.get('currencyId')?.touched">
+                            Currency is required
+                        </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>bill</mat-label>
+                        <input matInput formControlName="currencyId" type="text" required>
+                        <mat-error *ngIf="expense.get('currencyId')?.invalid && expense.get('currencyId')?.touched">
+                            bill is required
+                        </mat-error>
+                    </mat-form-field>
+
+                    <!-- Minus Button -->
+                    <button mat-icon-button color="warn" *ngIf="i !== 0" (click)="removeExpense(i)">
+                        <mat-icon>remove</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div>Total Expense Amount: {{ totalExpenseAmount }}</div>
+        
+        <!-- Plus Button -->
+        <button mat-icon-button color="primary" type="button" (click)="addExpense()">
+            <mat-icon>add</mat-icon>
+        </button>
+    </div>
+  </form>
+    
+    <div mat-dialog-actions class="action" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px">
+        <button mat-raised-button (click)="dialogclose()">Cancel</button>
+        <button mat-raised-button color="primary" type="submit" (click)="addVoucherexpense()">Save</button>
+    </div>
+

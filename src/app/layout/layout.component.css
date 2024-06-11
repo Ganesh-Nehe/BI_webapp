@@ -1,4 +1,5 @@
 app-header{
+    box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.5);
     position: fixed;
     width: 100%;
     top: 0%;
@@ -18,11 +19,11 @@ app-sidenav{
     width: 60px;
     height: calc(100vh - 4rem);
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
-    background-color: rgba(34, 34, 34, 0.99);
+    background-color: rgb(247, 255, 255);
     overflow-x: hidden;
     white-space: nowrap;
     transition: width 250ms ease-in;
-    height: 127vh;
+    height: 100%;
 }
 
 .app-sidenav-open {
