@@ -1,19 +1,19 @@
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Component, Inject, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { VoucherExpenseDetailsService } from "./voucher-expense-details.service"
+import { ExpenseMasterDetailsService } from './expense-master-details.service'
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
-  selector: 'app-voucher-expense-details',
-  templateUrl: './voucher-expense-details.component.html',
-  styleUrls: ['./voucher-expense-details.component.css']
+  selector: 'app-expense-master-details',
+  templateUrl: './expense-master-details.component.html',
+  styleUrls: ['./expense-master-details.component.css']
 })
-export class VoucherExpenseDetailsComponent implements OnInit {
-
+export class ExpenseMasterDetailsComponent {
   displayedColumns: string[] = ['expenseDate', 'miscExpenseCatName', 'expenseDescription', 'miscExpenseAmount','billLocation'];
   @ViewChild('dialogContent') dialogContent!: ElementRef;
  
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private voucherExpenseDetailsService: VoucherExpenseDetailsService) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private expensemasterdetailsservice: ExpenseMasterDetailsService, private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     console.log('VoucherExpenseDetailsComponent initialized with data:', this.data);
@@ -21,16 +21,26 @@ export class VoucherExpenseDetailsComponent implements OnInit {
 
   viewBill(billLocation: string) {
     const encodedBillLocation = encodeURIComponent(billLocation);
-    this.voucherExpenseDetailsService.getDocumentByLocation(encodedBillLocation).subscribe((response: HttpResponse<Blob>) => {
+    this.expensemasterdetailsservice.getDocumentByLocation(encodedBillLocation).subscribe((response: HttpResponse<Blob>) => {
       if (response.body) {
         const blob = new Blob([response.body], { type: 'image/png' });
         const url = window.URL.createObjectURL(blob);
         window.open(url, '_blank');
       } else {
-        console.error('Response body is null');
+        this.snackBar.open('Response is Null', 'Close', {
+          duration: 3000,
+          verticalPosition: 'top', 
+          horizontalPosition: 'center',
+          panelClass: ['snackbar-error'],
+        });
       }
     }, error => {
-      console.error('Error fetching the bill:', error);
+      this.snackBar.open('No file found on server', 'Close', {
+        duration: 3000,
+        verticalPosition: 'top', 
+        horizontalPosition: 'center',
+        panelClass: ['snackbar-error'],
+      });
     });
   }
   

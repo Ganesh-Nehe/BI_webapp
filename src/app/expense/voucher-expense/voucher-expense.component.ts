@@ -14,7 +14,7 @@ import { VoucherExpenseDetailsComponent } from  './voucher-expense-details/vouch
 })
 export class VoucherExpenseComponent implements OnInit {
 
-  displayedColumns: string[] = ['voucherId', 'ExpenseHead' ,'CreateDate', 'TotalAmount', 'viewDetails'];
+  displayedColumns: string[] = ['voucherId', 'ExpenseHead' ,'CreateDate', 'TotalAmount', 'viewDetails', 'Status'];
 
   dataSource!: MatTableDataSource<any>;
 
@@ -30,7 +30,7 @@ export class VoucherExpenseComponent implements OnInit {
   getVoucherExpenses() {
     this.voucherexpenseservice.showAllVoucherExpenses().subscribe({
       next: (res) =>  {
-        // console.log(res);
+        console.log(res);
         const dataArray = Array.isArray(res.data) ? res.data : [];
         this.dataSource = new MatTableDataSource(dataArray);
         this.dataSource.sort = this.sort;

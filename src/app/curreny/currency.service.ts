@@ -6,11 +6,10 @@ import { APIService } from 'src/app/api.service';
 @Injectable({
   providedIn: 'root'
 })
-export class EmployeeAddEditService {
-
+export class CurrencyService {
   constructor(private http: HttpClient, private apiService: APIService) { }
 
-  editEmployee(employeeId: string, data: any): Observable<any> {
+  getCurrencyList(): Observable<any>{
     const baseApi = this.apiService.getBaseApi();
     const httpOptions = {
       headers: new HttpHeaders({
@@ -18,8 +17,6 @@ export class EmployeeAddEditService {
         'Authorization': 'Bearer ' + localStorage.getItem('loginToken')
       })
     };
-
-    console.log('Request Payload:', { ...data, employeeId });
-    return this.http.patch(`${baseApi}/API/user/${employeeId}`, { ...data, employeeId }, httpOptions);
+    return this.http.get(`${baseApi}/API/currency`,httpOptions)
   }
 }

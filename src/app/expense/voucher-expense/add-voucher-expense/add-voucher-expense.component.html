@@ -51,25 +51,21 @@
                         <input matInput formControlName="miscExpenseAmount" type="number" required>
                         <mat-error *ngIf="expense.get('miscExpenseAmount')?.invalid && expense.get('miscExpenseAmount')?.touched">
                             Valid Amount is required
-                        </mat-error>
+                        </mat-error> 
                     </mat-form-field>
 
                     <!-- Currency ID -->
                     <mat-form-field appearance="outline">
                         <mat-label>Currency</mat-label>
-                        <input matInput formControlName="currencyId" type="number" required>
+                        <mat-select formControlName="currencyId" required>
+                            <mat-option *ngFor="let currency of currencies" [value]="currency.currency_id">{{ currency.currency_name }}</mat-option>
+                        </mat-select>
                         <mat-error *ngIf="expense.get('currencyId')?.invalid && expense.get('currencyId')?.touched">
                             Currency is required
                         </mat-error>
                     </mat-form-field>
 
-                    <mat-form-field appearance="outline">
-                        <mat-label>bill</mat-label>
-                        <input matInput formControlName="currencyId" type="text" required>
-                        <mat-error *ngIf="expense.get('currencyId')?.invalid && expense.get('currencyId')?.touched">
-                            bill is required
-                        </mat-error>
-                    </mat-form-field>
+                    <input type="file" (change)="onFileChange($event, i)">
 
                     <!-- Minus Button -->
                     <button mat-icon-button color="warn" *ngIf="i !== 0" (click)="removeExpense(i)">
@@ -78,18 +74,26 @@
                 </div>
             </div>
         </div>
+        <!-- Calculate Button -->
+        <div>
+            <button mat-raised-button color="accent" type="button" (click)="calculateTotalExpenseAmount()">
+                Calculate Total Expense
+            </button>
+        </div>
 
+        <!-- Show total expense amount -->
         <div>Total Expense Amount: {{ totalExpenseAmount }}</div>
-        
+
         <!-- Plus Button -->
         <button mat-icon-button color="primary" type="button" (click)="addExpense()">
             <mat-icon>add</mat-icon>
         </button>
     </div>
-  </form>
+</form>
     
     <div mat-dialog-actions class="action" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px">
         <button mat-raised-button (click)="dialogclose()">Cancel</button>
-        <button mat-raised-button color="primary" type="submit" (click)="addVoucherexpense()">Save</button>
+        <button mat-raised-button color="primary" (click)="addVoucherexpense()">Save</button>
     </div>
 
+ 

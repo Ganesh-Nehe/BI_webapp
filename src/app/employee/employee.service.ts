@@ -21,7 +21,7 @@ export class EmployeeService {
     return this.http.get(`${baseApi}/API/user/`,httpOptions)
   }
 
-  getEmployeeDetails(userId: string): Observable<any> {
+  getEmployeeDetails(employeeId: string): Observable<any> {
     const baseApi = this.apiService.getBaseApi();
     const httpOptions = {
       headers: new HttpHeaders({
@@ -29,6 +29,6 @@ export class EmployeeService {
         'Authorization': 'Bearer ' + localStorage.getItem('loginToken')
       })
     };
-    return this.http.get(`${baseApi}/API/user/${userId}`, httpOptions);
+    return this.http.get(`${baseApi}/API/user/${employeeId}`, httpOptions);
   }  
 }

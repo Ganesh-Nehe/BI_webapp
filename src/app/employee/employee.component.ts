@@ -17,7 +17,7 @@ import { EmployeeDetailsComponent } from './employee-details/employee-details.co
   styleUrls: ['./employee.component.css']
 })
 export class EmployeeComponent implements OnInit {
-  displayedColumns: string[] = ['serialNumber','userFirstName','userMiddleName','userLastName','telephone_no','mobile_no','emailId','action'];
+  displayedColumns: string[] = ['serialNumber','employeeFirstName','employeeMiddleName','employeeLastName','mobile_no','emailId','action'];
 
   dataSource!: MatTableDataSource<any>;
 
@@ -52,7 +52,7 @@ export class EmployeeComponent implements OnInit {
   }
 
   openDetailsDialog(data: any){
-    this.employeeService.getEmployeeDetails(data.userId).subscribe(
+    this.employeeService.getEmployeeDetails(data.employeeId).subscribe(
       (details) => {
         const dialogRef = this.dialog.open(EmployeeDetailsComponent, {
           data: { employeeDetails: details.data },

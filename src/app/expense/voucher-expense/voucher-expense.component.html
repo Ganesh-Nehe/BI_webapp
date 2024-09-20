@@ -34,13 +34,30 @@
             </ng-container>
     
             <ng-container matColumnDef="TotalAmount">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header style="max-width: 50px; white-space: normal; word-wrap: break-word;"> Total Amount </th>
-              <td mat-cell *matCellDef="let row" style="max-width: 50px; white-space: normal; word-wrap: break-word;"></td>
+              <th mat-header-cell *matHeaderCellDef mat-sort-header > Total Amount </th>
+              <td mat-cell *matCellDef="let row">{{row.totalAmount}}</td>
             </ng-container>
 
             <ng-container matColumnDef="viewDetails">
               <th mat-header-cell *matHeaderCellDef mat-sort-header> View Details </th>
               <td mat-cell *matCellDef="let row"> <button mat-raised-button color="primary" (click)="openDetailsDialog(row)">view</button></td>
+            </ng-container>
+
+            <ng-container matColumnDef="Status">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
+              <td mat-cell *matCellDef="let row">
+                <button
+                  mat-raised-button
+                  [ngClass]="{
+                    'btn-yellow': row.approval === 'Not Selected',
+                    'btn-green': row.approval === 'Approved',
+                    'btn-red': row.approval === 'Disapproved'
+                  }"
+                  [disabled]="true"
+                >
+                  {{ row.approval }}
+                </button>
+              </td>
             </ng-container>
 
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

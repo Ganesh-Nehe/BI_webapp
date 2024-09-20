@@ -13,7 +13,9 @@ export class AddVoucherExpenseComponent implements OnInit {
 
   voucherExpenseData: FormGroup;
   voucherHeads: any[] = [];
+  currencies: any[] = [];
   totalExpenseAmount: number = 0; 
+  fileData: (File | null)[] = [];
 
   constructor(private fb: FormBuilder,
               private http: HttpClient,
@@ -27,6 +29,7 @@ export class AddVoucherExpenseComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadVoucherHeads();
+    this.loadCurrencies(); 
     this.addExpense(); // Initialize with one expense form group
   }
 
@@ -41,17 +44,18 @@ export class AddVoucherExpenseComponent implements OnInit {
       miscExpenseAmount: ['', Validators.required],
       currencyId: ['', Validators.required],
       expenseDescription: ['', Validators.required],
-      billLocation: ['',Validators.required]
+      billLocation: ['']
     });
   }
 
   addExpense(): void {
     this.expenses.push(this.createExpenseGroup());
-    this.calculateTotalExpenseAmount();
+    this.fileData.push(null);
   }
 
   removeExpense(index: number): void {
     this.expenses.removeAt(index);
+    this.fileData.splice(index, 1);
     this.calculateTotalExpenseAmount();
   }
 
@@ -59,6 +63,12 @@ export class AddVoucherExpenseComponent implements OnInit {
     this.dialogref.close(true);
   }
 
+  onFileChange(event: Event, index: number): void {
+    const input = event.target as HTMLInputElement;
+    const file = (input.files as FileList)[0];
+    this.fileData[index] = file;
+  }
+  
   calculateTotalExpenseAmount(): void {
     this.totalExpenseAmount = this.expenses.controls.reduce((sum, control) => {
       const amount = control.get('miscExpenseAmount')?.value;
@@ -79,8 +89,27 @@ export class AddVoucherExpenseComponent implements OnInit {
         (response: any) => {
           this.voucherHeads = response.data;
         },
-        (error) => {
+        (error) => { 
           console.error('Error fetching voucher heads:', error);
+        }
+      );
+  }
+
+  loadCurrencies(): void {
+    const baseApi = this.apiService.getBaseApi();
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + localStorage.getItem('loginToken')
+      })
+    };
+    this.http.get(`${baseApi}/API/currency`, httpOptions)
+      .subscribe(
+        (response: any) => {
+          this.currencies = response.data;
+        },
+        (error) => {
+          console.error('Error fetching currencies:', error);
         }
       );
   }
@@ -88,12 +117,20 @@ export class AddVoucherExpenseComponent implements OnInit {
   addVoucherexpense() {
     const userId = localStorage.getItem('loggedInUserId');
     const baseApi = this.apiService.getBaseApi();
-    const formData = {
-      mischeadname: this.voucherExpenseData.value.mischeadname,
-      employeeId: userId,
-      expenses: this.voucherExpenseData.value.expenses
-    };
+    const formData = new FormData();
 
+    formData.append('mischeadname', this.voucherExpenseData.value.mischeadname);
+    formData.append('employeeId', userId ?? ''); 
+
+    this.voucherExpenseData.value.expenses.forEach((expense: any, index: number) => {
+      Object.keys(expense).forEach(key => {
+        formData.append(`expenses[${index}][${key}]`, expense[key]);
+      });
+      if (this.fileData[index]) {
+        formData.append(`file${index}`, this.fileData[index] as File);
+      }
+    });
+    formData.append('totalAmount', this.totalExpenseAmount.toString());
     const httpOptions = {
       headers: new HttpHeaders({
         'Authorization': 'Bearer ' + localStorage.getItem('loginToken')

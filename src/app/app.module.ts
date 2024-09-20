@@ -47,7 +47,13 @@ import { MatMenuModule } from '@angular/material/menu';
 import { AddVoucherheadComponent } from './expense/add-voucherhead/add-voucherhead.component';
 import { AddVoucherheadDialogComponent } from './expense/add-voucherhead/add-voucherhead-dialog/add-voucherhead-dialog.component';
 import { AddVoucherExpenseComponent } from './expense/voucher-expense/add-voucher-expense/add-voucher-expense.component';
-import { VoucherExpenseDetailsComponent } from './expense/voucher-expense/voucher-expense-details/voucher-expense-details.component'; 
+import { VoucherExpenseDetailsComponent } from './expense/voucher-expense/voucher-expense-details/voucher-expense-details.component';
+import { ExpenseMasterAddEditComponent } from './expense-master/expense-master-add-edit/expense-master-add-edit.component';
+import { CurrenyComponent } from './curreny/curreny.component';
+import { AddCurrencyComponent } from './curreny/add-currency/add-currency.component';
+import { ExpenseMasterDetailsComponent } from './expense-master/expense-master-details/expense-master-details.component'; 
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { UserProfileComponent } from './user-profile/user-profile.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -71,7 +77,12 @@ import { VoucherExpenseDetailsComponent } from './expense/voucher-expense/vouche
     AddVoucherheadComponent,
     AddVoucherheadDialogComponent,
     AddVoucherExpenseComponent,
-    VoucherExpenseDetailsComponent
+    VoucherExpenseDetailsComponent,
+    ExpenseMasterAddEditComponent,
+    CurrenyComponent,
+    AddCurrencyComponent,
+    ExpenseMasterDetailsComponent,
+    UserProfileComponent
   ],
   imports: [
     BrowserModule,
@@ -99,7 +110,8 @@ import { VoucherExpenseDetailsComponent } from './expense/voucher-expense/vouche
     MatIconModule,
     MatButtonToggleModule,
     MatMenuModule,
-    CommonModule
+    CommonModule,
+    MatSnackBarModule
   ],
   providers: [BnNgIdleService,BusinessAddEditComponent],
   bootstrap: [AppComponent]

@@ -4,6 +4,7 @@ import { HttpClient, HttpHeaders,HttpErrorResponse } from '@angular/common/http'
 import { APIService } from '../../api.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { EmployeeAddEditService } from './employee-add-edit.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-employee-add-edit',
@@ -19,19 +20,19 @@ export class EmployeeAddEditComponent implements  OnInit {
     public apiService :APIService,
     private dialogRef: MatDialogRef<EmployeeAddEditComponent>,
     private employeeService: EmployeeAddEditService,
-    @Inject(MAT_DIALOG_DATA) public data:any
+    @Inject(MAT_DIALOG_DATA) public data:any,
+    private snackBar: MatSnackBar
     
   ) {
     this.employeeForm = this.fb.group({
-      userFirstName: ['',Validators.required],
-      userMiddleName: ['',Validators.required],
-      userLastName: ['',Validators.required],
-      designation: ['',Validators.required],
-      telephone_no: ['',Validators.required],
-      mobile_no: ['',Validators.required],
+      employeeFirstName: ['',Validators.required],
+      employeeMiddleName: ['',Validators.required],
+      employeeLastName: ['',Validators.required],
       emailId: ['',Validators.required],
       password: ['',Validators.required],
-      auditDetail: ['', [Validators.required, Validators.minLength(20)]]
+      mobile_no: ['',Validators.required],
+      bankId: ['',Validators.required],
+      profilephoto: ['',Validators.required],
     });
   }
 
@@ -56,13 +57,23 @@ export class EmployeeAddEditComponent implements  OnInit {
 
       if (this.data) {
         // Editing existing employee
-        this.employeeService.editEmployee(this.data.userId, this.employeeForm.value).subscribe({
+        this.employeeService.editEmployee(this.data.employeeId, this.employeeForm.value).subscribe({
           next: (val: any) => {
             this.dialogRef.close(true);
+            this.snackBar.open('Employee updated succesfully', 'Close', {
+              duration: 3000,
+              verticalPosition: 'top', 
+              horizontalPosition: 'center',
+              panelClass: ['snackbar-error'],
+            });
           },
           error: (error: HttpErrorResponse) => {
-            console.error('Error updating employee:', error);
-            console.error('Error details:', error.error);
+            this.snackBar.open('Error updating employee', 'Close', {
+              duration: 3000,
+              verticalPosition: 'top', 
+              horizontalPosition: 'center',
+              panelClass: ['snackbar-error'],
+            });
           }
         });
       } else {
@@ -70,8 +81,19 @@ export class EmployeeAddEditComponent implements  OnInit {
         this.http.post(`${baseApi}/API/user/`, formData, httpOptions).subscribe(res => {
           console.log("Successfully added the employee", res);
           this.dialogRef.close(true);
+          this.snackBar.open('Employee created succesfully', 'Close', {
+            duration: 3000,
+            verticalPosition: 'top', 
+            horizontalPosition: 'center',
+            panelClass: ['snackbar-error'],
+          });
         }, error => {
-          console.error('Error submitting data: ', error);
+          this.snackBar.open('Error creating employee', 'Close', {
+            duration: 3000,
+            verticalPosition: 'top', 
+            horizontalPosition: 'center',
+            panelClass: ['snackbar-error'],
+          });;
         });
       }
     }

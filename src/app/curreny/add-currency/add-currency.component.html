@@ -1,0 +1,13 @@
+<div mat-dialog-title>Add Currency</div>
+<form [formGroup]="currencyForm">
+    <div mat-dialog-content class="content">
+        <mat-form-field fxFlex="100%" appearance="outline">
+            <mat-label>Currency</mat-label>
+            <input matInput type="text" formControlName="currency_name" required="" >
+        </mat-form-field>
+    </div>
+    <div mat-dialog-actions class="action">
+        <button class="btn btn-outline-dark" mat-raised-button (click)="dialogclose()">Cancel</button>
+        <button class="btn btn-outline-dark" mat-raised-button (click)="addCurrency()">Save</button>
+    </div>
+</form>

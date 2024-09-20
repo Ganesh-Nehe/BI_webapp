@@ -13,7 +13,7 @@ import { AuthService } from '../service/auth.service';
 export class LoginComponent {
 
   loginObj: any = {
-    "email_Id": "",
+    "emailId": "",
     "password": ""
   };
 
@@ -25,19 +25,19 @@ export class LoginComponent {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
       }),
-      withCredentials: true, // Include credentials in the request
+      withCredentials: true,
     };
 
     this.http.post(`${baseApi}/API/login`, this.loginObj, httpOptions)
       .subscribe((res: any) => {
-        // console.log('API Response:', res);
         if (res.success === 1) {
-          // debugger;
           this.authService.setLoggedIn(true);
           this.router.navigate(['/dashboard']);
           localStorage.setItem("loginToken", res.token);
-          localStorage.setItem('loggedInUserId', res.userId);
-          // console.log(res.userId);
+          localStorage.setItem('loggedInUserId', res.employeeId);
+          localStorage.setItem('permissions', JSON.stringify(res.permission_name));
+          localStorage.setItem('employeeFirstName', res.employeeFirstName);
+
         } else {
           alert(res.data);
           console.log('Login failed:', res.message);

@@ -12,6 +12,8 @@ import { ExpenseMasterComponent } from './expense-master/expense-master.componen
 import { TravelExpenseComponent } from './expense/travel-expense/travel-expense.component';
 import { VoucherExpenseComponent } from './expense/voucher-expense/voucher-expense.component';
 import { AddVoucherheadComponent } from './expense/add-voucherhead/add-voucherhead.component';
+import { CurrenyComponent } from './curreny/curreny.component'
+import { UserProfileComponent } from './user-profile/user-profile.component'
 
 const routes: Routes = [
   { 
@@ -46,7 +48,6 @@ const routes: Routes = [
       },
       {
         path: 'expense',
-        // component:  ExpenseComponent,
         children: [
           { path: 'travel', component: TravelExpenseComponent },
           { path: 'voucher', component:  VoucherExpenseComponent },
@@ -59,6 +60,14 @@ const routes: Routes = [
       {
         path: 'voucher-head',
         component: AddVoucherheadComponent
+      },
+      {
+        path: 'currency',
+        component: CurrenyComponent
+      },
+      {
+        path: 'profile',
+        component: UserProfileComponent
       }
     ]
   },

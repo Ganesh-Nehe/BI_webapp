@@ -2,27 +2,16 @@
     <div class="side-nav-button p-2 me-3 text-dark" (click)="SideNavToggle()">
         <i class="fa-solid fa-bars"></i>
     </div>
-    
-    <a class="navbar-brand px-4" href="#">Business Intelligence</a>
 
-    <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav me-auto">
-            <li class="nav-item dropdown position-relative">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">menu 1</a>
-                <ul class="dropdown-menu dropdown-menu-dark dropdown-right">
-                    <li><a class="dropdown-item" href="#">child 1</a></li>
-                    <li><a class="dropdown-item" href="#">child 2</a></li>
-                    <li><a class="dropdown-item" href="#">child 3</a></li>
-                </ul>
-            </li>
-        </ul>
-    </div>
+    <a class="navbar-brand mx-auto">Business Intelligence</a>
 
     <div class="profile-logo dropstart">
-        <button class="btn btn-outline-dark dropdown-toggle" data-bs-toggle="dropdown">USER</button>
+        <button class="btn btn-outline-dark dropdown-toggle" data-bs-toggle="dropdown">
+            Hello! {{ getEmployeeFirstName() }}
+        </button>
         <ul class="dropdown-menu dropdown-menu-light">
-            <li><a href="#" class="dropdown-item">your profile</a></li>
-            <li><a href="#" class="dropdown-item" (click)="logout()">logout</a></li>
+            <li><a class="dropdown-item" (click)="navigateTo('/profile')">your profile</a></li>
+            <li><a class="dropdown-item" (click)="logout()">logout</a></li>
         </ul>
     </div>
 </nav>

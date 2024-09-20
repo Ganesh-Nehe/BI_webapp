@@ -20,8 +20,15 @@ export class HeaderComponent implements OnInit {
   }
 
   SideNavToggle() {
-    // console.log('SideNav button clicked!');
     this.menuStatus = !this.menuStatus;
     this.sideNavToggled.emit(this.menuStatus);
+  }
+
+  navigateTo(path: string) {
+    this.router.navigate([path]);
+  }
+
+  getEmployeeFirstName(): string {
+    return localStorage.getItem('employeeFirstName') || 'USER';
   }
 }
