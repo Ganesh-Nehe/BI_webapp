@@ -11,28 +11,46 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   templateUrl: './employee-add-edit.component.html',
   styleUrls: ['./employee-add-edit.component.css']
 })
-export class EmployeeAddEditComponent implements  OnInit {
+export class EmployeeAddEditComponent implements OnInit {
 
   employeeForm: FormGroup;
+  selectAll: boolean = false;
+
+  checkboxes = {
+    dashboard: false,
+    business: false,
+    employee: false,
+    expense: false,
+    expenseMaster: false,
+    voucherHead: false,
+    currency: false
+  };
 
   constructor(private fb: FormBuilder, 
-    private http: HttpClient,
-    public apiService :APIService,
-    private dialogRef: MatDialogRef<EmployeeAddEditComponent>,
-    private employeeService: EmployeeAddEditService,
-    @Inject(MAT_DIALOG_DATA) public data:any,
-    private snackBar: MatSnackBar
-    
-  ) {
+              private http: HttpClient,
+              public apiService: APIService,
+              private dialogRef: MatDialogRef<EmployeeAddEditComponent>,
+              private employeeService: EmployeeAddEditService,
+              @Inject(MAT_DIALOG_DATA) public data: any,
+              private snackBar: MatSnackBar) {
     this.employeeForm = this.fb.group({
-      employeeFirstName: ['',Validators.required],
-      employeeMiddleName: ['',Validators.required],
-      employeeLastName: ['',Validators.required],
-      emailId: ['',Validators.required],
-      password: ['',Validators.required],
-      mobile_no: ['',Validators.required],
-      bankId: ['',Validators.required],
-      profilephoto: ['',Validators.required],
+      employeeFirstName: ['', Validators.required],
+      employeeMiddleName: ['', Validators.required],
+      employeeLastName: ['', Validators.required],
+      emailId: ['', Validators.required],
+      password: ['', !this.data ? Validators.required : null],
+      mobile_no: ['', Validators.required],
+      bankId: ['', Validators.required],
+      profilephoto: ['', Validators.required],
+      auditDetail: [this.data ? '' : null, this.data ? Validators.required : null],
+
+      dashboard: [false],
+      business: [false],
+      employee: [false],
+      expense: [false],
+      expenseMaster: [false],
+      voucherHead: [false],
+      currency: [false]
     });
   }
 
@@ -40,13 +58,22 @@ export class EmployeeAddEditComponent implements  OnInit {
     this.employeeForm.patchValue(this.data);
   }
 
-  dialogclose(){
+  toggleAllCheckboxes() {
+    this.selectAll = !this.selectAll;
+    Object.keys(this.employeeForm.controls).forEach(key => {
+      if (['dashboard', 'business', 'employee', 'expense', 'expenseMaster', 'voucherHead', 'currency'].includes(key)) {
+        this.employeeForm.controls[key].setValue(this.selectAll);
+      }
+    });
+  }
+
+  dialogclose() {
     this.dialogRef.close();
   }
 
-  addEmployeeData(){
+  addEmployeeData() {
     const baseApi = this.apiService.getBaseApi();
-    const formData = this.employeeForm.value;
+    const formData = { ...this.employeeForm.value }; 
 
     if (this.employeeForm.valid) {
       const httpOptions = {
@@ -56,15 +83,14 @@ export class EmployeeAddEditComponent implements  OnInit {
       };
 
       if (this.data) {
-        // Editing existing employee
-        this.employeeService.editEmployee(this.data.employeeId, this.employeeForm.value).subscribe({
+        this.employeeService.editEmployee(this.data.employeeId, formData).subscribe({
           next: (val: any) => {
             this.dialogRef.close(true);
-            this.snackBar.open('Employee updated succesfully', 'Close', {
+            this.snackBar.open('Employee updated successfully', 'Close', {
               duration: 3000,
               verticalPosition: 'top', 
               horizontalPosition: 'center',
-              panelClass: ['snackbar-error'],
+              panelClass: ['snackbar-error']
             });
           },
           error: (error: HttpErrorResponse) => {
@@ -72,28 +98,26 @@ export class EmployeeAddEditComponent implements  OnInit {
               duration: 3000,
               verticalPosition: 'top', 
               horizontalPosition: 'center',
-              panelClass: ['snackbar-error'],
+              panelClass: ['snackbar-error']
             });
           }
         });
       } else {
-        // Creating new employee
         this.http.post(`${baseApi}/API/user/`, formData, httpOptions).subscribe(res => {
-          console.log("Successfully added the employee", res);
           this.dialogRef.close(true);
-          this.snackBar.open('Employee created succesfully', 'Close', {
+          this.snackBar.open('Employee created successfully', 'Close', {
             duration: 3000,
             verticalPosition: 'top', 
             horizontalPosition: 'center',
-            panelClass: ['snackbar-error'],
+            panelClass: ['snackbar-error']
           });
         }, error => {
           this.snackBar.open('Error creating employee', 'Close', {
             duration: 3000,
             verticalPosition: 'top', 
             horizontalPosition: 'center',
-            panelClass: ['snackbar-error'],
-          });;
+            panelClass: ['snackbar-error']
+          });
         });
       }
     }

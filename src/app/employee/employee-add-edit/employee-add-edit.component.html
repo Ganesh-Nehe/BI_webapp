@@ -47,9 +47,26 @@
             </mat-form-field>
         </div>
 
+        <!-- Horizontal line based on mode -->
+        <div *ngIf="data" style="border-top: 1px solid #ccc; margin: 20px 0;"></div>
+        <div *ngIf="!data" style="border-top: 1px solid #ccc; margin: 20px 0;"></div>
+
+        <!-- Checkbox section -->
+        <div fxLayout="column" fxLayoutGap="10px">
+            <mat-checkbox [checked]="selectAll" (change)="toggleAllCheckboxes()">Select All</mat-checkbox>
+            <div fxLayout="row" fxLayoutGap="20px">
+              <mat-checkbox formControlName="dashboard">Dashboard</mat-checkbox>
+              <mat-checkbox formControlName="business">Business</mat-checkbox>
+              <mat-checkbox formControlName="employee">Employee</mat-checkbox>
+              <mat-checkbox formControlName="expense">Expense</mat-checkbox>
+              <mat-checkbox formControlName="expenseMaster">Expense Master</mat-checkbox>
+              <mat-checkbox formControlName="voucherHead">Voucher Head</mat-checkbox>
+              <mat-checkbox formControlName="currency">Currency</mat-checkbox>
+            </div>
+          </div>
     </div>
     <div mat-dialog-actions class="action">
         <button class="btn btn-outline-dark" mat-raised-button (click)="dialogclose()">Cancel</button>
-        <button class="btn btn-outline-dark" mat-raised-button [disabled]="employeeForm.invalid" (click)="addEmployeeData()">{{data? 'update': 'save'}}</button>
+        <button class="btn btn-outline-dark" mat-raised-button [disabled]="employeeForm.invalid" (click)="addEmployeeData()">{{data ? 'Update' : 'Save'}}</button>
     </div>
 </form>

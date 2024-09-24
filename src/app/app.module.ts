@@ -54,6 +54,7 @@ import { AddCurrencyComponent } from './curreny/add-currency/add-currency.compon
 import { ExpenseMasterDetailsComponent } from './expense-master/expense-master-details/expense-master-details.component'; 
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { UserProfileComponent } from './user-profile/user-profile.component';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 @NgModule({
   declarations: [
     AppComponent,
@@ -111,7 +112,8 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
     MatButtonToggleModule,
     MatMenuModule,
     CommonModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatCheckboxModule
   ],
   providers: [BnNgIdleService,BusinessAddEditComponent],
   bootstrap: [AppComponent]
