@@ -90,7 +90,7 @@ export class EmployeeAddEditComponent implements OnInit {
               duration: 3000,
               verticalPosition: 'top', 
               horizontalPosition: 'center',
-              panelClass: ['snackbar-error']
+              panelClass: ['snackbar-success']
             });
           },
           error: (error: HttpErrorResponse) => {
@@ -109,7 +109,7 @@ export class EmployeeAddEditComponent implements OnInit {
             duration: 3000,
             verticalPosition: 'top', 
             horizontalPosition: 'center',
-            panelClass: ['snackbar-error']
+            panelClass: ['snackbar-success']
           });
         }, error => {
           this.snackBar.open('Error creating employee', 'Close', {

@@ -18,10 +18,7 @@
                 <mat-label>PAN no</mat-label>
                 <input matInput placeholder="" type="text" formControlName="PAN_no" required>
             </mat-form-field>
-            <mat-form-field fxFlex="50%" appearance="outline">
-                <mat-label>Logo</mat-label>
-                <input matInput placeholder="" type="text" formControlName="logoFileLocation" required>
-            </mat-form-field>
+            <input type="file" (change)="onFileChange($event)">
         </div>
             <h3>
                 Enter address

@@ -22,7 +22,7 @@
       </li>
       <mat-menu #expenseMenu="matMenu" xPosition="before" class="custom-menu">
         <button mat-menu-item [routerLink]="'/expense/travel'">Travel</button>
-        <button mat-menu-item [routerLink]="'/expense/voucher'">Voucher</button>
+        <button mat-menu-item [routerLink]="'/expense/voucher'">Miscellaneous</button>
       </mat-menu>
   
       <li *ngIf="hasPermission('Expense Master')" class="nav-list-item" (click)="navigateTo('/expense-master')">

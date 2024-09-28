@@ -4,6 +4,7 @@ import { HttpClient, HttpHeaders,HttpErrorResponse } from '@angular/common/http'
 import { APIService } from '../../api.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { BusinessAddEditService } from './business-add-edit.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-business-add-edit',
@@ -21,14 +22,14 @@ export class BusinessAddEditComponent implements OnInit{
     private apiService: APIService,
     private businessService: BusinessAddEditService,
     private dialogRef: MatDialogRef<BusinessAddEditComponent>,
-    @Inject(MAT_DIALOG_DATA) public data:any
+    @Inject(MAT_DIALOG_DATA) public data:any,
+    private snackBar: MatSnackBar
   ) {
     const isUpdateMode = !!this.data;
     this.businessForm = this.fb.group({
       businessName: ['', Validators.required],
       CIN_no: ['', Validators.required],
       PAN_no: ['', Validators.required],
-      logoFileLocation: ['',Validators.required],
       addressTypeId: ['', Validators.required],
       addressLine_1: ['', Validators.required],
       addressLine_2: ['', Validators.required],
@@ -36,7 +37,7 @@ export class BusinessAddEditComponent implements OnInit{
       state: ['', Validators.required],
       isoCountryCode: ['', Validators.required],
       pinCode: ['', Validators.required],
-      auditDetail: ['', [Validators.required, Validators.minLength(20)]]
+      auditDetail: [this.data ? '' : null, this.data ? [Validators.required, Validators.minLength(20)] : null]
     });
 
   }
@@ -47,67 +48,77 @@ export class BusinessAddEditComponent implements OnInit{
     this.businessForm.patchValue(this.data)
   }
 
-  onFileSelected(event: any) {
-    // Handle file selection and store it in the component property
+  onFileChange(event: any) {
     this.selectedFile = event.target.files[0];
   }
 
   addBusinessData() {
     const baseApi = this.apiService.getBaseApi();
-    const businessFormData = this.businessForm.value;
   
     if (this.businessForm.valid) {
-      const httpOptions = {
-        headers: new HttpHeaders({
-          'Authorization': 'Bearer ' + localStorage.getItem('loginToken')
-        })
-      };
-
+      const formData = new FormData();
+  
+      // Append business data
+      formData.append('businessName', this.businessForm.get('businessName')?.value);
+      formData.append('CIN_no', this.businessForm.get('CIN_no')?.value);
+      formData.append('PAN_no', this.businessForm.get('PAN_no')?.value);
+  
+      // Append address data
+      formData.append('addressTypeId', this.businessForm.get('addressTypeId')?.value);
+      formData.append('addressLine_1', this.businessForm.get('addressLine_1')?.value);
+      formData.append('addressLine_2', this.businessForm.get('addressLine_2')?.value);
+      formData.append('city', this.businessForm.get('city')?.value);
+      formData.append('state', this.businessForm.get('state')?.value);
+      formData.append('isoCountryCode', this.businessForm.get('isoCountryCode')?.value);
+      formData.append('pinCode', this.businessForm.get('pinCode')?.value);
+      
+      // Append file if exists
+      if (this.selectedFile) {
+        formData.append('file', this.selectedFile, this.selectedFile.name);
+      }
       if (this.data) {
-        // Editing existing business
-        this.businessService.editBusiness(this.data.businessID, this.businessForm.value).subscribe({
+        formData.append('auditDetail', this.businessForm.get('auditDetail')?.value);
+      }
+      if (this.data) {
+        // Update the business with file
+        this.businessService.editBusiness(this.data.businessID, formData).subscribe({
           next: (val: any) => {
             this.dialogRef.close(true);
+            this.snackBar.open('Bussiness updated successfully', 'Close', {
+              duration: 3000,
+              verticalPosition: 'top',
+              horizontalPosition: 'center',
+              panelClass: ['snackbar-success']
+            });
           },
           error: (error: HttpErrorResponse) => {
-            console.log("Some Error Occurred!");
+            this.snackBar.open('Error updating business', 'Close', {
+              duration: 3000,
+              verticalPosition: 'top',
+              horizontalPosition: 'center',
+              panelClass: ['snackbar-error']
+            });
           }
         });
       } else {
-        const formData = {
-            businessName: businessFormData.businessName,
-            CIN_no: businessFormData.CIN_no,
-            PAN_no: businessFormData.PAN_no,
-            logoFileLocation: businessFormData.logoFileLocation,
-            addressTypeId: businessFormData.addressTypeId,
-            addressLine_1: businessFormData.addressLine_1,
-            addressLine_2: businessFormData.addressLine_2,
-            city: businessFormData.city,
-            state: businessFormData.state,
-            isoCountryCode: businessFormData.isoCountryCode,
-            pinCode: businessFormData.pinCode,
-        };
-  
-        this.http.post(`${baseApi}API/business/`, formData, httpOptions)
-          .subscribe(response => {
-            console.log('Data submitted successfully:', response);
-            this.dialogRef.close(true);
-          }, error => {
-            console.error('Error submitting data:', error);
+        // Add new business with file
+        this.businessService.addBusiness(formData).subscribe(response => {
+          this.dialogRef.close(true);
+          this.snackBar.open('Bussiness added successfully', 'Close', {
+            duration: 3000,
+            verticalPosition: 'top',
+            horizontalPosition: 'center',
+            panelClass: ['snackbar-success']
           });
-      }
-  
-      if (this.selectedFile) {
-        const formData = new FormData();
-        formData.append('image', this.selectedFile);
-  
-        this.http.post(`${baseApi}/API/uploadfiles`, formData, httpOptions)
-          .subscribe(response => {
-            console.log('File uploaded successfully:', response);
-          }, error => {
-            console.error('Error uploading file:', error);
+        }, error => {
+          this.snackBar.open('Error adding business', 'Close', {
+            duration: 3000,
+            verticalPosition: 'top',
+            horizontalPosition: 'center',
+            panelClass: ['snackbar-error']
           });
+        });
       }
     }
-  }  
+  }
 }

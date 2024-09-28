@@ -51,6 +51,10 @@ export class BusinessComponent implements OnInit {
     })
   }
 
+  getSerialNumber(index: number): number {
+    return index + 1 + (this.paginator.pageIndex * this.paginator.pageSize);
+  }
+
   openEditForm(data: any){
     const dialogRef = this.dialog.open(BusinessAddEditComponent,{
       data,

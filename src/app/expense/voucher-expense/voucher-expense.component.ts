@@ -6,6 +6,7 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { VoucherExpenseService } from './voucher-expense.service';
 import { AddVoucherExpenseComponent } from './add-voucher-expense/add-voucher-expense.component';
 import { VoucherExpenseDetailsComponent } from  './voucher-expense-details/voucher-expense-details.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-voucher-expense',
@@ -21,7 +22,7 @@ export class VoucherExpenseComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private dialog: MatDialog, private voucherexpenseservice: VoucherExpenseService) { }
+  constructor(private dialog: MatDialog, private voucherexpenseservice: VoucherExpenseService, private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.getVoucherExpenses();
@@ -37,8 +38,12 @@ export class VoucherExpenseComponent implements OnInit {
         this.dataSource.paginator = this.paginator
       },
       error: (err) => {
-        alert('Could not load voucher  expenses');
-        console.log("Error", err);
+        this.snackBar.open('Error loading expense list', 'Close', {
+          duration: 3000,
+          verticalPosition: 'top', 
+          horizontalPosition: 'center',
+          panelClass: ['snackbar-error']
+        });
       }
     });
   }
@@ -52,7 +57,12 @@ export class VoucherExpenseComponent implements OnInit {
         });
       },
       (error)=>{
-        console.log('error getting user details: ', error);
+        this.snackBar.open('Error loading expaense datails', 'Close', {
+          duration: 3000,
+          verticalPosition: 'top', 
+          horizontalPosition: 'center',
+          panelClass: ['snackbar-error']
+        });
       }
     );
   }
@@ -76,6 +86,4 @@ export class VoucherExpenseComponent implements OnInit {
       this.dataSource.paginator.firstPage();
     }
   }
-
-
 }
