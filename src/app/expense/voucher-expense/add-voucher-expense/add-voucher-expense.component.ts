@@ -44,6 +44,8 @@ export class AddVoucherExpenseComponent implements OnInit {
       miscExpenseAmount: ['', Validators.required],
       currencyId: ['', Validators.required],
       expenseDescription: ['', Validators.required],
+      hasBill: [false],
+      billStatus: ['No bill'],
       billLocation: ['']
     });
   }
@@ -67,6 +69,16 @@ export class AddVoucherExpenseComponent implements OnInit {
     const input = event.target as HTMLInputElement;
     const file = (input.files as FileList)[0];
     this.fileData[index] = file;
+  }
+
+  toggleFileUpload(index: number): void {
+    const expense = this.expenses.at(index);
+    if (expense.get('hasBill')?.value) {
+      expense.patchValue({ billStatus: 'Bill' });  // Set to "Bill" when checked
+    } else {
+      expense.patchValue({ billStatus: 'No bill' });  // Set to "No bill" when unchecked
+      this.fileData[index] = null;  // Remove file if unchecked
+    }
   }
   
   calculateTotalExpenseAmount(): void {
@@ -127,7 +139,7 @@ export class AddVoucherExpenseComponent implements OnInit {
         formData.append(`expenses[${index}][${key}]`, expense[key]);
       });
       if (this.fileData[index]) {
-        formData.append(`file${index}`, this.fileData[index] as File);
+        formData.append(`file${index}`, this.fileData[index] || '');
       }
     });
     formData.append('totalAmount', this.totalExpenseAmount.toString());
@@ -137,8 +149,8 @@ export class AddVoucherExpenseComponent implements OnInit {
       })
     };
 
-    this.http.post(`${baseApi}/API/expense/voucher/`, formData, httpOptions)
-      .subscribe(
+    this.http.post(`${baseApi}/API/expense/voucher/`, formData, httpOptions) 
+      .subscribe( 
         (response) => {
           console.log('API Response:', response);
           this.dialogref.close(true);

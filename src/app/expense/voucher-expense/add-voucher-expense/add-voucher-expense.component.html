@@ -65,7 +65,15 @@
                         </mat-error>
                     </mat-form-field>
 
-                    <input type="file" (change)="onFileChange($event, i)">
+                    <!-- Bill Checkbox -->
+                    <mat-checkbox formControlName="hasBill" (change)="toggleFileUpload(i)">
+                        Bill
+                    </mat-checkbox>
+
+                    <!-- Conditional File Upload -->
+                    <ng-container *ngIf="expense.get('hasBill')?.value">
+                        <input type="file" (change)="onFileChange($event, i)">
+                    </ng-container>
 
                     <!-- Minus Button -->
                     <button mat-icon-button color="warn" *ngIf="i !== 0" (click)="removeExpense(i)">
@@ -74,6 +82,7 @@
                 </div>
             </div>
         </div>
+
         <!-- Calculate Button -->
         <div>
             <button mat-raised-button color="accent" type="button" (click)="calculateTotalExpenseAmount()">
@@ -90,10 +99,8 @@
         </button>
     </div>
 </form>
-    
-    <div mat-dialog-actions class="action" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px">
-        <button mat-raised-button (click)="dialogclose()">Cancel</button>
-        <button mat-raised-button color="primary" (click)="addVoucherexpense()">Save</button>
-    </div>
 
- 
+<div mat-dialog-actions class="action" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px">
+    <button mat-raised-button (click)="dialogclose()">Cancel</button>
+    <button mat-raised-button color="primary" (click)="addVoucherexpense()">Save</button>
+</div>

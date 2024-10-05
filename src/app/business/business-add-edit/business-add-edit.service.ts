@@ -23,6 +23,7 @@ export class BusinessAddEditService {
     return this.http.patch(`${baseApi}/API/business/${businessId}`, data, httpOptions);
   }
   addBusiness(data: FormData): Observable<any> {
+    console.log(data);
     const baseApi = this.apiService.getBaseApi();
     const httpOptions = {
       headers: new HttpHeaders({
