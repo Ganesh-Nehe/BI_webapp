@@ -75,7 +75,7 @@ export class EmployeeAddEditComponent implements OnInit {
     const businessId = localStorage.getItem('businessId');
     if (this.employeeForm.valid) {
       const formData = new FormData();
-
+  
       // Append employee data
       formData.append('employeeFirstName', this.employeeForm.get('employeeFirstName')?.value);
       formData.append('employeeMiddleName', this.employeeForm.get('employeeMiddleName')?.value);
@@ -84,46 +84,52 @@ export class EmployeeAddEditComponent implements OnInit {
       formData.append('mobile_no', this.employeeForm.get('mobile_no')?.value);
       formData.append('bankId', this.employeeForm.get('bankId')?.value);
       formData.append('profilephoto', this.employeeForm.get('profilephoto')?.value);
+      
+      // Include auditDetail for both create and update
+      formData.append('auditDetail', this.employeeForm.get('auditDetail')?.value);
+  
       if (businessId !== null) {
         formData.append('businessId', businessId);
       }
-      if (!this.data) {
-        formData.append('password', this.employeeForm.get('password')?.value);
-      }
-
-      // Collect permissions into an array
-      const permissions: number[] = [];
-
-      if (this.employeeForm.get('dashboard')?.value === true) {
-        permissions.push(1); // Dashboard
-      }
-      if (this.employeeForm.get('employee')?.value === true) {
-        permissions.push(3); // Employee
-      }
-      if (this.employeeForm.get('expense')?.value === true) {
-        permissions.push(4); // Expense
-      }
-      if (this.employeeForm.get('expenseMaster')?.value === true) {
-        permissions.push(5); // Expense Master
-      }
-      if (this.employeeForm.get('voucherHead')?.value === true) {
-        permissions.push(6); // Voucher Head
-      }
-      if (this.employeeForm.get('currency')?.value === true) {
-        permissions.push(7); // Currency
-      }
-
-      // Append the permissions array as a JSON string
-      formData.append('permissions', JSON.stringify(permissions));
-
+  
       const httpOptions = {
         headers: new HttpHeaders({
           'Authorization': 'Bearer ' + localStorage.getItem('loginToken')
         })
       };
-
+  
+      // Always collect permissions if not updating
+      if (!this.data) {
+        formData.append('password', this.employeeForm.get('password')?.value);
+        
+        // Collect permissions into an array for new employee only
+        const permissions: number[] = [];
+        if (this.employeeForm.get('dashboard')?.value === true) {
+          permissions.push(1); // Dashboard
+        }
+        if (this.employeeForm.get('employee')?.value === true) {
+          permissions.push(3); // Employee
+        }
+        if (this.employeeForm.get('expense')?.value === true) {
+          permissions.push(4); // Expense
+        }
+        if (this.employeeForm.get('expenseMaster')?.value === true) {
+          permissions.push(5); // Expense Master
+        }
+        if (this.employeeForm.get('voucherHead')?.value === true) {
+          permissions.push(6); // Voucher Head
+        }
+        if (this.employeeForm.get('currency')?.value === true) {
+          permissions.push(7); // Currency
+        }
+  
+        // Append the permissions array as a JSON string
+        formData.append('permissions', JSON.stringify(permissions));
+      }
+  
       if (this.data) {
-        // If updating
+        formData.append('employeeId', this.data.employeeId); 
+        // If updating, send the employeeId and the updated data
         this.employeeService.editEmployee(this.data.employeeId, formData).subscribe({
           next: (val: any) => {
             this.dialogRef.close(true);

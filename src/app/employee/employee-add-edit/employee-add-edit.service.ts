@@ -10,16 +10,14 @@ export class EmployeeAddEditService {
 
   constructor(private http: HttpClient, private apiService: APIService) { }
 
-  editEmployee(employeeId: string, data: any): Observable<any> {
+  editEmployee(employeeId: string, formData: FormData): Observable<any> {
     const baseApi = this.apiService.getBaseApi();
     const httpOptions = {
       headers: new HttpHeaders({
-        'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + localStorage.getItem('loginToken')
       })
     };
-
-    console.log('Request Payload:', { ...data, employeeId });
-    return this.http.patch(`${baseApi}/API/user/${employeeId}`, { ...data, employeeId }, httpOptions);
+  
+    return this.http.patch(`${baseApi}/API/user/${employeeId}`, formData, httpOptions);
   }
 }

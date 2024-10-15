@@ -52,7 +52,7 @@
         <div *ngIf="!data" style="border-top: 1px solid #ccc; margin: 20px 0;"></div>
 
         <!-- Checkbox section -->
-        <div fxLayout="column" fxLayoutGap="10px">
+        <div *ngIf="!data" fxLayout="column" fxLayoutGap="10px">
             <mat-checkbox [checked]="selectAll" (change)="toggleAllCheckboxes()">Select All</mat-checkbox>
             <div fxLayout="row" fxLayoutGap="20px">
               <mat-checkbox formControlName="dashboard">Dashboard</mat-checkbox>

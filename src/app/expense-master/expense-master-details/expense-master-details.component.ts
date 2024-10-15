@@ -10,38 +10,13 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrls: ['./expense-master-details.component.css']
 })
 export class ExpenseMasterDetailsComponent {
-  displayedColumns: string[] = ['expenseDate', 'miscExpenseCatName', 'expenseDescription', 'miscExpenseAmount','billLocation'];
+  displayedColumns: string[] = ['expenseDate', 'miscExpenseCatName', 'expenseDescription', 'miscExpenseAmount','bill_status'];
   @ViewChild('dialogContent') dialogContent!: ElementRef;
  
   constructor(@Inject(MAT_DIALOG_DATA) public data: any, private expensemasterdetailsservice: ExpenseMasterDetailsService, private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     console.log('VoucherExpenseDetailsComponent initialized with data:', this.data);
-  }
-
-  viewBill(billLocation: string) {
-    const encodedBillLocation = encodeURIComponent(billLocation);
-    this.expensemasterdetailsservice.getDocumentByLocation(encodedBillLocation).subscribe((response: HttpResponse<Blob>) => {
-      if (response.body) {
-        const blob = new Blob([response.body], { type: 'image/png' });
-        const url = window.URL.createObjectURL(blob);
-        window.open(url, '_blank');
-      } else {
-        this.snackBar.open('Response is Null', 'Close', {
-          duration: 3000,
-          verticalPosition: 'top', 
-          horizontalPosition: 'center',
-          panelClass: ['snackbar-error'],
-        });
-      }
-    }, error => {
-      this.snackBar.open('No file found on server', 'Close', {
-        duration: 3000,
-        verticalPosition: 'top', 
-        horizontalPosition: 'center',
-        panelClass: ['snackbar-error'],
-      });
-    });
   }
   
   print() {
