@@ -13,13 +13,14 @@ export class VoucherExpenseService {
 
   showAllVoucherExpenses(): Observable<any>{
     const baseApi = this.apiService.getBaseApi();
+    const employeeId = localStorage.getItem('loggedInUserId')
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + localStorage.getItem('loginToken')
       })
     };
-    return this.http.get(`${baseApi}/API/expense/voucher`,httpOptions)
+    return this.http.get(`${baseApi}/API/expense/voucherEmployee?employeeId=${employeeId}`,httpOptions)
   }
 
   getVoucherdetails(voucherId: string): Observable<any>{

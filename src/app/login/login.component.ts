@@ -35,6 +35,7 @@ export class LoginComponent {
           this.router.navigate(['/dashboard']);
           localStorage.setItem("loginToken", res.token);
           localStorage.setItem('loggedInUserId', res.employeeId);
+          localStorage.setItem('businessId', res.businessId); 
           localStorage.setItem('permissions', JSON.stringify(res.permission_name));
           localStorage.setItem('employeeFirstName', res.employeeFirstName);
 

@@ -128,11 +128,13 @@ export class AddVoucherExpenseComponent implements OnInit {
 
   addVoucherexpense() {
     const userId = localStorage.getItem('loggedInUserId');
+    const businessId = localStorage.getItem('businessId');
     const baseApi = this.apiService.getBaseApi();
     const formData = new FormData();
 
     formData.append('mischeadname', this.voucherExpenseData.value.mischeadname);
     formData.append('employeeId', userId ?? ''); 
+    formData.append('businessId', businessId ?? '');
 
     this.voucherExpenseData.value.expenses.forEach((expense: any, index: number) => {
       Object.keys(expense).forEach(key => {

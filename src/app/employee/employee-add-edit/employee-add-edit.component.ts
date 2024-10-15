@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { HttpClient, HttpHeaders,HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { APIService } from '../../api.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { EmployeeAddEditService } from './employee-add-edit.service';
@@ -25,13 +25,13 @@ export class EmployeeAddEditComponent implements OnInit {
     currency: false
   };
 
-  constructor(private fb: FormBuilder, 
-              private http: HttpClient,
-              public apiService: APIService,
-              private dialogRef: MatDialogRef<EmployeeAddEditComponent>,
-              private employeeService: EmployeeAddEditService,
-              @Inject(MAT_DIALOG_DATA) public data: any,
-              private snackBar: MatSnackBar) {
+  constructor(private fb: FormBuilder,
+    private http: HttpClient,
+    public apiService: APIService,
+    private dialogRef: MatDialogRef<EmployeeAddEditComponent>,
+    private employeeService: EmployeeAddEditService,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private snackBar: MatSnackBar) {
     this.employeeForm = this.fb.group({
       employeeFirstName: ['', Validators.required],
       employeeMiddleName: ['', Validators.required],
@@ -72,10 +72,10 @@ export class EmployeeAddEditComponent implements OnInit {
 
   addEmployeeData() {
     const baseApi = this.apiService.getBaseApi();
-  
+    const businessId = localStorage.getItem('businessId');
     if (this.employeeForm.valid) {
       const formData = new FormData();
-  
+
       // Append employee data
       formData.append('employeeFirstName', this.employeeForm.get('employeeFirstName')?.value);
       formData.append('employeeMiddleName', this.employeeForm.get('employeeMiddleName')?.value);
@@ -84,13 +84,16 @@ export class EmployeeAddEditComponent implements OnInit {
       formData.append('mobile_no', this.employeeForm.get('mobile_no')?.value);
       formData.append('bankId', this.employeeForm.get('bankId')?.value);
       formData.append('profilephoto', this.employeeForm.get('profilephoto')?.value);
+      if (businessId !== null) {
+        formData.append('businessId', businessId);
+      }
       if (!this.data) {
         formData.append('password', this.employeeForm.get('password')?.value);
       }
-  
+
       // Collect permissions into an array
       const permissions: number[] = [];
-  
+
       if (this.employeeForm.get('dashboard')?.value === true) {
         permissions.push(1); // Dashboard
       }
@@ -109,16 +112,16 @@ export class EmployeeAddEditComponent implements OnInit {
       if (this.employeeForm.get('currency')?.value === true) {
         permissions.push(7); // Currency
       }
-  
+
       // Append the permissions array as a JSON string
       formData.append('permissions', JSON.stringify(permissions));
-  
+
       const httpOptions = {
         headers: new HttpHeaders({
           'Authorization': 'Bearer ' + localStorage.getItem('loginToken')
         })
       };
-  
+
       if (this.data) {
         // If updating
         this.employeeService.editEmployee(this.data.employeeId, formData).subscribe({
@@ -160,5 +163,5 @@ export class EmployeeAddEditComponent implements OnInit {
         });
       }
     }
-  }  
+  }
 }

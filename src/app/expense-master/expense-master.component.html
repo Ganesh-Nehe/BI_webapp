@@ -38,6 +38,11 @@
             <td mat-cell *matCellDef="let row"> <button mat-raised-button color="primary" (click)="openDetailsDialog(row)">view</button></td>
           </ng-container>
 
+          <ng-container matColumnDef="file_location">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> View Document </th>
+            <td mat-cell *matCellDef="let element"> <button mat-raised-button color="accent" (click)="openDocument(element.file_location)">Document</button></td>
+          </ng-container>
+
           <ng-container matColumnDef="Approval">
             <th mat-header-cell *matHeaderCellDef mat-sort-header style="max-width: 110px; max-height: 50px;"> Approval </th>
             <td mat-cell *matCellDef="let row" style="max-width: 110px; max-height: 20px;"> 

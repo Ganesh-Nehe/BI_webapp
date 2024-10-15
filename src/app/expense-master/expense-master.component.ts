@@ -11,6 +11,7 @@ import { ExpenseMasterAddEditComponent } from './expense-master-add-edit/expense
 import { ExpenseMasterService } from './expense-master.service'
 import { ExpenseMasterDetailsComponent } from './expense-master-details/expense-master-details.component'
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-expense-master',
@@ -18,7 +19,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrls: ['./expense-master.component.css']
 })
 export class ExpenseMasterComponent {
-  displayedColumns: string[] = ['voucherId', 'ExpenseHead' ,'CreateDate', 'TotalAmount', 'viewDetails', 'Approval'];
+  displayedColumns: string[] = ['voucherId', 'ExpenseHead' ,'CreateDate', 'TotalAmount', 'viewDetails', "file_location", 'Approval'];
 
   dataSource!: MatTableDataSource<any>;
 
@@ -59,6 +60,39 @@ export class ExpenseMasterComponent {
         console.log('error getting user details: ', error);
       }
     );
+  }
+
+  openDocument(file_location: string) {
+    console.log(file_location);
+  
+    // Replace backslashes with forward slashes if needed (for URL encoding)
+    const normalizedLocation = file_location.replace(/\\/g, '/');
+    const encodedFileLocation = encodeURIComponent(normalizedLocation);
+  
+    this.expensemasterservice.getDocument(encodedFileLocation).subscribe((response: HttpResponse<Blob>) => {
+      if (response.body) {
+        // Create a Blob from the response body and specify the correct MIME type for PDF
+        const blob = new Blob([response.body], { type: 'application/pdf' });
+  
+        // Create a URL for the Blob and open it in a new tab
+        const url = window.URL.createObjectURL(blob);
+        window.open(url, '_blank');
+      } else {
+        this.snackBar.open('Response is Null', 'Close', {
+          duration: 3000,
+          verticalPosition: 'top',
+          horizontalPosition: 'center',
+          panelClass: ['snackbar-error'],
+        });
+      }
+    }, error => {
+      this.snackBar.open('No file found on server', 'Close', {
+        duration: 3000,
+        verticalPosition: 'top',
+        horizontalPosition: 'center',
+        panelClass: ['snackbar-error'],
+      });
+    });
   }
 
   onApprovalStatusChange(voucherId: number, approvalStatus: string) {
