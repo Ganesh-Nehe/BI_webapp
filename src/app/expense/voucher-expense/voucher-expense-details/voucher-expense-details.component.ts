@@ -10,7 +10,7 @@ import { VoucherExpenseDetailsService } from "./voucher-expense-details.service"
 })
 export class VoucherExpenseDetailsComponent implements OnInit {
 
-  displayedColumns: string[] = ['expenseDate', 'miscExpenseCatName', 'expenseDescription', 'miscExpenseAmount','billLocation'];
+  displayedColumns: string[] = ['expenseDate', 'miscExpenseCatName', 'expenseDescription', 'miscExpenseAmount','bill_status'];
   @ViewChild('dialogContent') dialogContent!: ElementRef;
  
   constructor(@Inject(MAT_DIALOG_DATA) public data: any, private voucherExpenseDetailsService: VoucherExpenseDetailsService) { }
