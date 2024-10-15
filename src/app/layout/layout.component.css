@@ -41,3 +41,53 @@ app-sidenav{
     width: calc(100% - 250px);
     left: 250px;
 }
+
+@media only screen and (max-width: 768px) {
+    app-sidenav {
+        width: 50px;
+    }
+
+    .app-sidenav-open {
+        width: 200px;
+    }
+
+    .display-area {
+        left: 50px;
+        width: calc(100% - 50px);
+    }
+
+    .display-area-shrink {
+        left: 200px;
+        width: calc(100% - 200px);
+    }
+}
+
+/* Mobile layout */
+@media only screen and (max-width: 600px) {
+    app-header {
+        height: 3rem;
+    }
+
+    main {
+        top: 3rem;
+    }
+
+    app-sidenav {
+        width: 0;
+        transition: width 250ms ease-in;
+    }
+
+    .app-sidenav-open {
+        width: 180px;
+    }
+
+    .display-area {
+        left: 0;
+        width: 100%;
+    }
+
+    .display-area-shrink {
+        left: 180px;
+        width: calc(100% - 180px);
+    }
+}

@@ -1,0 +1,43 @@
+@media only screen and (max-width: 768px) {
+    mat-dialog-title {
+        font-size: 1.3rem;
+    }
+
+    mat-dialog-content {
+        padding: 0.5rem;
+    }
+
+    mat-dialog-content p {
+        font-size: 0.95rem;
+    }
+
+    mat-dialog-actions {
+        justify-content: center;
+    }
+}
+
+/* Mobile layout */
+@media only screen and (max-width: 600px) {
+    mat-dialog-title {
+        font-size: 1.2rem;
+    }
+
+    mat-dialog-content {
+        padding: 0.2rem;
+    }
+
+    mat-dialog-content p {
+        font-size: 0.9rem;
+    }
+
+    /* Stack the action buttons vertically on mobile */
+    mat-dialog-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    mat-dialog-actions button {
+        width: 100%;
+        margin-bottom: 0.5rem;
+    }
+}

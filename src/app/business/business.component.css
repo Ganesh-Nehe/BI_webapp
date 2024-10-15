@@ -60,3 +60,66 @@ button.mat-icon-button {
 th.mat-header-cell:nth-child(1), td.mat-cell:nth-child(1) {
     max-width: 10px; /* Serial Number column */
 }
+
+
+@media only screen and (max-width: 768px) {
+    h3 {
+      font-size: 1.5rem;
+    }
+  
+    .filter-input {
+      margin-bottom: 10px;
+    }
+  
+    .btn {
+      font-size: 0.9rem;
+    }
+  
+    .table-container {
+      padding: 0;
+    }
+  
+    .custom-table th, .custom-table td {
+      padding: 8px;
+      font-size: 0.9rem;
+    }
+  }
+  
+  /* Mobile layout */
+  @media only screen and (max-width: 600px) {
+    .page-container {
+      padding: 10px;
+    }
+  
+    h3 {
+      font-size: 1.2rem;
+    }
+  
+    .d-flex {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+    .btn {
+      width: 100%;
+      margin-top: 10px;
+      font-size: 0.8rem;
+    }
+  
+    .filter-input {
+      margin-bottom: 10px;
+    }
+  
+    .table-container {
+      overflow-x: auto;
+    }
+  
+    .custom-table th, .custom-table td {
+      padding: 6px;
+      font-size: 0.8rem;
+    }
+  
+    .mat-paginator {
+      font-size: 0.8rem;
+    }
+  }

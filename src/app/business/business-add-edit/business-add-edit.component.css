@@ -24,3 +24,38 @@
 .file{
     margin-bottom: 10px;
 }
+
+@media only screen and (max-width: 768px) {
+    .content {
+        padding: 0.5rem;
+    }
+
+    /* Set flex direction to column for smaller screens */
+    [fxLayout="row"] {
+        flex-direction: column !important;
+    }
+
+    /* Adjust form field width for tablet */
+    mat-form-field[fxFlex="50%"] {
+        width: 100% !important;
+    }
+}
+
+/* Mobile layout */
+@media only screen and (max-width: 600px) {
+    .content {
+        padding: 0.2rem;
+    }
+
+    /* Ensure form fields take full width on mobile */
+    mat-form-field[fxFlex="50%"],
+    mat-form-field[fxFlex="100%"] {
+        width: 100% !important;
+    }
+
+    /* Set full width for buttons */
+    .action button {
+        width: 100%;
+        margin-bottom: 0.5rem;
+    }
+}
