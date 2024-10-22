@@ -3,16 +3,16 @@
         <mat-toolbar color="primary" class="mat-toolbar">
             Login page
         </mat-toolbar>
-        <form fxLayoutAlign="stretch" fxLayout="column" class="login-form">
+        <form fxLayoutAlign="stretch" fxLayout="column" class="login-form" (ngSubmit)="onLogin()">
             <mat-form-field fxFlex appearance="outline">
                 <mat-label>Email</mat-label>
-              <input matInput name="Email" [(ngModel)]="loginObj.emailId" placeholder="" required>
+                <input matInput name="Email" [(ngModel)]="loginObj.emailId" placeholder="" required>
             </mat-form-field>
             <mat-form-field fxFlex appearance="outline">
-                <mat-label>password</mat-label>
+                <mat-label>Password</mat-label>
                 <input matInput type="password" name="password" [(ngModel)]="loginObj.password" placeholder="" required>
             </mat-form-field>
-            <button mat-raised-button type="submit" (click)="onLogin()" class="login-button" >login</button>
+            <button mat-raised-button type="submit" class="login-button">Login</button>
         </form>
     </mat-card>
 </div>
