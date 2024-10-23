@@ -9,14 +9,14 @@
 
 .action{
     padding: 0px 25px 20px;
-    button {
+    :is(button) {
         flex: 1;
     }
 }
 
 .custom-mat-form-field {
     width: 100%;
-    mat-form-field {
+    :is(mat-form-field) {
         width: 100%;
     }
 }

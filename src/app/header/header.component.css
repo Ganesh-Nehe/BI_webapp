@@ -13,3 +13,45 @@ nav{
     background-color: rgb(210, 220, 228);
     border-radius: 30%;
 }
+
+/* Media query for tablets and smaller devices */
+@media (max-width: 991px) {
+    .navbar-brand {
+        font-size: 1.2rem;
+        text-align: center;
+    }
+
+    .profile-logo {
+        margin-right: 10px;
+    }
+}
+
+/* Media query for mobile phones */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .side-nav-button {
+        margin-bottom: 10px;
+    }
+
+    .navbar-brand {
+        display: block;
+        font-size: 1.2rem;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    .profile-logo {
+        margin-top: 10px;
+        width: 100%;
+        text-align: right;
+    }
+
+    .dropdown-menu {
+        right: 0;
+        left: auto;
+    }
+}

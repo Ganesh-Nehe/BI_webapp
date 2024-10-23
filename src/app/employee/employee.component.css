@@ -55,3 +55,53 @@ button.mat-icon-button {
     width: 36px; 
     height: 36px; 
 }
+
+/* Media Queries for Responsive Design */
+@media (max-width: 768px) { /* Tablets and mobile */
+    .filter-input {
+        width: 100%; /* Full width for filter input */
+    }
+
+    .page-container {
+        padding: 15px; /* Reduced padding */
+    }
+
+    th, td {
+        font-size: 14px; /* Smaller font size for better fitting */
+        padding: 10px; /* More padding for touch devices */
+    }
+
+    button {
+        font-size: 14px; /* Make buttons smaller */
+    }
+}
+
+@media (max-width: 576px) { /* Mobile phones */
+    h3 {
+        font-size: 18px; /* Smaller heading */
+        text-align: center; /* Center the heading */
+    }
+
+    .d-flex {
+        flex-direction: column; /* Stack button below the heading */
+        align-items: center; /* Center items */
+    }
+
+    button.btn {
+        width: 100%; /* Full width buttons */
+        margin-top: 10px; /* Add spacing between elements */
+    }
+
+    th, td {
+        font-size: 12px; /* Further reduce font size */
+        padding: 8px; /* More padding */
+    }
+
+    .table-card {
+        overflow-x: auto; /* Enable horizontal scrolling on small devices */
+    }
+
+    .custom-table {
+        display: block; /* Allow table to scroll horizontally */
+    }
+}
