@@ -7,7 +7,7 @@ import { VoucherExpenseService } from './voucher-expense.service';
 import { AddVoucherExpenseComponent } from './add-voucher-expense/add-voucher-expense.component';
 import { VoucherExpenseDetailsComponent } from  './voucher-expense-details/voucher-expense-details.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
-
+import { DescriptionDetailDialogComponent } from './description-detail-dialog/description-detail-dialog.component'
 @Component({
   selector: 'app-voucher-expense',
   templateUrl: './voucher-expense.component.html',
@@ -31,7 +31,6 @@ export class VoucherExpenseComponent implements OnInit {
   getVoucherExpenses() {
     this.voucherexpenseservice.showAllVoucherExpenses().subscribe({
       next: (res) =>  {
-        console.log(res);
         const dataArray = Array.isArray(res.data) ? res.data : [];
         this.dataSource = new MatTableDataSource(dataArray);
         this.dataSource.sort = this.sort;
@@ -46,6 +45,18 @@ export class VoucherExpenseComponent implements OnInit {
         });
       }
     });
+  }
+
+  openDisapproveDetailDialog(row: any) {
+    if (row.approval === 'Disapproved') {
+      const dialogRef = this.dialog.open(DescriptionDetailDialogComponent, {
+        data: {
+          voucherId: row.voucherId,
+          description: row.description
+        },
+        width: '500px',
+      });
+    }
   }
 
   openDetailsDialog(row: any) {

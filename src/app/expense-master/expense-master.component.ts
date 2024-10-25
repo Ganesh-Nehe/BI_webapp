@@ -99,30 +99,24 @@ export class ExpenseMasterComponent {
   onApprovalStatusChange(voucherId: number, approvalStatus: string) {
     if (approvalStatus === 'Not Selected') return;
   
-    // Check if the approval status is "Disapproved"
     if (approvalStatus === 'Disapproved') {
-      // Open the dialog for the disapproval reason
       const dialogRef = this.dialog.open(DisapprovalDialogComponent, {
         disableClose: true,
         width: '600px',
         data: { voucherId }
       });
   
-      // After the dialog is closed, check if there is a description
       dialogRef.afterClosed().subscribe((description: string) => {
         if (description) {
-          console.log('Disapproval description:', description);
-          
-          // Only proceed with the approval status update if the description is provided
-          const body = { voucherId, approvalStatus, description }; // Include the description in the body
+          const body = { voucherId, approvalStatus: 'Disapproved', description };
   
           this.expensemasterservice.updateApprovalStatus(body).subscribe({
             next: (res: any) => {
               if (res.success) {
                 this.snackBar.open('Approval status updated successfully', 'Close', {
                   duration: 3000,
-                  verticalPosition: 'top',  
-                  horizontalPosition: 'center', 
+                  verticalPosition: 'top',
+                  horizontalPosition: 'center',
                   panelClass: ['snackbar-success'],
                 });
                 this.getVoucherExpenses();
@@ -131,7 +125,7 @@ export class ExpenseMasterComponent {
             error: (err) => {
               this.snackBar.open('Error updating approval status', 'Close', {
                 duration: 3000,
-                verticalPosition: 'top', 
+                verticalPosition: 'top',
                 horizontalPosition: 'center',
                 panelClass: ['snackbar-error'],
               });
@@ -139,21 +133,19 @@ export class ExpenseMasterComponent {
           });
         }
       });
-      
-      // Return early to avoid updating the status immediately
-      return;
+  
+      return; // Return early to avoid updating the status without a description
     }
   
-    // For other statuses (e.g., approved), proceed with the update immediately
+    // Immediate update for statuses other than "Disapproved"
     const body = { voucherId, approvalStatus };
-  
     this.expensemasterservice.updateApprovalStatus(body).subscribe({
       next: (res: any) => {
         if (res.success) {
           this.snackBar.open('Approval status updated successfully', 'Close', {
             duration: 3000,
-            verticalPosition: 'top',  
-            horizontalPosition: 'center', 
+            verticalPosition: 'top',
+            horizontalPosition: 'center',
             panelClass: ['snackbar-success'],
           });
           this.getVoucherExpenses();
@@ -162,13 +154,14 @@ export class ExpenseMasterComponent {
       error: (err) => {
         this.snackBar.open('Error updating approval status', 'Close', {
           duration: 3000,
-          verticalPosition: 'top', 
+          verticalPosition: 'top',
           horizontalPosition: 'center',
           panelClass: ['snackbar-error'],
         });
       }
     });
   }
+  
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;

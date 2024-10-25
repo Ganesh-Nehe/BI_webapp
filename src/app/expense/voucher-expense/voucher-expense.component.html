@@ -43,7 +43,7 @@
               <td mat-cell *matCellDef="let row"> <button mat-raised-button color="primary" (click)="openDetailsDialog(row)">view</button></td>
             </ng-container>
 
-            <ng-container matColumnDef="Status">
+            <ng-container matColumnDef="Status"> 
               <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
               <td mat-cell *matCellDef="let row">
                 <button
@@ -53,7 +53,7 @@
                     'btn-green': row.approval === 'Approved',
                     'btn-red': row.approval === 'Disapproved'
                   }"
-                  [disabled]="true"
+                  (click)="openDisapproveDetailDialog(row)"
                 >
                   {{ row.approval }}
                 </button>

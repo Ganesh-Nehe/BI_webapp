@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class APIService {
-  private baseApi: string = 'http://192.168.31.16:3000';
+  private baseApi: string = 'http://localhost:3000';
 
   constructor() { }
 
