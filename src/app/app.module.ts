@@ -55,6 +55,7 @@ import { ExpenseMasterDetailsComponent } from './expense-master/expense-master-d
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { DisapprovalDialogComponent } from './expense-master/disapproval-dialog/disapproval-dialog.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -83,7 +84,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     CurrenyComponent,
     AddCurrencyComponent,
     ExpenseMasterDetailsComponent,
-    UserProfileComponent
+    UserProfileComponent,
+    DisapprovalDialogComponent
   ],
   imports: [
     BrowserModule,

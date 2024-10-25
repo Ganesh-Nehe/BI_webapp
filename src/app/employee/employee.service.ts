@@ -12,13 +12,14 @@ export class EmployeeService {
 
   getEmployeeList(): Observable<any>{
     const baseApi = this.apiService.getBaseApi();
+    const businessId = localStorage.getItem('businessId');
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + localStorage.getItem('loginToken')
       })
     };
-    return this.http.get(`${baseApi}/API/user/`,httpOptions)
+    return this.http.get(`${baseApi}/API/user/?businessId=${businessId}`,httpOptions)
   }
 
   getEmployeeDetails(employeeId: string): Observable<any> {
