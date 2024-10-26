@@ -17,10 +17,12 @@ export class AddVoucherExpenseComponent implements OnInit {
   totalExpenseAmount: number = 0; 
   fileData: (File | null)[] = [];
 
-  constructor(private fb: FormBuilder,
-              private http: HttpClient,
-              private apiService: APIService,
-              private dialogref: MatDialogRef<AddVoucherExpenseComponent>) {
+  constructor(
+    private fb: FormBuilder,
+    private http: HttpClient,
+    private apiService: APIService,
+    private dialogref: MatDialogRef<AddVoucherExpenseComponent>
+  ) {
     this.voucherExpenseData = this.fb.group({
       mischeadname: ['', Validators.required],
       expenses: this.fb.array([])
@@ -88,7 +90,7 @@ export class AddVoucherExpenseComponent implements OnInit {
     }, 0);
   }
 
-  loadVoucherHeads(): void {
+  async loadVoucherHeads(): Promise<void> {
     const baseApi = this.apiService.getBaseApi();
     const httpOptions = {
       headers: new HttpHeaders({
@@ -96,18 +98,16 @@ export class AddVoucherExpenseComponent implements OnInit {
         'Authorization': 'Bearer ' + localStorage.getItem('loginToken')
       })
     };
-    this.http.get(`${baseApi}/API/expense/voucherhead`, httpOptions)
-      .subscribe(
-        (response: any) => {
-          this.voucherHeads = response.data;
-        },
-        (error) => { 
-          console.error('Error fetching voucher heads:', error);
-        }
-      );
+    
+    try {
+      const response: any = await this.http.get(`${baseApi}/API/expense/voucherhead`, httpOptions).toPromise();
+      this.voucherHeads = response.data;
+    } catch (error) { 
+      console.error('Error fetching voucher heads:', error);
+    }
   }
 
-  loadCurrencies(): void {
+  async loadCurrencies(): Promise<void> {
     const baseApi = this.apiService.getBaseApi();
     const httpOptions = {
       headers: new HttpHeaders({
@@ -115,18 +115,16 @@ export class AddVoucherExpenseComponent implements OnInit {
         'Authorization': 'Bearer ' + localStorage.getItem('loginToken')
       })
     };
-    this.http.get(`${baseApi}/API/currency`, httpOptions)
-      .subscribe(
-        (response: any) => {
-          this.currencies = response.data;
-        },
-        (error) => {
-          console.error('Error fetching currencies:', error);
-        }
-      );
+
+    try {
+      const response: any = await this.http.get(`${baseApi}/API/currency`, httpOptions).toPromise();
+      this.currencies = response.data;
+    } catch (error) {
+      console.error('Error fetching currencies:', error);
+    }
   }
 
-  addVoucherexpense() {
+  async addVoucherexpense(): Promise<void> {
     const userId = localStorage.getItem('loggedInUserId');
     const businessId = localStorage.getItem('businessId');
     const baseApi = this.apiService.getBaseApi();
@@ -144,22 +142,21 @@ export class AddVoucherExpenseComponent implements OnInit {
         formData.append(`file${index}`, this.fileData[index] || '');
       }
     });
+
     formData.append('totalAmount', this.totalExpenseAmount.toString());
+
     const httpOptions = {
       headers: new HttpHeaders({
         'Authorization': 'Bearer ' + localStorage.getItem('loginToken')
       })
     };
 
-    this.http.post(`${baseApi}/API/expense/voucher/`, formData, httpOptions) 
-      .subscribe( 
-        (response) => {
-          console.log('API Response:', response);
-          this.dialogref.close(true);
-        },
-        (error) => {
-          console.error('API Error:', error);
-        }
-      );
+    try {
+      const response = await this.http.post(`${baseApi}/API/expense/voucher/`, formData, httpOptions).toPromise();
+      console.log('API Response:', response);
+      this.dialogref.close(true);
+    } catch (error) {
+      console.error('API Error:', error);
+    }
   }
 }

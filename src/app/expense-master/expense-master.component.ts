@@ -33,34 +33,29 @@ export class ExpenseMasterComponent {
     this.getVoucherExpenses();
   }
 
-  getVoucherExpenses() {
-    this.expensemasterservice.showAllVoucherExpenses().subscribe({
-      next: (res) =>  {
-        // console.log(res);
-        const dataArray = Array.isArray(res.data) ? res.data : [];
-        this.dataSource = new MatTableDataSource(dataArray);
-        this.dataSource.sort = this.sort;
-        this.dataSource.paginator = this.paginator
-      },
-      error: (err) => {
-        alert('Could not load voucher  expenses');
-        console.log("Error", err);
-      }
-    });
+  async getVoucherExpenses() {
+    try {
+      const res = await this.expensemasterservice.showAllVoucherExpenses();
+      const dataArray = Array.isArray(res.data) ? res.data : [];
+      this.dataSource = new MatTableDataSource(dataArray);
+      this.dataSource.sort = this.sort;
+      this.dataSource.paginator = this.paginator;
+    } catch (err) {
+      alert('Could not load voucher expenses');
+      console.error("Error", err);
+    }
   }
 
-  openDetailsDialog(row: any) {
-    this.expensemasterservice.getVoucherdetails(row.voucherId).subscribe(
-      (details)=>{
-        const dialogRef = this.dialog.open(ExpenseMasterDetailsComponent, {
-          data: {voucherDetails: details.data},
-          width: '700px',
-        });
-      },
-      (error)=>{
-        console.log('error getting user details: ', error);
-      }
-    );
+  async openDetailsDialog(row: any) {
+    try {
+      const details = await this.expensemasterservice.getVoucherdetails(row.voucherId);
+      this.dialog.open(ExpenseMasterDetailsComponent, {
+        data: { voucherDetails: details.data },
+        width: '700px',
+      });
+    } catch (error) {
+      console.log('Error getting user details: ', error);
+    }
   }
 
   openDocument(file_location: string) {
@@ -96,73 +91,68 @@ export class ExpenseMasterComponent {
     });
   }
 
-  onApprovalStatusChange(voucherId: number, approvalStatus: string) {
+  async onApprovalStatusChange(voucherId: number, approvalStatus: string) {
     if (approvalStatus === 'Not Selected') return;
-  
+
     if (approvalStatus === 'Disapproved') {
       const dialogRef = this.dialog.open(DisapprovalDialogComponent, {
         disableClose: true,
         width: '600px',
         data: { voucherId }
       });
-  
-      dialogRef.afterClosed().subscribe((description: string) => {
+
+      dialogRef.afterClosed().subscribe(async (description: string) => {
         if (description) {
           const body = { voucherId, approvalStatus: 'Disapproved', description };
-  
-          this.expensemasterservice.updateApprovalStatus(body).subscribe({
-            next: (res: any) => {
-              if (res.success) {
-                this.snackBar.open('Approval status updated successfully', 'Close', {
-                  duration: 3000,
-                  verticalPosition: 'top',
-                  horizontalPosition: 'center',
-                  panelClass: ['snackbar-success'],
-                });
-                this.getVoucherExpenses();
-              }
-            },
-            error: (err) => {
-              this.snackBar.open('Error updating approval status', 'Close', {
+
+          try {
+            const res: any = await this.expensemasterservice.updateApprovalStatus(body);
+            if (res.success) {
+              this.snackBar.open('Approval status updated successfully', 'Close', {
                 duration: 3000,
                 verticalPosition: 'top',
                 horizontalPosition: 'center',
-                panelClass: ['snackbar-error'],
+                panelClass: ['snackbar-success'],
               });
+              await this.getVoucherExpenses();
             }
-          });
+          } catch (err) {
+            this.snackBar.open('Error updating approval status', 'Close', {
+              duration: 3000,
+              verticalPosition: 'top',
+              horizontalPosition: 'center',
+              panelClass: ['snackbar-error'],
+            });
+          }
         }
       });
-  
+
       return; // Return early to avoid updating the status without a description
     }
-  
+
     // Immediate update for statuses other than "Disapproved"
     const body = { voucherId, approvalStatus };
-    this.expensemasterservice.updateApprovalStatus(body).subscribe({
-      next: (res: any) => {
-        if (res.success) {
-          this.snackBar.open('Approval status updated successfully', 'Close', {
-            duration: 3000,
-            verticalPosition: 'top',
-            horizontalPosition: 'center',
-            panelClass: ['snackbar-success'],
-          });
-          this.getVoucherExpenses();
-        }
-      },
-      error: (err) => {
-        this.snackBar.open('Error updating approval status', 'Close', {
+    try {
+      const res: any = await this.expensemasterservice.updateApprovalStatus(body);
+      if (res.success) {
+        this.snackBar.open('Approval status updated successfully', 'Close', {
           duration: 3000,
           verticalPosition: 'top',
           horizontalPosition: 'center',
-          panelClass: ['snackbar-error'],
+          panelClass: ['snackbar-success'],
         });
+        await this.getVoucherExpenses();
       }
-    });
+    } catch (err) {
+      this.snackBar.open('Error updating approval status', 'Close', {
+        duration: 3000,
+        verticalPosition: 'top',
+        horizontalPosition: 'center',
+        panelClass: ['snackbar-error'],
+      });
+    }
   }
   
-
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();

@@ -1,6 +1,5 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
 import { APIService } from 'src/app/api.service';
 
 @Injectable({
@@ -9,7 +8,7 @@ import { APIService } from 'src/app/api.service';
 export class CurrencyService {
   constructor(private http: HttpClient, private apiService: APIService) { }
 
-  getCurrencyList(): Observable<any>{
+  async getCurrencyList(): Promise<any> {
     const baseApi = this.apiService.getBaseApi();
     const httpOptions = {
       headers: new HttpHeaders({
@@ -17,6 +16,13 @@ export class CurrencyService {
         'Authorization': 'Bearer ' + localStorage.getItem('loginToken')
       })
     };
-    return this.http.get(`${baseApi}/API/currency`,httpOptions)
+    
+    try {
+      const response = await this.http.get(`${baseApi}/API/currency`, httpOptions).toPromise();
+      return response; // Return the response from the API
+    } catch (error) {
+      console.error('Error fetching currency list:', error);
+      throw error; // Rethrow the error to handle it in the calling component
+    }
   }
 }

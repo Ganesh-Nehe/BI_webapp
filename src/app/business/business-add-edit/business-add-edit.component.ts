@@ -79,12 +79,10 @@ export class BusinessAddEditComponent implements OnInit {
     this.selectedFile = event.target.files[0];
   }
 
-  addBusinessData() {
-    const baseApi = this.apiService.getBaseApi();
-  
+  async addBusinessData() {
     if (this.businessForm.valid) {
       const formData = new FormData();
-  
+      
       // Append business data
       formData.append('businessName', this.businessForm.get('businessName')?.value);
       formData.append('CIN_no', this.businessForm.get('CIN_no')?.value);
@@ -106,65 +104,41 @@ export class BusinessAddEditComponent implements OnInit {
   
       // Collect checkbox values into an array
       const permissions: number[] = [];
+      if (this.businessForm.get('dashboard')?.value === true) permissions.push(1); // Dashboard
+      if (this.businessForm.get('employee')?.value === true) permissions.push(3); // Employee
+      if (this.businessForm.get('expense')?.value === true) permissions.push(4); // Expense
+      if (this.businessForm.get('expenseMaster')?.value === true) permissions.push(5); // Expense Master
+      if (this.businessForm.get('voucherHead')?.value === true) permissions.push(6); // Voucher Head
+      if (this.businessForm.get('currency')?.value === true) permissions.push(7); // Currency
   
-      if (this.businessForm.get('dashboard')?.value === true) {
-        permissions.push(1); // Dashboard
-      }
-      if (this.businessForm.get('employee')?.value === true) {
-        permissions.push(3); // Employee
-      }
-      if (this.businessForm.get('expense')?.value === true) {
-        permissions.push(4); // Expense
-      }
-      if (this.businessForm.get('expenseMaster')?.value === true) {
-        permissions.push(5); // Expense Master
-      }
-      if (this.businessForm.get('voucherHead')?.value === true) {
-        permissions.push(6); // Voucher Head
-      }
-      if (this.businessForm.get('currency')?.value === true) {
-        permissions.push(7); // Currency
-      }
-  
-      // Append the permissions array as a JSON string
+      // Append permissions as JSON string
       formData.append('permissions', JSON.stringify(permissions));
   
-      if (this.data) {
-        formData.append('auditDetail', this.businessForm.get('auditDetail')?.value);
+      try {
+        if (this.data) {
+          // Edit business with file
+          formData.append('auditDetail', this.businessForm.get('auditDetail')?.value);
+          await this.businessService.editBusiness(this.data.businessID, formData);
+          this.dialogRef.close(true);
+          this.snackBar.open('Business updated successfully', 'Close', {
+            duration: 3000,
+            verticalPosition: 'top',
+            horizontalPosition: 'center',
+            panelClass: ['snackbar-success']
+          });
+        } else {
+          // Append admin user data for new business
+          formData.append('employeeFirstName', this.businessForm.get('employeeFirstName')?.value);
+          formData.append('employeeMiddleName', this.businessForm.get('employeeMiddleName')?.value);
+          formData.append('employeeLastName', this.businessForm.get('employeeLastName')?.value);
+          formData.append('emailId', this.businessForm.get('emailId')?.value);
+          formData.append('password', this.businessForm.get('password')?.value);
+          formData.append('mobile_no', this.businessForm.get('mobile_no')?.value);
+          formData.append('bankId', this.businessForm.get('bankId')?.value);
+          formData.append('profilephoto', this.businessForm.get('profilephoto')?.value);
   
-        // Update the business with file
-        this.businessService.editBusiness(this.data.businessID, formData).subscribe({
-          next: (val: any) => {
-            this.dialogRef.close(true);
-            this.snackBar.open('Business updated successfully', 'Close', {
-              duration: 3000,
-              verticalPosition: 'top',
-              horizontalPosition: 'center',
-              panelClass: ['snackbar-success']
-            });
-          },
-          error: (error: HttpErrorResponse) => {
-            this.snackBar.open('Error updating business', 'Close', {
-              duration: 3000,
-              verticalPosition: 'top',
-              horizontalPosition: 'center',
-              panelClass: ['snackbar-error']
-            });
-          }
-        });
-      } else {
-        // Append admin user data for adding a new business
-        formData.append('employeeFirstName', this.businessForm.get('employeeFirstName')?.value);
-        formData.append('employeeMiddleName', this.businessForm.get('employeeMiddleName')?.value);
-        formData.append('employeeLastName', this.businessForm.get('employeeLastName')?.value);
-        formData.append('emailId', this.businessForm.get('emailId')?.value);
-        formData.append('password', this.businessForm.get('password')?.value);
-        formData.append('mobile_no', this.businessForm.get('mobile_no')?.value);
-        formData.append('bankId', this.businessForm.get('bankId')?.value);
-        formData.append('profilephoto', this.businessForm.get('profilephoto')?.value);
-  
-        // Add new business with file
-        this.businessService.addBusiness(formData).subscribe(response => {
+          // Add new business with file
+          await this.businessService.addBusiness(formData);
           this.dialogRef.close(true);
           this.snackBar.open('Business added successfully', 'Close', {
             duration: 3000,
@@ -172,16 +146,16 @@ export class BusinessAddEditComponent implements OnInit {
             horizontalPosition: 'center',
             panelClass: ['snackbar-success']
           });
-        }, error => {
-          this.snackBar.open('Error adding business', 'Close', {
-            duration: 3000,
-            verticalPosition: 'top',
-            horizontalPosition: 'center',
-            panelClass: ['snackbar-error']
-          });
+        }
+      } catch (error) {
+        console.error('Error handling business data:', error);
+        this.snackBar.open(this.data ? 'Error updating business' : 'Error adding business', 'Close', {
+          duration: 3000,
+          verticalPosition: 'top',
+          horizontalPosition: 'center',
+          panelClass: ['snackbar-error']
         });
       }
     }
   }
-  
 }

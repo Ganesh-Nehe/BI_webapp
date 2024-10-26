@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 })
 export class HeaderComponent implements OnInit {
   @Output() sideNavToggled = new EventEmitter<boolean>();
-  menuStatus: boolean = false;
+  menuStatus: boolean = true;
 
   constructor(private router: Router) {}
 

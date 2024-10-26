@@ -1,17 +1,14 @@
-import { HttpClient,HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, map } from 'rxjs';
 import { APIService } from '../api.service';
-
 
 @Injectable({
   providedIn: 'root'
 })
 export class BusinessService {
-
   constructor(private http: HttpClient, private apiService: APIService) { }
 
-  getBusinessList(): Observable<any>{
+  async getBusinessList(): Promise<any> {
     const baseApi = this.apiService.getBaseApi();
     const httpOptions = {
       headers: new HttpHeaders({
@@ -19,10 +16,11 @@ export class BusinessService {
         'Authorization': 'Bearer ' + localStorage.getItem('loginToken')
       })
     };
-    return this.http.get(`${baseApi}/API/business`,httpOptions)
+    
+    return this.http.get(`${baseApi}/API/business`, httpOptions).toPromise();
   }
 
-  getBusinessDetails(businessId: string): Observable<any> {
+  async getBusinessDetails(businessId: string): Promise<any> {
     const baseApi = this.apiService.getBaseApi();
     const httpOptions = {
       headers: new HttpHeaders({
@@ -30,10 +28,11 @@ export class BusinessService {
         'Authorization': 'Bearer ' + localStorage.getItem('loginToken')
       })
     };
-    return this.http.get(`${baseApi}/API/business/${businessId}`, httpOptions);
+
+    return this.http.get(`${baseApi}/API/business/${businessId}`, httpOptions).toPromise();
   }
 
-  updateBusinessStatus(businessId: string, live_sleep: number): Observable<any> {
+  async updateBusinessStatus(businessId: string, live_sleep: number): Promise<any> {
     const baseApi = this.apiService.getBaseApi();
     const httpOptions = {
       headers: new HttpHeaders({
@@ -41,10 +40,9 @@ export class BusinessService {
         'Authorization': 'Bearer ' + localStorage.getItem('loginToken')
       })
     };
-  
-    // Prepare the request body with the businessId and live_sleep value
+    
     const requestBody = { businessId, live_sleep };
-  
-    return this.http.patch(`${baseApi}/API/business/update-status/${businessId}`, requestBody, httpOptions);
+    
+    return this.http.patch(`${baseApi}/API/business/update-status/${businessId}`, requestBody, httpOptions).toPromise();
   }
 }

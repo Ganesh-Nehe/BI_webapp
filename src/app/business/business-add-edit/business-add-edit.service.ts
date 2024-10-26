@@ -1,6 +1,5 @@
-import { HttpClient,HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
 import { APIService } from 'src/app/api.service';
 
 @Injectable({
@@ -8,9 +7,9 @@ import { APIService } from 'src/app/api.service';
 })
 export class BusinessAddEditService {
 
-  constructor(private http:HttpClient, private apiService:APIService) { }
+  constructor(private http: HttpClient, private apiService: APIService) { }
 
-  editBusiness(businessId: string, data: FormData): Observable<any> {
+  async editBusiness(businessId: string, data: FormData): Promise<any> {
     const baseApi = this.apiService.getBaseApi();
     const userId = localStorage.getItem('loggedInUserId') || '';
     const httpOptions = {
@@ -18,19 +17,30 @@ export class BusinessAddEditService {
         'Authorization': 'Bearer ' + localStorage.getItem('loginToken')
       })
     };
-    data.append('businessId', businessId)
-    data.append('userId', userId)
-    return this.http.patch(`${baseApi}/API/business/${businessId}`, data, httpOptions);
+    data.append('businessId', businessId);
+    data.append('userId', userId);
+
+    try {
+      return await this.http.patch(`${baseApi}/API/business/${businessId}`, data, httpOptions).toPromise();
+    } catch (error) {
+      console.error('Error updating business:', error);
+      throw error;
+    }
   }
-  addBusiness(data: FormData): Observable<any> {
-    console.log(data);
+
+  async addBusiness(data: FormData): Promise<any> {
     const baseApi = this.apiService.getBaseApi();
     const httpOptions = {
       headers: new HttpHeaders({
         'Authorization': 'Bearer ' + localStorage.getItem('loginToken')
       })
     };
-   
-    return this.http.post(`${baseApi}/API/business`, data, httpOptions);
+
+    try {
+      return await this.http.post(`${baseApi}/API/business`, data, httpOptions).toPromise();
+    } catch (error) {
+      console.error('Error adding business:', error);
+      throw error;
+    }
   }
 }

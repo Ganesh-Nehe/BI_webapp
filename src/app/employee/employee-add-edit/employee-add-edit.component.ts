@@ -25,13 +25,15 @@ export class EmployeeAddEditComponent implements OnInit {
     currency: false
   };
 
-  constructor(private fb: FormBuilder,
+  constructor(
+    private fb: FormBuilder,
     private http: HttpClient,
     public apiService: APIService,
     private dialogRef: MatDialogRef<EmployeeAddEditComponent>,
     private employeeService: EmployeeAddEditService,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private snackBar: MatSnackBar) {
+    private snackBar: MatSnackBar
+  ) {
     this.employeeForm = this.fb.group({
       employeeFirstName: ['', Validators.required],
       employeeMiddleName: ['', Validators.required],
@@ -42,7 +44,6 @@ export class EmployeeAddEditComponent implements OnInit {
       bankId: ['', Validators.required],
       profilephoto: ['', Validators.required],
       auditDetail: [this.data ? '' : null, this.data ? Validators.required : null],
-
       dashboard: [false],
       business: [false],
       employee: [false],
@@ -70,9 +71,10 @@ export class EmployeeAddEditComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  addEmployeeData() {
+  async addEmployeeData() {
     const baseApi = this.apiService.getBaseApi();
     const businessId = localStorage.getItem('businessId');
+
     if (this.employeeForm.valid) {
       const formData = new FormData();
   
@@ -84,10 +86,8 @@ export class EmployeeAddEditComponent implements OnInit {
       formData.append('mobile_no', this.employeeForm.get('mobile_no')?.value);
       formData.append('bankId', this.employeeForm.get('bankId')?.value);
       formData.append('profilephoto', this.employeeForm.get('profilephoto')?.value);
-      
-      // Include auditDetail for both create and update
       formData.append('auditDetail', this.employeeForm.get('auditDetail')?.value);
-  
+
       if (businessId !== null) {
         formData.append('businessId', businessId);
       }
@@ -104,54 +104,32 @@ export class EmployeeAddEditComponent implements OnInit {
         
         // Collect permissions into an array for new employee only
         const permissions: number[] = [];
-        if (this.employeeForm.get('dashboard')?.value === true) {
-          permissions.push(1); // Dashboard
-        }
-        if (this.employeeForm.get('employee')?.value === true) {
-          permissions.push(3); // Employee
-        }
-        if (this.employeeForm.get('expense')?.value === true) {
-          permissions.push(4); // Expense
-        }
-        if (this.employeeForm.get('expenseMaster')?.value === true) {
-          permissions.push(5); // Expense Master
-        }
-        if (this.employeeForm.get('voucherHead')?.value === true) {
-          permissions.push(6); // Voucher Head
-        }
-        if (this.employeeForm.get('currency')?.value === true) {
-          permissions.push(7); // Currency
-        }
+        if (this.employeeForm.get('dashboard')?.value) permissions.push(1);
+        if (this.employeeForm.get('employee')?.value) permissions.push(3);
+        if (this.employeeForm.get('expense')?.value) permissions.push(4);
+        if (this.employeeForm.get('expenseMaster')?.value) permissions.push(5);
+        if (this.employeeForm.get('voucherHead')?.value) permissions.push(6);
+        if (this.employeeForm.get('currency')?.value) permissions.push(7);
   
         // Append the permissions array as a JSON string
         formData.append('permissions', JSON.stringify(permissions));
       }
   
-      if (this.data) {
-        formData.append('employeeId', this.data.employeeId); 
-        // If updating, send the employeeId and the updated data
-        this.employeeService.editEmployee(this.data.employeeId, formData).subscribe({
-          next: (val: any) => {
-            this.dialogRef.close(true);
-            this.snackBar.open('Employee updated successfully', 'Close', {
-              duration: 3000,
-              verticalPosition: 'top',
-              horizontalPosition: 'center',
-              panelClass: ['snackbar-success']
-            });
-          },
-          error: (error: HttpErrorResponse) => {
-            this.snackBar.open('Error updating employee', 'Close', {
-              duration: 3000,
-              verticalPosition: 'top',
-              horizontalPosition: 'center',
-              panelClass: ['snackbar-error']
-            });
-          }
-        });
-      } else {
-        // If creating new
-        this.http.post(`${baseApi}/API/user/`, formData, httpOptions).subscribe(res => {
+      try {
+        if (this.data) {
+          formData.append('employeeId', this.data.employeeId); 
+          // If updating, send the employeeId and the updated data
+          await this.employeeService.editEmployee(this.data.employeeId, formData);
+          this.dialogRef.close(true);
+          this.snackBar.open('Employee updated successfully', 'Close', {
+            duration: 3000,
+            verticalPosition: 'top',
+            horizontalPosition: 'center',
+            panelClass: ['snackbar-success']
+          });
+        } else {
+          // If creating new
+          await this.http.post(`${baseApi}/API/user/`, formData, httpOptions).toPromise();
           this.dialogRef.close(true);
           this.snackBar.open('Employee created successfully', 'Close', {
             duration: 3000,
@@ -159,13 +137,14 @@ export class EmployeeAddEditComponent implements OnInit {
             horizontalPosition: 'center',
             panelClass: ['snackbar-success']
           });
-        }, error => {
-          this.snackBar.open('Error creating employee', 'Close', {
-            duration: 3000,
-            verticalPosition: 'top',
-            horizontalPosition: 'center',
-            panelClass: ['snackbar-error']
-          });
+        }
+      } catch (error) {
+        const errorMsg = this.data ? 'Error updating employee' : 'Error creating employee';
+        this.snackBar.open(errorMsg, 'Close', {
+          duration: 3000,
+          verticalPosition: 'top',
+          horizontalPosition: 'center',
+          panelClass: ['snackbar-error']
         });
       }
     }

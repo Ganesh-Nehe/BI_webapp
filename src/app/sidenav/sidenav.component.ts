@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 })
 export class SidenavComponent implements OnInit {
 
-  @Input() sideNavStatus: boolean = false;
+  @Input() sideNavStatus: boolean = true;
   isSubmenuVisible: boolean = false;
   permissions: string[] = [];
 

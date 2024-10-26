@@ -10,7 +10,7 @@ import { Observable } from 'rxjs';
 export class ExpenseMasterService {
   constructor(private http: HttpClient, private apiService: APIService) { }
 
-  showAllVoucherExpenses(): Observable<any>{
+  async showAllVoucherExpenses(): Promise<any> {
     const baseApi = this.apiService.getBaseApi();
     const businessId = localStorage.getItem('businessId');
     const httpOptions = {
@@ -19,10 +19,17 @@ export class ExpenseMasterService {
         'Authorization': 'Bearer ' + localStorage.getItem('loginToken')
       })
     };
-    return this.http.get(`${baseApi}/API/expense/voucher?businessId=${businessId}`,httpOptions)
+
+    try {
+      const response = await this.http.get(`${baseApi}/API/expense/voucher?businessId=${businessId}`, httpOptions).toPromise();
+      return response;
+    } catch (error) {
+      console.error('Error fetching all voucher expenses:', error);
+      throw error; // Re-throw the error after logging it
+    }
   }
 
-  getVoucherdetails(voucherId: string): Observable<any>{
+  async getVoucherdetails(voucherId: string): Promise<any> {
     const baseApi = this.apiService.getBaseApi();
     const httpOptions = {
       headers: new HttpHeaders({
@@ -30,7 +37,14 @@ export class ExpenseMasterService {
         'Authorization': 'Bearer ' + localStorage.getItem('loginToken')
       })
     };
-    return this.http.get(`${baseApi}/API/expense/voucherdetails/${voucherId}`,httpOptions)
+
+    try {
+      const response = await this.http.get(`${baseApi}/API/expense/voucherdetails/${voucherId}`, httpOptions).toPromise();
+      return response;
+    } catch (error) {
+      console.error(`Error fetching voucher details for ID ${voucherId}:`, error);
+      throw error; // Re-throw the error after logging it
+    }
   }
 
   getDocument(encodedFileLocation: string) {
@@ -48,7 +62,7 @@ export class ExpenseMasterService {
     return this.http.get<HttpResponse<Blob>>(`${baseApi}/API/document/${encodedFileLocation}`, httpOptions);
   }
 
-  updateApprovalStatus(body: any): Observable<any> {
+  async updateApprovalStatus(body: any): Promise<any> {
     const baseApi = this.apiService.getBaseApi();
     const httpOptions = {
       headers: new HttpHeaders({
@@ -56,7 +70,14 @@ export class ExpenseMasterService {
         'Authorization': 'Bearer ' + localStorage.getItem('loginToken')
       })
     };
-    return this.http.post(`${baseApi}/API/expense/voucher/updateApprovalStatus`, body, httpOptions);
+
+    try {
+      const response = await this.http.post(`${baseApi}/API/expense/voucher/updateApprovalStatus`, body, httpOptions).toPromise();
+      return response;
+    } catch (error) {
+      console.error('Error updating approval status:', error);
+      throw error; // Re-throw the error after logging it
+    }
   }
 
 }

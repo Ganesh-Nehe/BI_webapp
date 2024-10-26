@@ -1,29 +1,34 @@
 import { Injectable } from '@angular/core';
 import { APIService } from 'src/app/api.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
-
 
 @Injectable({
   providedIn: 'root'
 })
 export class VoucherExpenseService {
 
-  constructor(private http: HttpClient ,private apiService: APIService) { }
+  constructor(private http: HttpClient, private apiService: APIService) { }
 
-  showAllVoucherExpenses(): Observable<any>{
+  async showAllVoucherExpenses(): Promise<any> {
     const baseApi = this.apiService.getBaseApi();
-    const employeeId = localStorage.getItem('loggedInUserId')
+    const employeeId = localStorage.getItem('loggedInUserId');
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + localStorage.getItem('loginToken')
       })
     };
-    return this.http.get(`${baseApi}/API/expense/voucherEmployee?employeeId=${employeeId}`,httpOptions)
+
+    try {
+      const response = await this.http.get(`${baseApi}/API/expense/voucherEmployee?employeeId=${employeeId}`, httpOptions).toPromise();
+      return response;
+    } catch (error) {
+      console.error('Error fetching all voucher expenses', error);
+      throw error; // Re-throw the error for further handling
+    }
   }
 
-  getVoucherdetails(voucherId: string): Observable<any>{
+  async getVoucherdetails(voucherId: string): Promise<any> {
     const baseApi = this.apiService.getBaseApi();
     const httpOptions = {
       headers: new HttpHeaders({
@@ -31,6 +36,13 @@ export class VoucherExpenseService {
         'Authorization': 'Bearer ' + localStorage.getItem('loginToken')
       })
     };
-    return this.http.get(`${baseApi}/API/expense/voucherdetails/${voucherId}`,httpOptions)
+
+    try {
+      const response = await this.http.get(`${baseApi}/API/expense/voucherdetails/${voucherId}`, httpOptions).toPromise();
+      return response;
+    } catch (error) {
+      console.error('Error fetching voucher details', error);
+      throw error; // Re-throw the error for further handling
+    }
   }
 }

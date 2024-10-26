@@ -27,25 +27,24 @@ export class AddCurrencyComponent {
     this.dialogRef.close();
   }
 
-  addCurrency(){
+  async addCurrency() {
     const baseApi = this.apiService.getBaseApi();
     const CurrencyFormData = this.currencyForm.value;
+
     if (this.currencyForm.valid) {
       const httpOptions = {
         headers: new HttpHeaders({
           'Authorization': 'Bearer ' + localStorage.getItem('loginToken')
         })
       };
-      this.http.post(`${baseApi}/API/currency/`, CurrencyFormData, httpOptions)
-        .subscribe(
-          (response) => {
-            console.log('API Response:', response);
-            this.dialogRef.close(true);
-          },
-          (error) => {
-            console.error('API Error:', error);
-          }
-        );
+
+      try {
+        const response = await this.http.post(`${baseApi}/API/currency/`, CurrencyFormData, httpOptions).toPromise();
+        console.log('API Response:', response);
+        this.dialogRef.close(true);
+      } catch (error) {
+        console.error('API Error:', error);
+      }
     }
- }
+  }
 }

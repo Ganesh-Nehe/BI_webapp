@@ -1,13 +1,14 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-import { MatSort, MatSortModule } from '@angular/material/sort';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import { VoucherExpenseService } from './voucher-expense.service';
 import { AddVoucherExpenseComponent } from './add-voucher-expense/add-voucher-expense.component';
-import { VoucherExpenseDetailsComponent } from  './voucher-expense-details/voucher-expense-details.component';
+import { VoucherExpenseDetailsComponent } from './voucher-expense-details/voucher-expense-details.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { DescriptionDetailDialogComponent } from './description-detail-dialog/description-detail-dialog.component'
+import { DescriptionDetailDialogComponent } from './description-detail-dialog/description-detail-dialog.component';
+
 @Component({
   selector: 'app-voucher-expense',
   templateUrl: './voucher-expense.component.html',
@@ -15,8 +16,7 @@ import { DescriptionDetailDialogComponent } from './description-detail-dialog/de
 })
 export class VoucherExpenseComponent implements OnInit {
 
-  displayedColumns: string[] = ['voucherId', 'ExpenseHead' ,'CreateDate', 'TotalAmount', 'viewDetails', 'Status'];
-
+  displayedColumns: string[] = ['voucherId', 'ExpenseHead', 'CreateDate', 'TotalAmount', 'viewDetails', 'Status'];
   dataSource!: MatTableDataSource<any>;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -28,23 +28,21 @@ export class VoucherExpenseComponent implements OnInit {
     this.getVoucherExpenses();
   }
 
-  getVoucherExpenses() {
-    this.voucherexpenseservice.showAllVoucherExpenses().subscribe({
-      next: (res) =>  {
-        const dataArray = Array.isArray(res.data) ? res.data : [];
-        this.dataSource = new MatTableDataSource(dataArray);
-        this.dataSource.sort = this.sort;
-        this.dataSource.paginator = this.paginator
-      },
-      error: (err) => {
-        this.snackBar.open('Error loading expense list', 'Close', {
-          duration: 3000,
-          verticalPosition: 'top', 
-          horizontalPosition: 'center',
-          panelClass: ['snackbar-error']
-        });
-      }
-    });
+  async getVoucherExpenses() {
+    try {
+      const res = await this.voucherexpenseservice.showAllVoucherExpenses();
+      const dataArray = Array.isArray(res.data) ? res.data : [];
+      this.dataSource = new MatTableDataSource(dataArray);
+      this.dataSource.sort = this.sort;
+      this.dataSource.paginator = this.paginator;
+    } catch (err) {
+      this.snackBar.open('Error loading expense list', 'Close', {
+        duration: 3000,
+        verticalPosition: 'top',
+        horizontalPosition: 'center',
+        panelClass: ['snackbar-error']
+      });
+    }
   }
 
   openDisapproveDetailDialog(row: any) {
@@ -59,26 +57,24 @@ export class VoucherExpenseComponent implements OnInit {
     }
   }
 
-  openDetailsDialog(row: any) {
-    this.voucherexpenseservice.getVoucherdetails(row.voucherId).subscribe(
-      (details)=>{
-        const dialogRef = this.dialog.open(VoucherExpenseDetailsComponent, {
-          data: {voucherDetails: details.data},
-          width: '700px',
-        });
-      },
-      (error)=>{
-        this.snackBar.open('Error loading expaense datails', 'Close', {
-          duration: 3000,
-          verticalPosition: 'top', 
-          horizontalPosition: 'center',
-          panelClass: ['snackbar-error']
-        });
-      }
-    );
+  async openDetailsDialog(row: any) {
+    try {
+      const details = await this.voucherexpenseservice.getVoucherdetails(row.voucherId);
+      const dialogRef = this.dialog.open(VoucherExpenseDetailsComponent, {
+        data: { voucherDetails: details.data },
+        width: '700px',
+      });
+    } catch (error) {
+      this.snackBar.open('Error loading expense details', 'Close', {
+        duration: 3000,
+        verticalPosition: 'top',
+        horizontalPosition: 'center',
+        panelClass: ['snackbar-error']
+      });
+    }
   }
 
-  openAddDialog(){
+  openAddDialog() {
     const dialogRef = this.dialog.open(AddVoucherExpenseComponent);
     dialogRef.afterClosed().subscribe({
       next: (val) => {

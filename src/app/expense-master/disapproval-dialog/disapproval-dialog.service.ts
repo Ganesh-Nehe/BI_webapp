@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { APIService } from 'src/app/api.service';
-import { HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -10,12 +9,12 @@ export class DisapprovalDialogService {
 
   constructor(private http: HttpClient, private apiService: APIService) { }
 
-  save(voucherId: string, approvalStatus: string, description: string): Observable<any> {
-    const formdata ={
+  async save(voucherId: string, approvalStatus: string, description: string): Promise<any> {
+    const formdata = {
       voucherId,
       approvalStatus,
       description
-    }
+    };
     const baseApi = this.apiService.getBaseApi();
     const httpOptions = {
       headers: new HttpHeaders({
@@ -23,6 +22,13 @@ export class DisapprovalDialogService {
         'Authorization': 'Bearer ' + localStorage.getItem('loginToken')
       })
     };
-    return this.http.patch(`${baseApi}/API/disapproval/discription`, formdata, httpOptions);
+
+    try {
+      const response = await this.http.patch(`${baseApi}/API/disapproval/discription`, formdata, httpOptions).toPromise();
+      return response; // return the response from the server
+    } catch (error) {
+      console.error('Error saving disapproval:', error);
+      throw error; // re-throw the error for handling upstream
+    }
   }
 }
