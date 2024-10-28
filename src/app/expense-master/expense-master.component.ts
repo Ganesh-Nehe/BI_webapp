@@ -37,7 +37,7 @@ export class ExpenseMasterComponent {
     try {
       const res = await this.expensemasterservice.showAllVoucherExpenses();
       const dataArray = Array.isArray(res.data) ? res.data : [];
-      this.dataSource = new MatTableDataSource(dataArray);
+      this.dataSource = new MatTableDataSource(dataArray.reverse());
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
     } catch (err) {
