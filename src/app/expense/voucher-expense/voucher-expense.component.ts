@@ -16,7 +16,7 @@ import { DescriptionDetailDialogComponent } from './description-detail-dialog/de
 })
 export class VoucherExpenseComponent implements OnInit {
 
-  displayedColumns: string[] = ['voucherId', 'ExpenseHead', 'CreateDate', 'TotalAmount', 'viewDetails', 'Status'];
+  displayedColumns: string[] = ['serialNumber', 'ExpenseHead', 'CreateDate', 'TotalAmount', 'viewDetails', 'Status'];
   dataSource!: MatTableDataSource<any>;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;

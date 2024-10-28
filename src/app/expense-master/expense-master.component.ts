@@ -20,7 +20,7 @@ import { DisapprovalDialogComponent } from './disapproval-dialog/disapproval-dia
   styleUrls: ['./expense-master.component.css']
 })
 export class ExpenseMasterComponent {
-  displayedColumns: string[] = ['voucherId', 'EmployeeName', 'ExpenseHead' ,'CreateDate', 'TotalAmount', 'viewDetails', "file_location", 'Approval'];
+  displayedColumns: string[] = ['serialNumber', 'EmployeeName', 'ExpenseHead' ,'CreateDate', 'TotalAmount', 'viewDetails', "file_location", 'Approval'];
 
   dataSource!: MatTableDataSource<any>;
 
