@@ -18,6 +18,11 @@
             <td mat-cell *matCellDef="let row">{{row.voucherId}}</td>
           </ng-container>
 
+          <ng-container matColumnDef="EmployeeName">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Employee Name </th>
+            <td mat-cell *matCellDef="let row">{{ row.employeeFirstName }} {{ row.employeeLastName }}</td>
+          </ng-container>
+
           <ng-container matColumnDef="ExpenseHead">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Expense Head </th>
             <td mat-cell *matCellDef="let row">{{row.mischeadname}}</td>
