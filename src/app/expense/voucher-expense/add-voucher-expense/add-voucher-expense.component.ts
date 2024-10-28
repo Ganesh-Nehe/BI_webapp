@@ -76,10 +76,10 @@ export class AddVoucherExpenseComponent implements OnInit {
   toggleFileUpload(index: number): void {
     const expense = this.expenses.at(index);
     if (expense.get('hasBill')?.value) {
-      expense.patchValue({ billStatus: 'Bill' });  // Set to "Bill" when checked
+      expense.patchValue({ billStatus: 'Bill' });  
     } else {
-      expense.patchValue({ billStatus: 'No bill' });  // Set to "No bill" when unchecked
-      this.fileData[index] = null;  // Remove file if unchecked
+      expense.patchValue({ billStatus: 'No bill' }); 
+      this.fileData[index] = null;
     }
   }
   
@@ -125,6 +125,7 @@ export class AddVoucherExpenseComponent implements OnInit {
   }
 
   async addVoucherexpense(): Promise<void> {
+    this.calculateTotalExpenseAmount();
     const userId = localStorage.getItem('loggedInUserId');
     const businessId = localStorage.getItem('businessId');
     const baseApi = this.apiService.getBaseApi();
