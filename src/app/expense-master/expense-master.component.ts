@@ -13,6 +13,7 @@ import { ExpenseMasterDetailsComponent } from './expense-master-details/expense-
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { DisapprovalDialogComponent } from './disapproval-dialog/disapproval-dialog.component'
+import { PaymentDialogComponent } from './payment-dialog/payment-dialog.component'
 
 @Component({
   selector: 'app-expense-master',
@@ -20,7 +21,7 @@ import { DisapprovalDialogComponent } from './disapproval-dialog/disapproval-dia
   styleUrls: ['./expense-master.component.css']
 })
 export class ExpenseMasterComponent {
-  displayedColumns: string[] = ['serialNumber', 'EmployeeName', 'ExpenseHead' ,'CreateDate', 'TotalAmount', 'viewDetails', "file_location", 'Approval'];
+  displayedColumns: string[] = ['serialNumber', 'EmployeeName', 'ExpenseHead' ,'CreateDate', 'TotalAmount', 'viewDetails', "file_location", 'Approval', 'payment'];
 
   dataSource!: MatTableDataSource<any>;
 
@@ -59,7 +60,6 @@ export class ExpenseMasterComponent {
   }
 
   openDocument(file_location: string) {
-    console.log(file_location);
   
     // Replace backslashes with forward slashes if needed (for URL encoding)
     const normalizedLocation = file_location.replace(/\\/g, '/');
@@ -152,6 +152,25 @@ export class ExpenseMasterComponent {
       });
     }
   }
+
+  async openPaymentDialog(voucherPayment: boolean, fileLocation: string, row: any) {
+    if (!voucherPayment && row.approval === 'Approved') { 
+      await this.dialog.open(PaymentDialogComponent, {
+        width: '600px',
+        data: { voucherId: row.voucherId }
+      }).afterClosed().toPromise(); 
+      await this.getVoucherExpenses();
+    } else if (row.approval === 'Disapproved' || row.approval === 'Not Selected') {
+      this.snackBar.open('Payment cannot be proceed as expense is not approved yet !', 'Close', {
+        duration: 3000,
+        verticalPosition: 'top',
+        horizontalPosition: 'center',
+        panelClass: ['snackbar-error'],
+      });
+    }else{
+      await this.openDocument(fileLocation);
+    }
+  } 
   
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;

@@ -18,8 +18,7 @@ export class ExpenseMasterDetailsService {
       }),
       observe: 'response' as 'body',
       responseType: 'blob' as 'json'
-    };
-    console.log(`Encoded location being sent to API: ${encodedLocation}`);  
+    }; 
     return this.http.get<HttpResponse<Blob>>(`${baseApi}/API/document/${encodedLocation}`, httpOptions);
   }
 }

@@ -16,7 +16,6 @@ export class ExpenseMasterDetailsComponent {
   constructor(@Inject(MAT_DIALOG_DATA) public data: any, private expensemasterdetailsservice: ExpenseMasterDetailsService, private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
-    console.log('VoucherExpenseDetailsComponent initialized with data:', this.data);
   }
   
   print() {

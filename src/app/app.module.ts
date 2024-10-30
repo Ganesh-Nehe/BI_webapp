@@ -57,6 +57,7 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { DisapprovalDialogComponent } from './expense-master/disapproval-dialog/disapproval-dialog.component';
 import { DescriptionDetailDialogComponent } from './expense/voucher-expense/description-detail-dialog/description-detail-dialog.component';
+import { PaymentDialogComponent } from './expense-master/payment-dialog/payment-dialog.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -87,7 +88,8 @@ import { DescriptionDetailDialogComponent } from './expense/voucher-expense/desc
     ExpenseMasterDetailsComponent,
     UserProfileComponent,
     DisapprovalDialogComponent,
-    DescriptionDetailDialogComponent
+    DescriptionDetailDialogComponent,
+    PaymentDialogComponent
   ],
   imports: [
     BrowserModule,
