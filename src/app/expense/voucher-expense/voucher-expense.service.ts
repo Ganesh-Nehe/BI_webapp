@@ -60,4 +60,22 @@ export class VoucherExpenseService {
       throw error; // Re-throw the error for further handling
     }
   }
+  
+  async getVoucherdetailsforId(voucherId: string): Promise<any> {
+    const baseApi = this.apiService.getBaseApi();
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + localStorage.getItem('loginToken')
+      })
+    };
+
+    try {
+      const response = await this.http.get(`${baseApi}/API/expense/voucherdetailsForId/${voucherId}`, httpOptions).toPromise();
+      return response;
+    } catch (error) {
+      console.error('Error fetching voucher details', error);
+      throw error; // Re-throw the error for further handling
+    }
+  }
 }

@@ -38,6 +38,7 @@ th:first-child, td:first-child {
 
 tr:last-child td {
     border-bottom: 1px solid grey;
+    
 }
 
 .active-toggle {

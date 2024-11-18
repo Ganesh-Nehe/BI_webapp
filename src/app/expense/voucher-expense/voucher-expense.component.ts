@@ -17,7 +17,7 @@ import { HttpResponse } from '@angular/common/http';
 })
 export class VoucherExpenseComponent implements OnInit {
 
-  displayedColumns: string[] = ['serialNumber', 'ExpenseHead', 'CreateDate', 'TotalAmount', 'viewDetails', 'file_location','Status', 'payment'];
+  displayedColumns: string[] = ['serialNumber', 'ExpenseHead', 'CreateDate', 'TotalAmount', 'viewDetails', 'file_location','Status', 'payment', 'edit'];
   dataSource!: MatTableDataSource<any>;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -33,7 +33,7 @@ export class VoucherExpenseComponent implements OnInit {
     try {
       const res = await this.voucherexpenseservice.showAllVoucherExpenses();
       const dataArray = Array.isArray(res.data) ? res.data : [];
-      this.dataSource = new MatTableDataSource(dataArray);
+      this.dataSource = new MatTableDataSource(dataArray.reverse());
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
     } catch (err) {
@@ -129,6 +129,36 @@ export class VoucherExpenseComponent implements OnInit {
         }
       }
     });
+  }
+
+  async openEditDialog(row: any) {
+    if (row.approval === 'Disapproved' || row.approval === 'Not Selected' ) {
+      const details = await this.voucherexpenseservice.getVoucherdetailsforId(row.voucherId);
+      const dialogRef = this.dialog.open(AddVoucherExpenseComponent, {
+        data: {voucherHead : row, voucherDetails : details}, // Pass selected row data for editing
+      });
+    
+      dialogRef.afterClosed().subscribe({
+        next: (result) => {
+          if (result) {
+            this.getVoucherExpenses(); // Reload voucher list on update
+          }
+        }
+      });
+    } else if (row.approval === 'Approved') {
+      this.snackBar.open('Cannot edit as expense is now Approved', 'Close', {
+        duration: 3000,
+        verticalPosition: 'top',
+        horizontalPosition: 'center'
+      });
+    }else{
+      this.snackBar.open('Error', 'Close', {
+        duration: 3000,
+        verticalPosition: 'top',
+        horizontalPosition: 'center',
+        panelClass: ['snackbar-error']
+      });
+    }
   }
 
   applyFilter(event: Event) {

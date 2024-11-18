@@ -38,7 +38,27 @@ export class ExpenseMasterComponent {
     try {
       const res = await this.expensemasterservice.showAllVoucherExpenses();
       const dataArray = Array.isArray(res.data) ? res.data : [];
-      this.dataSource = new MatTableDataSource(dataArray.reverse());
+  
+      // Reverse the data first
+      const reversedData = dataArray.reverse();
+  
+      // Define the order for "Approval" statuses
+      const approvalOrder: { [key: string]: number } = {
+        "Not Selected": 1,
+        "Approved": 2,
+        "Disapproved": 3,
+      };
+  
+      // Sort the reversed data based on "Approval"
+      const sortedData = reversedData.sort((a: any, b: any) => {
+        return (
+          (approvalOrder[a.approval as keyof typeof approvalOrder] || 4) -
+          (approvalOrder[b.approval as keyof typeof approvalOrder] || 4)
+        );
+      });
+  
+      // Set up the data source
+      this.dataSource = new MatTableDataSource(sortedData);
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
     } catch (err) {
@@ -46,6 +66,7 @@ export class ExpenseMasterComponent {
       console.error("Error", err);
     }
   }
+  
 
   async openDetailsDialog(row: any) {
     try {
