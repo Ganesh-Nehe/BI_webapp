@@ -12,8 +12,10 @@ import { ExpenseMasterComponent } from './expense-master/expense-master.componen
 import { TravelExpenseComponent } from './expense/travel-expense/travel-expense.component';
 import { VoucherExpenseComponent } from './expense/voucher-expense/voucher-expense.component';
 import { AddVoucherheadComponent } from './expense/add-voucherhead/add-voucherhead.component';
-import { CurrenyComponent } from './curreny/curreny.component'
-import { UserProfileComponent } from './user-profile/user-profile.component'
+import { CurrenyComponent } from './curreny/curreny.component';
+import { UserProfileComponent } from './user-profile/user-profile.component';
+import { AddTravelHeadComponent } from './expense/add-travel-head/add-travel-head.component';
+import { TravelExpenseMasterComponent } from './travel-expense-master/travel-expense-master.component';
 
 const routes: Routes = [
   { 
@@ -50,16 +52,24 @@ const routes: Routes = [
         path: 'expense',
         children: [
           { path: 'travel', component: TravelExpenseComponent },
-          { path: 'voucher', component:  VoucherExpenseComponent },
+          { path: 'miscellaneous', component:  VoucherExpenseComponent },
         ]
       },
       {
-        path: 'expense-master',
+        path: 'miscellaneous-summary',
         component: ExpenseMasterComponent
+      },
+      {
+        path: 'travel-summary',
+        component: TravelExpenseMasterComponent
       },
       {
         path: 'voucher-head',
         component: AddVoucherheadComponent
+      },
+      {
+        path: 'travel-head',
+        component: AddTravelHeadComponent
       },
       {
         path: 'currency',

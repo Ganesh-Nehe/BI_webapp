@@ -1,0 +1,14 @@
+<div mat-dialog-title>Add Travel Head</div>
+<form [formGroup]="travelHeadForm">
+    <div mat-dialog-content class="content">
+        <mat-form-field fxFlex="100%" appearance="outline">
+            <mat-label>travel Head</mat-label>
+            <input matInput type="text" formControlName="travelExpenseCatName" required="" >
+        </mat-form-field>
+    </div>
+    <div mat-dialog-actions class="action">
+        <button mat-dialog-close class="btn btn-outline-dark" mat-raised-button close->Cancel</button>
+        <button class="btn btn-outline-dark" mat-raised-button color="primary" (click)="addTravelHead()">Save</button>
+    </div>
+</form>
+

@@ -66,7 +66,6 @@ export class ExpenseMasterComponent {
       console.error("Error", err);
     }
   }
-  
 
   async openDetailsDialog(row: any) {
     try {
@@ -192,6 +191,10 @@ export class ExpenseMasterComponent {
       await this.openDocument(fileLocation);
     }
   } 
+
+  getSerialNumber(index: number): number {
+    return index + 1 + (this.paginator.pageIndex * this.paginator.pageSize);
+  }
   
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;

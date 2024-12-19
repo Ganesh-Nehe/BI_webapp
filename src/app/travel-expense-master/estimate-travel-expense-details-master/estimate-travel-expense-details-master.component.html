@@ -1,0 +1,36 @@
+<h2 mat-dialog-title>Estimate Travel Expense Details</h2>
+<div mat-dialog-content #dialogContent>
+  <table mat-table [dataSource]="data.data" class="mat-elevation-z8">
+
+    <ng-container matColumnDef="estTravelHead">
+      <th mat-header-cell *matHeaderCellDef> Estimate Travel Head </th>
+      <td mat-cell *matCellDef="let element">{{element.miscExpenseCatName}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="unitCost">
+      <th mat-header-cell *matHeaderCellDef> Cost </th>
+      <td mat-cell *matCellDef="let element">{{(element.unitCost) | currency: element.currency_name}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="noOfDays">
+      <th mat-header-cell *matHeaderCellDef> No Of Days </th>
+      <td mat-cell *matCellDef="let element">{{element.noOfDays}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="remark">
+      <th mat-header-cell *matHeaderCellDef> Remark </th>
+      <td mat-cell *matCellDef="let element"> {{element.remark}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="totalExpense">
+      <th mat-header-cell *matHeaderCellDef> Total Expense </th>
+      <td mat-cell *matCellDef="let element">{{(element.unitCost * element.noOfDays) | currency: element.currency_name}} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+</div>
+<div mat-dialog-actions class="action">
+  <button mat-button mat-dialog-close class="btn btn-outline-dark" mat-raised-button color="primary">Close</button>
+</div>

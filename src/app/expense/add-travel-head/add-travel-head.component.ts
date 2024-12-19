@@ -3,31 +3,41 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { AddVoucherheadService } from './add-voucherhead.service';
-import { AddVoucherheadDialogComponent } from './add-voucherhead-dialog/add-voucherhead-dialog.component';
+import { AddTravelHeadService } from './add-travel-head.service'
+import { AddTravelHeadDialogComponent } from './add-travel-head-dialog/add-travel-head-dialog.component'
 
 @Component({
-  selector: 'app-add-voucherhead',
-  templateUrl: './add-voucherhead.component.html',
-  styleUrls: ['./add-voucherhead.component.css']
+  selector: 'app-add-travel-head',
+  templateUrl: './add-travel-head.component.html',
+  styleUrls: ['./add-travel-head.component.css']
 })
-export class AddVoucherheadComponent implements OnInit {
-
+export class AddTravelHeadComponent implements OnInit {
   displayedColumns: string[] = ['sr no', 'Head Name'];
   dataSource!: MatTableDataSource<any>;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private dialog: MatDialog, private voucherheadservice: AddVoucherheadService) {}
+  constructor(private dialog: MatDialog, private AddTravelHeadService: AddTravelHeadService) { }
 
   ngOnInit(): void {
-    this.getVoucherHeadList(); // Call the method to load data on component initialization
+    this.getTravelHeadList()
   }
 
-  async getVoucherHeadList() {
+  openAddDialog() {
+    const dialogRef = this.dialog.open(AddTravelHeadDialogComponent);
+    dialogRef.afterClosed().subscribe({
+      next: (val) => {
+        if (val) {
+          this.getTravelHeadList(); // Refresh the list after closing the dialog if a new item was added
+        }
+      }
+    });
+  }
+
+  async getTravelHeadList() {
     try {
-      const res = await this.voucherheadservice.getVoucherHeadList(); // Await the service call
+      const res = await this.AddTravelHeadService.getTravelHeadList(); // Await the service call
       const dataArray = Array.isArray(res.data) ? res.data : []; // Extract the data
       this.dataSource = new MatTableDataSource(dataArray); // Assign data to the dataSource
       this.dataSource.sort = this.sort; // Set sorting
@@ -35,17 +45,6 @@ export class AddVoucherheadComponent implements OnInit {
     } catch (error) {
       console.error('Error fetching voucher head list:', error); // Handle errors
     }
-  }
-
-  openAddDialog() {
-    const dialogRef = this.dialog.open(AddVoucherheadDialogComponent);
-    dialogRef.afterClosed().subscribe({
-      next: (val) => {
-        if (val) {
-          this.getVoucherHeadList(); // Refresh the list after closing the dialog if a new item was added
-        }
-      }
-    });
   }
 
   getSerialNumber(index: number): number {
@@ -60,4 +59,5 @@ export class AddVoucherheadComponent implements OnInit {
       this.dataSource.paginator.firstPage(); // Reset paginator to first page on filter
     }
   }
+
 }

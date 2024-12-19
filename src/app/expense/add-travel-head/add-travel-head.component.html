@@ -1,7 +1,7 @@
 <div class="page-container">
-    <h3>Voucher Heads</h3>
+    <h3>Travel Heads</h3>
     <div class="d-flex">
-      <button class="btn btn-outline-dark ms-auto" type="submit" (click)="openAddDialog()">Create Voucher Head</button>
+      <button class="btn btn-outline-dark ms-auto" type="submit" (click)="openAddDialog()">Create Travel Head</button>
     </div>
     <mat-form-field class="filter-input">
         <mat-label>Filter</mat-label>
@@ -17,7 +17,7 @@
 
               <ng-container matColumnDef="Head Name">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Head Name </th>
-                <td mat-cell *matCellDef="let row"> {{row.miscExpenseCatName}} </td>
+                <td mat-cell *matCellDef="let row"> {{row.travelExpenseCatName}} </td>
               </ng-container>
 
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

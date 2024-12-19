@@ -161,6 +161,10 @@ export class VoucherExpenseComponent implements OnInit {
     }
   }
 
+  getSerialNumber(index: number): number {
+    return index + 1 + (this.paginator.pageIndex * this.paginator.pageSize);
+  }
+
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();

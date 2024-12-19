@@ -19,7 +19,7 @@
 
     <ng-container matColumnDef="miscExpenseAmount">
       <th mat-header-cell *matHeaderCellDef> Amount </th>
-      <td mat-cell *matCellDef="let element"> {{element.miscExpenseAmount}} {{element.currency_name}} </td>
+      <td mat-cell *matCellDef="let element"> {{element.miscExpenseAmount | currency: element.currency_name}} </td>
     </ng-container>
 
     <ng-container matColumnDef="bill_status">
@@ -31,7 +31,7 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
 </div>
-<div mat-dialog-actions>
+<div mat-dialog-actions class="action">
   <button mat-button (click)="print()">Print</button>
-  <button mat-button mat-dialog-close>Close</button>
+  <button mat-button mat-dialog-close class="btn btn-outline-dark" mat-raised-button color="primary">Close</button>
 </div>

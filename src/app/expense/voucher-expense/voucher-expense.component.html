@@ -1,5 +1,5 @@
 <div class="page-container">
-  <h3>Voucher Expense</h3>
+  <h3>Miscellaneous Expense</h3>
   <div class="d-flex">
     <button class="btn btn-outline-dark ms-auto" type="submit" (click)="openAddDialog()">Create voucher Expense</button>
   </div>
@@ -17,7 +17,7 @@
           <th mat-header-cell *matHeaderCellDef mat-sort-header
             style="max-width: 20px; white-space: normal; word-wrap: break-word;"> Sr. no </th>
           <td mat-cell *matCellDef="let row; let i = index"
-            style="max-width: 20px; white-space: normal; word-wrap: break-word;"> {{ i + 1 }} </td>
+            style="max-width: 20px; white-space: normal; word-wrap: break-word;"> {{ getSerialNumber(i) }} </td>
         </ng-container>
 
         <ng-container matColumnDef="voucherId">
@@ -37,7 +37,7 @@
 
         <ng-container matColumnDef="TotalAmount">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Total Amount </th>
-          <td mat-cell *matCellDef="let row">{{row.totalAmount}}</td>
+          <td mat-cell *matCellDef="let row">{{(row.totalAmount) | currency:'INR':'symbol':'1.0-0' }}</td>
         </ng-container>
 
         <ng-container matColumnDef="viewDetails">

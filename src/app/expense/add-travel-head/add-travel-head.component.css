@@ -60,25 +60,3 @@ button.mat-icon-button {
 th.mat-header-cell:nth-child(1), td.mat-cell:nth-child(1) {
     max-width: 10px; /* Serial Number column */
 }
-
-::ng-deep .btn-yellow {
-    background-color: yellow !important;
-    color: black !important;
-}
-
-::ng-deep .btn-green {
-    background-color: green !important;
-    color: white !important;
-}
-
-::ng-deep .btn-red {
-    background-color: red !important;
-    color: white !important;
-}
-
-/* Ensure buttons have consistent padding and margin */
-button.mat-raised-button {
-    margin: 0;
-    padding: 0 16px;
-}
-

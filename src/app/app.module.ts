@@ -58,6 +58,15 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { DisapprovalDialogComponent } from './expense-master/disapproval-dialog/disapproval-dialog.component';
 import { DescriptionDetailDialogComponent } from './expense/voucher-expense/description-detail-dialog/description-detail-dialog.component';
 import { PaymentDialogComponent } from './expense-master/payment-dialog/payment-dialog.component';
+import { AddTravelExpenseComponent } from './expense/travel-expense/add-travel-expense/add-travel-expense.component';
+import { EstimateTravelExpenseDetailsComponent } from './expense/travel-expense/estimate-travel-expense-details/estimate-travel-expense-details.component';
+import { TravelExpenseMasterComponent } from './travel-expense-master/travel-expense-master.component';
+import { AddTravelHeadComponent } from './expense/add-travel-head/add-travel-head.component';
+import { EstimateTravelExpenseDetailsMasterComponent } from './travel-expense-master/estimate-travel-expense-details-master/estimate-travel-expense-details-master.component';
+import { DisaprrovalDialogEstTravelComponent } from './travel-expense-master/disaprroval-dialog-est-travel/disaprroval-dialog-est-travel.component';
+import { DisapprovaldialogesttravelComponent } from './expense/travel-expense/disapprovaldialogesttravel/disapprovaldialogesttravel.component';
+import { AddTravelHeadDialogComponent } from './expense/add-travel-head/add-travel-head-dialog/add-travel-head-dialog.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -89,7 +98,15 @@ import { PaymentDialogComponent } from './expense-master/payment-dialog/payment-
     UserProfileComponent,
     DisapprovalDialogComponent,
     DescriptionDetailDialogComponent,
-    PaymentDialogComponent
+    PaymentDialogComponent,
+    AddTravelExpenseComponent,
+    EstimateTravelExpenseDetailsComponent,
+    TravelExpenseMasterComponent,
+    AddTravelHeadComponent,
+    EstimateTravelExpenseDetailsMasterComponent,
+    DisaprrovalDialogEstTravelComponent,
+    DisapprovaldialogesttravelComponent,
+    AddTravelHeadDialogComponent
   ],
   imports: [
     BrowserModule,
