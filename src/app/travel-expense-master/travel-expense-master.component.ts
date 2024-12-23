@@ -15,7 +15,7 @@ import { DisaprrovalDialogEstTravelComponent } from './disaprroval-dialog-est-tr
   styleUrls: ['./travel-expense-master.component.css']
 })
 export class TravelExpenseMasterComponent {
-  displayedColumns: string[] = ['serialNumber', 'projectName', 'startDate', 'endDate', 'purpose', 'location', 'modeOfTransport','totalEstimateCost', 'viewDetails', 'status'];
+  displayedColumns: string[] = ['serialNumber', 'employeeName', 'projectName', 'startDate', 'endDate', 'purpose', 'location', 'modeOfTransport','totalEstimateCost', 'viewDetails', 'status'];
   dataSource!: MatTableDataSource<any>;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -31,7 +31,20 @@ export class TravelExpenseMasterComponent {
     try {
       const res = await this.TravelExpenseMasterService.showAllEstTravelExpenses();
       const dataArray = Array.isArray(res.data) ? res.data : [];
-      this.dataSource = new MatTableDataSource(dataArray.reverse());
+      const statusPriority: { [key: string]: number } = {
+        Underprocess: 1,
+        Approved: 2,
+        Disapproved: 3
+      };
+  
+      // Sort the data based on the custom status order
+      const sortedData = dataArray.sort((a: any, b: any) => {
+        const statusA = a.status as keyof typeof statusPriority;
+        const statusB = b.status as keyof typeof statusPriority;
+        return statusPriority[statusA] - statusPriority[statusB];
+      });
+  
+      this.dataSource = new MatTableDataSource(sortedData);
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
     } catch (err) {

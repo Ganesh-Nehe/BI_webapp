@@ -22,7 +22,7 @@ export class AddTravelExpenseService {
       const response = await this.http.post(`${baseApi}/API/expense/addtravelEstimate`, formData, httpOptions).toPromise();
       return response;
     } catch (error) {
-      console.error('Error saving disapproval:', error);
+      console.error('Error:', error);
       throw error;
     }
   }
@@ -40,7 +40,7 @@ export class AddTravelExpenseService {
       const response = await this.http.post(`${baseApi}/API/expense/updatetravelEstimate`, formData, httpOptions).toPromise();
       return response;
     } catch (error) {
-      console.error('Error saving disapproval:', error);
+      console.error('Error:', error);
       throw error;
     }
   }

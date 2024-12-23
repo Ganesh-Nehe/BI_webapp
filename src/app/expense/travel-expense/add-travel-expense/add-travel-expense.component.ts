@@ -194,10 +194,9 @@ export class AddTravelExpenseComponent implements OnInit {
     const group = this.fb.group({
       travelExpenseCatId: ['', Validators.required],
       currencyId: ['', Validators.required],
-      unitCost: [0, Validators.required],
-      
+      unitCost: [0, Validators.required],     
       noOfDays: [0, Validators.required],
-      remark: [''],
+      remark: ['', Validators.required],
       total: [0],
     });
   
@@ -221,13 +220,9 @@ export class AddTravelExpenseComponent implements OnInit {
   
     // Map form data to handle optional fields
     const formData = {
-      ...this.travelExpenseForm.value,
+      ...this.travelExpenseForm.getRawValue(),
       employeeId: userId,
       businessId: businessId,
-      estTravelExpenses: this.travelExpenseForm.value.estTravelExpenses.map((expense: any) => ({
-        ...expense,
-        remark: expense.remark || null, // Convert empty remarks to null
-      })),
     };
   
     if (this.travelExpenseForm.valid) {
@@ -252,12 +247,7 @@ export class AddTravelExpenseComponent implements OnInit {
         });
       }
     } else {
-      const invalidFields = Object.keys(this.travelExpenseForm.controls).filter((field) => {
-        return this.travelExpenseForm.get(field)?.invalid;
-      });
-  
-      const alertMessage = `The following fields are incomplete or invalid:\n\n${invalidFields.join('\n')}`;
-      alert(alertMessage);
+      alert("error ! Form incomplete")
     }
   }
   
