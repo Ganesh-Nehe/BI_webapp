@@ -58,7 +58,7 @@
               </ng-container>
               <ng-template #otherStates>
                 <ng-container *ngIf="row.approval === 'Disapproved'; else notSelected">
-                  <button mat-raised-button color="warn" style="background-color: red; color: white;">
+                  <button mat-raised-button color="warn" style="background-color: red; color: white;" (click)="openDisapproveDetailDialog(row)" >
                     {{row.approval}}
                   </button>
                 </ng-container>

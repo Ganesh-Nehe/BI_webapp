@@ -18,6 +18,7 @@ export class AddVoucherExpenseComponent implements OnInit {
   currencies: any[] = [];
   totalExpenseAmount: number = 0; 
   fileData: (File | null)[] = [];
+  isSaving = false;
 
   constructor(
     private fb: FormBuilder,
@@ -128,6 +129,7 @@ export class AddVoucherExpenseComponent implements OnInit {
         input.value = ''; 
       }
     }
+    this.toggleFileUpload(index);
   }
 
   toggleFileUpload(index: number): void {
@@ -182,6 +184,8 @@ export class AddVoucherExpenseComponent implements OnInit {
   }
 
   async addVoucherexpense(): Promise<void> {
+    if (this.isSaving) return;
+    this.isSaving = true;
     this.calculateTotalExpenseAmount();
     const userId = localStorage.getItem('loggedInUserId');
     const businessId = localStorage.getItem('businessId');
@@ -211,22 +215,31 @@ export class AddVoucherExpenseComponent implements OnInit {
         'Authorization': 'Bearer ' + localStorage.getItem('loginToken')
       })
     };
-    if (!this.data){
-      try {
-        const response = await this.http.post(`${baseApi}/API/expense/voucher/`, formData, httpOptions).toPromise();
-        console.log('API Response:', response);
-        this.dialogref.close(true);
-      } catch (error) {
-        console.error('API Error:', error);
+    if (this.voucherExpenseData.valid){
+      if (!this.data){
+        try {
+          const response = await this.http.post(`${baseApi}/API/expense/voucher/`, formData, httpOptions).toPromise();
+          console.log('API Response:', response);
+          this.dialogref.close(true);
+        } catch (error) {
+          console.error('API Error:', error);
+        } finally {
+          this.isSaving = false; // Re-enable the button
+        }
+      }else{
+        try {
+          const response = await this.http.post(`${baseApi}/API/expense/updateVoucher/`, formData, httpOptions).toPromise();
+          console.log('API Response:', response);
+          this.dialogref.close(true);
+        } catch (error) {
+          console.error('API Error:', error);
+        } finally {
+          this.isSaving = false; // Re-enable the button
+        }
       }
     }else{
-      try {
-        const response = await this.http.post(`${baseApi}/API/expense/updateVoucher/`, formData, httpOptions).toPromise();
-        console.log('API Response:', response);
-        this.dialogref.close(true);
-      } catch (error) {
-        console.error('API Error:', error);
-      }
+      alert("error ⚠️ Form incomplete")
+      this.isSaving = false;
     }
   }
 }

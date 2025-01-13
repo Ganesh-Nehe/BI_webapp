@@ -76,9 +76,23 @@ th.mat-header-cell:nth-child(1), td.mat-cell:nth-child(1) {
     color: white !important;
 }
 
+::ng-deep .btn-white {
+    background-color: white !important;
+    color: rgb(0, 0, 0) !important;
+}
+
 /* Ensure buttons have consistent padding and margin */
 button.mat-raised-button {
     margin: 0;
     padding: 0 16px;
 }
+
+.scrollable-container {
+    overflow-x: auto;
+    max-width: 100%; /* Ensures the container doesn't overflow beyond the card */
+  }
+  
+  .custom-table {
+    min-width: 2200px; /* Set a minimum width to ensure the table is scrollable */
+  }
 

@@ -66,6 +66,15 @@ import { EstimateTravelExpenseDetailsMasterComponent } from './travel-expense-ma
 import { DisaprrovalDialogEstTravelComponent } from './travel-expense-master/disaprroval-dialog-est-travel/disaprroval-dialog-est-travel.component';
 import { DisapprovaldialogesttravelComponent } from './expense/travel-expense/disapprovaldialogesttravel/disapprovaldialogesttravel.component';
 import { AddTravelHeadDialogComponent } from './expense/add-travel-head/add-travel-head-dialog/add-travel-head-dialog.component';
+import { MasterDescriptionDialogComponent } from './expense-master/master-description-dialog/master-description-dialog.component';
+import { DesciptionDialogEstTravelComponent } from './travel-expense-master/desciption-dialog-est-travel/desciption-dialog-est-travel.component';
+import { TravelExpenseStatementComponent } from './expense/travel-expense/travel-expense-statement/travel-expense-statement.component';
+import { TravelStatementDetailComponent } from './expense/travel-expense/travel-statement-detail/travel-statement-detail.component';
+import { DisapprovaldialogstatementComponent } from './expense/travel-expense/disapprovaldialogstatement/disapprovaldialogstatement.component';
+import { MasterTravelStatementDetailsComponent } from './travel-expense-master/master-travel-statement-details/master-travel-statement-details.component';
+import { StatementPaymentDialogComponent } from './travel-expense-master/statement-payment-dialog/statement-payment-dialog.component';
+import { DisapprovalDialogTravelComponent } from './travel-expense-master/disapproval-dialog-travel/disapproval-dialog-travel.component';
+import { DescriptionDialogTarvelComponent } from './travel-expense-master/description-dialog-tarvel/description-dialog-tarvel.component';
 
 @NgModule({
   declarations: [
@@ -106,7 +115,16 @@ import { AddTravelHeadDialogComponent } from './expense/add-travel-head/add-trav
     EstimateTravelExpenseDetailsMasterComponent,
     DisaprrovalDialogEstTravelComponent,
     DisapprovaldialogesttravelComponent,
-    AddTravelHeadDialogComponent
+    AddTravelHeadDialogComponent,
+    MasterDescriptionDialogComponent,
+    DesciptionDialogEstTravelComponent,
+    TravelExpenseStatementComponent,
+    TravelStatementDetailComponent,
+    DisapprovaldialogstatementComponent,
+    MasterTravelStatementDetailsComponent,
+    StatementPaymentDialogComponent,
+    DisapprovalDialogTravelComponent,
+    DescriptionDialogTarvelComponent
   ],
   imports: [
     BrowserModule,

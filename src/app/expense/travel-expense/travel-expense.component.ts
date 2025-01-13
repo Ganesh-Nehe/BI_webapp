@@ -9,6 +9,11 @@ import { AddTravelExpenseComponent } from './add-travel-expense/add-travel-expen
 import { TravelExpenseService } from './travel-expense.service'
 import { EstimateTravelExpenseDetailsComponent } from './estimate-travel-expense-details/estimate-travel-expense-details.component'
 import { DisapprovaldialogesttravelComponent } from './disapprovaldialogesttravel/disapprovaldialogesttravel.component'
+import { TravelExpenseStatementComponent } from './travel-expense-statement/travel-expense-statement.component';
+import { TravelStatementDetailComponent } from './travel-statement-detail/travel-statement-detail.component';
+import { DisapprovaldialogstatementComponent } from './disapprovaldialogstatement/disapprovaldialogstatement.component';
+
+import * as e from 'cors';
 @Component({
   selector: 'app-travel-expense',
   templateUrl: './travel-expense.component.html',
@@ -16,7 +21,7 @@ import { DisapprovaldialogesttravelComponent } from './disapprovaldialogesttrave
 })
 export class TravelExpenseComponent implements OnInit {
 
-  displayedColumns: string[] = ['serialNumber', 'projectName', 'startDate', 'endDate', 'purpose', 'location', 'modeOfTransport','totalEstimateCost', 'viewDetails', 'status', 'edit'];
+  displayedColumns: string[] = ['serialNumber', 'projectName', 'startDate', 'endDate', 'purpose', 'location','modeOfTransport', 'totalEstimateCost', 'viewDetails', 'status', 'edit', 'createStatement', 'viewStatementDetails', 'travelDocument', 'approval', 'editStatement', 'travelPayment'];
   dataSource!: MatTableDataSource<any>;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -116,6 +121,168 @@ export class TravelExpenseComponent implements OnInit {
   getSerialNumber(index: number): number {
     return index + 1 + (this.paginator.pageIndex * this.paginator.pageSize);
   }
+
+  async createStatement(row: any) {
+    if (row.status === 'Approved' && row.travelId === null ) {
+      const details = await this.TravelExpenseService.getEstTraveldetailsforId(row.EstTravelHeadId);
+      const dialogRef = this.dialog.open(TravelExpenseStatementComponent, {
+        data: { estTravelHead: row, form: 'saveStatement' } // Pass selected row data for editing
+      });
+    
+      dialogRef.afterClosed().subscribe({
+        next: (result) => {
+          if (result) {
+            this.loadtravelEstimate(); // Reload voucher list on update
+          }
+        }
+      });
+    } else if (row.status === 'Disapproved' || row.status === 'Underprocess') {
+      this.snackBar.open('Cannot create statement as estimate expense is not yet approved', 'Close', {
+        duration: 3000,
+        verticalPosition: 'top',
+        horizontalPosition: 'center'
+      });
+    }else if (row.travelId !== null ){
+      this.snackBar.open('Expense already created, Use Edit ', 'Close', {
+        duration: 3000,
+        verticalPosition: 'top',
+        horizontalPosition: 'center',
+        panelClass: ['snackbar-error']
+      });
+    }else{
+      this.snackBar.open('Error', 'Close', {
+        duration: 3000,
+        verticalPosition: 'top',
+        horizontalPosition: 'center',
+        panelClass: ['snackbar-error']
+      });
+    }
+  }
+
+  async openStatementDetailsDialog(row: any){
+    if (row.travelId !== null){
+      const res = await this.TravelExpenseService.getTravelExpenseDetails(row);
+      const dialogRef = this.dialog.open(TravelStatementDetailComponent,{
+        data: res
+      });
+      dialogRef.afterClosed().subscribe({
+        next: (val) => {
+          if (val) {
+            this.loadtravelEstimate();
+          }
+        }
+      });
+    }else{
+      this.snackBar.open('Travel Statement not created yet !', 'Close', {
+        duration: 3000,
+        verticalPosition: 'top',
+        horizontalPosition: 'center',
+        panelClass: ['snackbar-error']
+      });
+    }
+  }
+
+  openDocument(file_location: string) {
+
+    // Replace backslashes with forward slashes if needed (for URL encoding)
+    if (file_location !== null){
+      const normalizedLocation = file_location.replace(/\\/g, '/');
+      const encodedFileLocation = encodeURIComponent(normalizedLocation);
+  
+      this.TravelExpenseService.getDocument(encodedFileLocation).subscribe((response: HttpResponse<Blob>) => {
+        if (response.body) {
+          // Create a Blob from the response body and specify the correct MIME type for PDF
+          const blob = new Blob([response.body], { type: 'application/pdf' });
+  
+          // Create a URL for the Blob and open it in a new tab
+          const url = window.URL.createObjectURL(blob);
+          window.open(url, '_blank');
+        } else {
+          this.snackBar.open('Response is Null', 'Close', {
+            duration: 3000,
+            verticalPosition: 'top',
+            horizontalPosition: 'center',
+            panelClass: ['snackbar-error'],
+          });
+        }
+      }, error => {
+        this.snackBar.open('No file found on server', 'Close', {
+          duration: 3000,
+          verticalPosition: 'top',
+          horizontalPosition: 'center',
+          panelClass: ['snackbar-error'],
+        });
+      });
+    }else {
+      this.snackBar.open('Travel Statement not created yet !', 'Close', {
+        duration: 3000,
+        verticalPosition: 'top',
+        horizontalPosition: 'center',
+        panelClass: ['snackbar-error'],
+      });
+    }
+  }
+
+  async openPaymentDocument(travelPayment: boolean, file_location: string, row: any) {
+    if (!travelPayment) {
+      this.snackBar.open('Payment is not proceed yet !', 'Close', {
+        duration: 3000,
+        verticalPosition: 'top',
+        horizontalPosition: 'center',
+        panelClass: ['snackbar-error'],
+      });
+    } else {
+      this.openDocument(file_location);
+    }
+  }
+
+  async openTravelEditDialog(row: any) {
+    if (row.travelStatus === 'Disapproved' || row.travelStatus === 'Underprocess') {
+      const details = await this.TravelExpenseService.getTravelExpenseDetails(row);
+      const dialogRef = this.dialog.open(TravelExpenseStatementComponent, {
+        data: { TravelDetails : details , form: 'updateStatement'}, 
+      });
+    
+      dialogRef.afterClosed().subscribe({
+        next: (result) => {
+          if (result) {
+            this.loadtravelEstimate(); // Reload voucher list on update
+          }
+        }
+      });
+    } else if (row.travelStatus === 'Approved') {
+      this.snackBar.open('Cannot edit as expense is now Approved', 'Close', {
+        duration: 3000,
+        verticalPosition: 'top',
+        horizontalPosition: 'center'
+      });
+    }else if (row.travelStatus === null) {
+      this.snackBar.open('Travel Statement not created yet !', 'Close', {
+        duration: 3000,
+        verticalPosition: 'top',
+        horizontalPosition: 'center'
+      });
+    }else{
+      this.snackBar.open('Error', 'Close', {
+        duration: 3000,
+        verticalPosition: 'top',
+        horizontalPosition: 'center',
+        panelClass: ['snackbar-error']
+      });
+    }
+  }
+
+  openStatementDisapproveDetailDialog(row: any){
+  if (row.travelStatus === 'Disapproved') {
+    const dialogRef = this.dialog.open(DisapprovaldialogstatementComponent, {
+      data: {
+        travelId: row.travelId,
+        travelDescription: row.travelDescription
+      },
+      width: '500px',
+    });
+  }
+}
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;

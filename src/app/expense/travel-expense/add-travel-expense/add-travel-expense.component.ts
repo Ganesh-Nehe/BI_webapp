@@ -17,6 +17,7 @@ export class AddTravelExpenseComponent implements OnInit {
   minEndDate: Date | null = null;
   estTravelHeads: any[] = [];
   currencies: any[] = [];
+  isSaving = false;
 
   constructor(
     private fb: FormBuilder,
@@ -215,6 +216,8 @@ export class AddTravelExpenseComponent implements OnInit {
   }
 
   async addTravelEstimate() {
+    if (this.isSaving) return;
+    this.isSaving = true;
     const userId = localStorage.getItem('loggedInUserId');
     const businessId = localStorage.getItem('businessId');
   
@@ -226,28 +229,36 @@ export class AddTravelExpenseComponent implements OnInit {
     };
   
     if (this.travelExpenseForm.valid) {
-      if (!this.data) {
-        const result = await this.AddTravelExpenseService.addTravelEstimate(formData);
-        this.dialogRef.close(true);
-        this.snackBar.open('Estimate Travel added successfully', 'Close', {
-          duration: 3000,
-          verticalPosition: 'top',
-          horizontalPosition: 'center',
-          panelClass: ['snackbar-success']
-        });
-      } else {
-        formData['EstTravelHeadId'] = this.data.estTravelHead.EstTravelHeadId;
-        const result = await this.AddTravelExpenseService.updateTravelEstimate(formData);
-        this.dialogRef.close(true);
-        this.snackBar.open('Estimate Travel updated successfully', 'Close', {
-          duration: 3000,
-          verticalPosition: 'top',
-          horizontalPosition: 'center',
-          panelClass: ['snackbar-success']
-        });
+      try{
+        if (!this.data) {
+          const result = await this.AddTravelExpenseService.addTravelEstimate(formData);
+          this.dialogRef.close(true);
+          this.snackBar.open('Estimate Travel added successfully', 'Close', {
+            duration: 3000,
+            verticalPosition: 'top',
+            horizontalPosition: 'center',
+            panelClass: ['snackbar-success']
+          });
+        } else {
+          formData['EstTravelHeadId'] = this.data.estTravelHead.EstTravelHeadId;
+          const result = await this.AddTravelExpenseService.updateTravelEstimate(formData);
+          this.dialogRef.close(true);
+          this.snackBar.open('Estimate Travel updated successfully', 'Close', {
+            duration: 3000,
+            verticalPosition: 'top',
+            horizontalPosition: 'center',
+            panelClass: ['snackbar-success']
+          });
+        }
+
+      }catch{
+        console.error("Error !")
+      } finally {
+        this.isSaving = false; // Re-enable the button
       }
     } else {
-      alert("error ! Form incomplete")
+      alert("error ⚠️ Form incomplete")
+      this.isSaving = false;
     }
   }
   

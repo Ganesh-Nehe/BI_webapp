@@ -103,5 +103,5 @@
 
 <div mat-dialog-actions class="action" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px">
     <button mat-raised-button mat-dialog-close>Cancel</button>
-    <button mat-raised-button color="primary" (click)="addTravelEstimate()">{{ data ? 'Update' : 'Save' }}</button>
+    <button mat-raised-button color="primary" (click)="addTravelEstimate()" [disabled]="isSaving">{{ data ? 'Update' : 'Save' }}</button>
 </div>

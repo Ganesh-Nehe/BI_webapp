@@ -17,7 +17,7 @@ import { HttpResponse } from '@angular/common/http';
 })
 export class VoucherExpenseComponent implements OnInit {
 
-  displayedColumns: string[] = ['serialNumber', 'ExpenseHead', 'CreateDate', 'TotalAmount', 'viewDetails', 'file_location','Status', 'payment', 'edit'];
+  displayedColumns: string[] = ['serialNumber', 'ExpenseHead', 'CreateDate', 'TotalAmount', 'viewDetails', 'file_location','Status', 'edit', 'payment'];
   dataSource!: MatTableDataSource<any>;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;

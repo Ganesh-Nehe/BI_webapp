@@ -15,7 +15,7 @@ export class AppComponent {
   ngOnInit(): void {
     // Start watching for idle time (30 minutes)
     this.bnIdle.startWatching(30 * 60).subscribe({
-      next: (isIdle) => {
+      next: (isIdle) => { 
         if (isIdle) {
           // Check if already on the login page
           if (this.router.url.includes('/login')) {

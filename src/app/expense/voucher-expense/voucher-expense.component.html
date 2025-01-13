@@ -41,8 +41,8 @@
         </ng-container>
 
         <ng-container matColumnDef="viewDetails">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header style="max-width: 60px;"> View Details </th>
-          <td mat-cell *matCellDef="let row" style="max-width: 60px;"> <button mat-raised-button color="primary"
+          <th mat-header-cell *matHeaderCellDef mat-sort-header style="max-width: 90px;"> View Details </th>
+          <td mat-cell *matCellDef="let row" style="max-width: 90px;"> <button mat-raised-button color="primary"
               (click)="openDetailsDialog(row)">view</button></td>
         </ng-container>
 
@@ -53,8 +53,8 @@
         </ng-container>
 
         <ng-container matColumnDef="payment">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header style="max-width: 80px;">Payment</th>
-          <td mat-cell *matCellDef="let row" style="max-width: 80px;">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header style="max-width: 90px;">Payment</th>
+          <td mat-cell *matCellDef="let row" style="max-width: 90px;">
             <button mat-raised-button [color]="row.voucher_payment ? 'primary' : 'warn'"
               [ngStyle]="{'background-color': row.voucher_payment ? 'green' : 'red', 'color': 'white'}"
               (click)="openPaymentDocument(row.voucher_payment, row.voucher_payment, row)">
@@ -64,8 +64,8 @@
         </ng-container>
 
         <ng-container matColumnDef="Status">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
-          <td mat-cell *matCellDef="let row">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header style="max-width: 110px;"> Status </th>
+          <td mat-cell *matCellDef="let row" style="max-width: 110px;">
             <button mat-raised-button [ngClass]="{
                     'btn-yellow': row.approval === 'Not Selected',
                     'btn-green': row.approval === 'Approved',
@@ -77,8 +77,8 @@
         </ng-container>
 
         <ng-container matColumnDef="edit">
-          <th mat-header-cell *matHeaderCellDef> Edit </th>
-          <td mat-cell *matCellDef="let row">
+          <th mat-header-cell *matHeaderCellDef style="max-width: 90px;"> Edit </th>
+          <td mat-cell *matCellDef="let row" style="max-width: 90px;">
             <button mat-raised-button color="accent" (click)="openEditDialog(row)">Edit</button>
           </td>
         </ng-container>

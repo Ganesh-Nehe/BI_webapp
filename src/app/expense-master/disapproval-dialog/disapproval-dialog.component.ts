@@ -16,28 +16,40 @@ export class DisapprovalDialogComponent {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private disapprovalDialogService: DisapprovalDialogService,
     private snackBar: MatSnackBar
-  ) {}
+  ) { }
 
   async onSave() {
     const { voucherId } = this.data;
-
-    try {
-      const response = await this.disapprovalDialogService.save(voucherId, 'Disapproved', this.description);
-      this.dialogRef.close(this.description);
-      this.snackBar.open('Description added successfully', 'Close', {
-        duration: 3000,
-        verticalPosition: 'top',
-        horizontalPosition: 'center',
-        panelClass: ['snackbar-success']
-      });
-    } catch (error) {
-      console.error('Error adding description:', error);
-      this.snackBar.open('Error adding description', 'Close', {
+    if (this.description && this.description.trim() !== '') {
+      try {
+        const response = await this.disapprovalDialogService.save(voucherId, 'Disapproved', this.description);
+        this.dialogRef.close(this.description);
+        this.snackBar.open('Description added successfully', 'Close', {
+          duration: 3000,
+          verticalPosition: 'top',
+          horizontalPosition: 'center',
+          panelClass: ['snackbar-success']
+        });
+      } catch (error) {
+        console.error('Error adding description:', error);
+        this.snackBar.open('Error adding description', 'Close', {
+          duration: 3000,
+          verticalPosition: 'top',
+          horizontalPosition: 'center',
+          panelClass: ['snackbar-error']
+        });
+      }
+    } else {
+      this.snackBar.open('Description required', 'Close', {
         duration: 3000,
         verticalPosition: 'top',
         horizontalPosition: 'center',
         panelClass: ['snackbar-error']
       });
     }
+  }
+
+  onClose() {
+    this.dialogRef.close('reload');
   }
 }
