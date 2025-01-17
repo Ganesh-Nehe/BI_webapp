@@ -8,7 +8,7 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 })
 export class MasterTravelStatementDetailsComponent implements OnInit {
   categoryTotals: { [key: string]: number } = {};
-  displayedColumns: string[] = ['projectName', 'startDate', 'endDate', 'location', 'purpose', 'modeOfTransport', 'totalExpense'];
+  displayedColumns: string[] = ['projectName', 'startDate', 'endDate', 'location', 'purpose', 'modeOfTransport', 'advanceAmount', 'advancePaymentDate', 'totalExpense', 'payableAmount'];
   expenseColumns: string[] = ['travelExpenseCatName', 'unitCost', 'expenseDate', 'remark', 'hasBill'];
   categoryColumns: string[] = ['costOfTravel', 'hotelStay', 'food', 'localTransport', 'entertainment'];
   total: number = 100

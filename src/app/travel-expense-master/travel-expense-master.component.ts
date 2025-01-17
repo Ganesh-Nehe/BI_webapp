@@ -13,6 +13,7 @@ import { MasterTravelStatementDetailsComponent } from './master-travel-statement
 import { StatementPaymentDialogComponent } from './statement-payment-dialog/statement-payment-dialog.component'
 import { DisapprovalDialogTravelComponent } from './disapproval-dialog-travel/disapproval-dialog-travel.component'
 import { DescriptionDialogTarvelComponent } from './description-dialog-tarvel/description-dialog-tarvel.component'
+import { AdvancePaymentDialogComponent } from './advance-payment-dialog/advance-payment-dialog.component'
 
 @Component({
   selector: 'app-travel-expense-master',
@@ -20,7 +21,7 @@ import { DescriptionDialogTarvelComponent } from './description-dialog-tarvel/de
   styleUrls: ['./travel-expense-master.component.css']
 })
 export class TravelExpenseMasterComponent {
-  displayedColumns: string[] = ['serialNumber', 'employeeName', 'projectName', 'startDate', 'endDate', 'purpose', 'location', 'modeOfTransport', 'totalEstimateCost', 'viewDetails', 'status', 'viewStatement', 'travelDocument', 'travelStatus', 'travelPayment'];
+  displayedColumns: string[] = ['serialNumber', 'employeeName', 'projectName', 'startDate', 'endDate', 'purpose', 'location', 'modeOfTransport', 'totalEstimateCost', 'viewDetails', 'status', 'advancePayment', 'viewStatement', 'travelDocument', 'travelStatus', 'travelPayment'];
   dataSource!: MatTableDataSource<any>;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -67,7 +68,7 @@ export class TravelExpenseMasterComponent {
     const res = await this.TravelExpenseMasterService.getEstTravelExpenseDetails(row);
     // console.log(res);
     const dialogRef = this.dialog.open(EstimateTravelExpenseDetailsMasterComponent, {
-      data: res
+      data: {res, row}
     });
     dialogRef.afterClosed().subscribe({
       next: (val) => {
@@ -79,7 +80,7 @@ export class TravelExpenseMasterComponent {
   }
 
   async onApprovalStatusChange(EstTravelHeadId: number, approvalStatus: string) {
-    if (approvalStatus === 'Not Selected') return;
+    if (approvalStatus === 'Underprocess') return;
 
     if (approvalStatus === 'Disapproved') {
       const dialogRef = this.dialog.open(DisaprrovalDialogEstTravelComponent, {
@@ -210,7 +211,7 @@ export class TravelExpenseMasterComponent {
         data: { travelId: row.travelId }
       }).afterClosed().toPromise();
       await this.loadtravelEstimate();
-    } else if (row.travelStatus === 'Disapproved' || row.travelStatus === 'Not Selected') {
+    } else if (row.travelStatus === 'Disapproved' || row.travelStatus === 'Underprocess') {
       this.snackBar.open('Payment cannot be proceed as expense is not approved yet !', 'Close', {
         duration: 3000,
         verticalPosition: 'top',
@@ -277,6 +278,27 @@ export class TravelExpenseMasterComponent {
         },
         width: '500px',
       });
+    }
+  }
+
+  async openAdvancePaymentDialog(advancePayment: boolean, fileLocation: string, row: any) {
+    // console.log(advancePayment);
+    // console.log(row.status);
+    if (!advancePayment && row.status === 'Approved') {
+      await this.dialog.open(AdvancePaymentDialogComponent, {
+        width: '600px',
+        data: { EstTravelHeadId : row.EstTravelHeadId  }
+      }).afterClosed().toPromise();
+      await this.loadtravelEstimate();
+    } else if (row.status === 'Disapproved' || row.status === 'Underprocess') {
+      this.snackBar.open('Payment cannot be proceed as estimate is not approved yet !', 'Close', {
+        duration: 3000,
+        verticalPosition: 'top',
+        horizontalPosition: 'center',
+        panelClass: ['snackbar-error'],
+      });
+    } else {
+      this.openDocument(fileLocation);
     }
   }
 

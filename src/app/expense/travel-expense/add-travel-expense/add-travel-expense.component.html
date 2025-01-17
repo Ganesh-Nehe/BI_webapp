@@ -1,4 +1,4 @@
-<div mat-dialog-title>Add Estimate Travel Expense</div>
+<div mat-dialog-title>Add Travel Estimate</div>
 <form [formGroup]="travelExpenseForm">
     <div mat-dialog-content class="content">
         <div fxLayout="row" fxLayoutGap="10px">
@@ -38,6 +38,14 @@
                 <mat-label>Mode of Transport</mat-label>
                 <input matInput formControlName="modeOfTransport" required>
             </mat-form-field>
+
+            <mat-form-field appearance="outline" fxFlex="50%">
+                <mat-label>Advance Request</mat-label>
+                <mat-select formControlName="advanceRequest" required>
+                  <mat-option [value]="'Required'">Required</mat-option>
+                  <mat-option [value]="'Not Required'">Not Required</mat-option>
+                </mat-select>
+            </mat-form-field>
         </div>
         <hr />
         <div formArrayName="estTravelExpenses">
@@ -69,7 +77,7 @@
                         <mat-error *ngIf="estTravelExpense.get('currencyId')?.invalid && estTravelExpense.get('currencyId')?.touched">
                             Currency is required
                         </mat-error>
-                    </mat-form-field>                    
+                    </mat-form-field>
 
                     <mat-form-field appearance="outline" fxFlex="50%"> 
                         <mat-label>No of days</mat-label>

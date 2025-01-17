@@ -21,7 +21,7 @@ import * as e from 'cors';
 })
 export class TravelExpenseComponent implements OnInit {
 
-  displayedColumns: string[] = ['serialNumber', 'projectName', 'startDate', 'endDate', 'purpose', 'location','modeOfTransport', 'totalEstimateCost', 'viewDetails', 'status', 'edit', 'createStatement', 'viewStatementDetails', 'travelDocument', 'approval', 'editStatement', 'travelPayment'];
+  displayedColumns: string[] = ['serialNumber', 'projectName', 'startDate', 'endDate', 'purpose', 'location', 'modeOfTransport', 'totalEstimateCost', 'viewDetails', 'status', 'edit', 'advancePayment', 'createStatement', 'viewStatementDetails', 'travelDocument', 'approval', 'editStatement', 'travelPayment'];
   dataSource!: MatTableDataSource<any>;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -64,8 +64,8 @@ export class TravelExpenseComponent implements OnInit {
   async openDetailsDialog(row: any) {
     const res = await this.TravelExpenseService.getEstTravelExpenseDetails(row);
     // console.log(res);
-    const dialogRef = this.dialog.open(EstimateTravelExpenseDetailsComponent,{
-      data: res
+    const dialogRef = this.dialog.open(EstimateTravelExpenseDetailsComponent, {
+      data: { res, row }
     });
     dialogRef.afterClosed().subscribe({
       next: (val) => {
@@ -89,12 +89,12 @@ export class TravelExpenseComponent implements OnInit {
   }
 
   async openEditDialog(row: any) {
-    if (row.status === 'Disapproved' || row.status === 'Underprocess' ) {
+    if (row.status === 'Disapproved' || row.status === 'Underprocess') {
       const details = await this.TravelExpenseService.getEstTraveldetailsforId(row.EstTravelHeadId);
       const dialogRef = this.dialog.open(AddTravelExpenseComponent, {
-        data: {estTravelHead : row, estTravelDetails : details}, // Pass selected row data for editing
+        data: { estTravelHead: row, estTravelDetails: details }, // Pass selected row data for editing
       });
-    
+
       dialogRef.afterClosed().subscribe({
         next: (result) => {
           if (result) {
@@ -108,7 +108,7 @@ export class TravelExpenseComponent implements OnInit {
         verticalPosition: 'top',
         horizontalPosition: 'center'
       });
-    }else{
+    } else {
       this.snackBar.open('Error', 'Close', {
         duration: 3000,
         verticalPosition: 'top',
@@ -123,12 +123,12 @@ export class TravelExpenseComponent implements OnInit {
   }
 
   async createStatement(row: any) {
-    if (row.status === 'Approved' && row.travelId === null ) {
+    if (row.status === 'Approved' && row.travelId === null) {
       const details = await this.TravelExpenseService.getEstTraveldetailsforId(row.EstTravelHeadId);
       const dialogRef = this.dialog.open(TravelExpenseStatementComponent, {
         data: { estTravelHead: row, form: 'saveStatement' } // Pass selected row data for editing
       });
-    
+
       dialogRef.afterClosed().subscribe({
         next: (result) => {
           if (result) {
@@ -142,14 +142,14 @@ export class TravelExpenseComponent implements OnInit {
         verticalPosition: 'top',
         horizontalPosition: 'center'
       });
-    }else if (row.travelId !== null ){
+    } else if (row.travelId !== null) {
       this.snackBar.open('Expense already created, Use Edit ', 'Close', {
         duration: 3000,
         verticalPosition: 'top',
         horizontalPosition: 'center',
         panelClass: ['snackbar-error']
       });
-    }else{
+    } else {
       this.snackBar.open('Error', 'Close', {
         duration: 3000,
         verticalPosition: 'top',
@@ -159,10 +159,10 @@ export class TravelExpenseComponent implements OnInit {
     }
   }
 
-  async openStatementDetailsDialog(row: any){
-    if (row.travelId !== null){
+  async openStatementDetailsDialog(row: any) {
+    if (row.travelId !== null) {
       const res = await this.TravelExpenseService.getTravelExpenseDetails(row);
-      const dialogRef = this.dialog.open(TravelStatementDetailComponent,{
+      const dialogRef = this.dialog.open(TravelStatementDetailComponent, {
         data: res
       });
       dialogRef.afterClosed().subscribe({
@@ -172,7 +172,7 @@ export class TravelExpenseComponent implements OnInit {
           }
         }
       });
-    }else{
+    } else {
       this.snackBar.open('Travel Statement not created yet !', 'Close', {
         duration: 3000,
         verticalPosition: 'top',
@@ -185,15 +185,15 @@ export class TravelExpenseComponent implements OnInit {
   openDocument(file_location: string) {
 
     // Replace backslashes with forward slashes if needed (for URL encoding)
-    if (file_location !== null){
+    if (file_location !== null) {
       const normalizedLocation = file_location.replace(/\\/g, '/');
       const encodedFileLocation = encodeURIComponent(normalizedLocation);
-  
+
       this.TravelExpenseService.getDocument(encodedFileLocation).subscribe((response: HttpResponse<Blob>) => {
         if (response.body) {
           // Create a Blob from the response body and specify the correct MIME type for PDF
           const blob = new Blob([response.body], { type: 'application/pdf' });
-  
+
           // Create a URL for the Blob and open it in a new tab
           const url = window.URL.createObjectURL(blob);
           window.open(url, '_blank');
@@ -213,7 +213,7 @@ export class TravelExpenseComponent implements OnInit {
           panelClass: ['snackbar-error'],
         });
       });
-    }else {
+    } else {
       this.snackBar.open('Travel Statement not created yet !', 'Close', {
         duration: 3000,
         verticalPosition: 'top',
@@ -240,9 +240,9 @@ export class TravelExpenseComponent implements OnInit {
     if (row.travelStatus === 'Disapproved' || row.travelStatus === 'Underprocess') {
       const details = await this.TravelExpenseService.getTravelExpenseDetails(row);
       const dialogRef = this.dialog.open(TravelExpenseStatementComponent, {
-        data: { TravelDetails : details , form: 'updateStatement'}, 
+        data: { TravelDetails: details, form: 'updateStatement' },
       });
-    
+
       dialogRef.afterClosed().subscribe({
         next: (result) => {
           if (result) {
@@ -256,13 +256,13 @@ export class TravelExpenseComponent implements OnInit {
         verticalPosition: 'top',
         horizontalPosition: 'center'
       });
-    }else if (row.travelStatus === null) {
+    } else if (row.travelStatus === null) {
       this.snackBar.open('Travel Statement not created yet !', 'Close', {
         duration: 3000,
         verticalPosition: 'top',
         horizontalPosition: 'center'
       });
-    }else{
+    } else {
       this.snackBar.open('Error', 'Close', {
         duration: 3000,
         verticalPosition: 'top',
@@ -272,17 +272,17 @@ export class TravelExpenseComponent implements OnInit {
     }
   }
 
-  openStatementDisapproveDetailDialog(row: any){
-  if (row.travelStatus === 'Disapproved') {
-    const dialogRef = this.dialog.open(DisapprovaldialogstatementComponent, {
-      data: {
-        travelId: row.travelId,
-        travelDescription: row.travelDescription
-      },
-      width: '500px',
-    });
+  openStatementDisapproveDetailDialog(row: any) {
+    if (row.travelStatus === 'Disapproved') {
+      const dialogRef = this.dialog.open(DisapprovaldialogstatementComponent, {
+        data: {
+          travelId: row.travelId,
+          travelDescription: row.travelDescription
+        },
+        width: '500px',
+      });
+    }
   }
-}
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;

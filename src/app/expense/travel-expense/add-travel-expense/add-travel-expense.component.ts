@@ -35,11 +35,13 @@ export class AddTravelExpenseComponent implements OnInit {
       location: ['', Validators.required],
       purpose: ['', Validators.required],
       modeOfTransport: ['', Validators.required],
+      advanceRequest: ['' ,Validators.required],
       estTravelExpenses: this.fb.array([])
     });
     this.travelExpenseForm.get('startDate')?.valueChanges.subscribe((startDate) => {
       this.minEndDate = startDate ? new Date(startDate) : null;
     });
+
     this.travelExpenseForm.get('startDate')?.valueChanges.subscribe((startDate) => {
       this.minEndDate = startDate ? new Date(startDate) : null;
       this.updateNoOfDays();
@@ -47,7 +49,8 @@ export class AddTravelExpenseComponent implements OnInit {
 
     this.travelExpenseForm.get('endDate')?.valueChanges.subscribe(() => {
       this.updateNoOfDays();
-    })
+    });
+
     this.estTravelExpenses.valueChanges.subscribe(() => {
       this.updateTotals();
     });
@@ -82,6 +85,7 @@ export class AddTravelExpenseComponent implements OnInit {
         }
       });
     }
+    this.updateTotals();
   }
   
 
@@ -90,6 +94,7 @@ export class AddTravelExpenseComponent implements OnInit {
       .map((control) => control.get('travelExpenseCatId')?.value)
       .filter((value) => value !== null && value !== undefined);
 
+    this.updateNoOfDays();
     return this.estTravelHeads.filter(
       (head) =>
         !selectedHeads.includes(head.travelExpenseCatId) || // Exclude already selected ids
@@ -119,6 +124,7 @@ export class AddTravelExpenseComponent implements OnInit {
       location: estTravelHead.location,
       purpose: estTravelHead.purpose,
       modeOfTransport: estTravelHead.modeOfTransport,
+      advanceRequest: estTravelHead.advanceRequest
     });
   }
 

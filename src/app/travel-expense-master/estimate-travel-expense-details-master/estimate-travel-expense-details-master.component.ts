@@ -8,7 +8,8 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
   styleUrls: ['./estimate-travel-expense-details-master.component.css']
 })
 export class EstimateTravelExpenseDetailsMasterComponent implements OnInit {
-  displayedColumns: string[] = ['estTravelHead', 'unitCost', 'noOfDays', 'remark', 'totalExpense'];
+  estimateDetailsColumns: string[] = ['projectName', 'startDate', 'endDate', 'purpose', 'location', 'modeOfTransport','advancePayment', 'estimateTotal'];
+  displayedColumns: string[] = ['estTravelHead', 'unitCost', 'noOfDays', 'remark','totalExpense'];
   @ViewChild('dialogContent') dialogContent!: ElementRef;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any) { }

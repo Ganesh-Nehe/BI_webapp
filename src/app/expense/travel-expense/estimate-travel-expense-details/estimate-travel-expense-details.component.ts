@@ -8,12 +8,13 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
   styleUrls: ['./estimate-travel-expense-details.component.css']
 })
 export class EstimateTravelExpenseDetailsComponent implements OnInit {
+  estimateDetailsColumns: string[] = ['projectName', 'startDate', 'endDate', 'purpose', 'location', 'modeOfTransport','advancePayment', 'estimateTotal'];
   displayedColumns: string[] = ['estTravelHead', 'unitCost', 'noOfDays', 'remark','totalExpense'];
   @ViewChild('dialogContent') dialogContent!: ElementRef;
   
   constructor (@Inject(MAT_DIALOG_DATA) public data: any) {}
   
   ngOnInit(): void {
-      // console.log("data recieved : ", this.data);
+      console.log("data recieved : ", this.data);
   }
 }

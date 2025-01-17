@@ -75,6 +75,7 @@ import { MasterTravelStatementDetailsComponent } from './travel-expense-master/m
 import { StatementPaymentDialogComponent } from './travel-expense-master/statement-payment-dialog/statement-payment-dialog.component';
 import { DisapprovalDialogTravelComponent } from './travel-expense-master/disapproval-dialog-travel/disapproval-dialog-travel.component';
 import { DescriptionDialogTarvelComponent } from './travel-expense-master/description-dialog-tarvel/description-dialog-tarvel.component';
+import { AdvancePaymentDialogComponent } from './travel-expense-master/advance-payment-dialog/advance-payment-dialog.component';
 
 @NgModule({
   declarations: [
@@ -124,7 +125,8 @@ import { DescriptionDialogTarvelComponent } from './travel-expense-master/descri
     MasterTravelStatementDetailsComponent,
     StatementPaymentDialogComponent,
     DisapprovalDialogTravelComponent,
-    DescriptionDialogTarvelComponent
+    DescriptionDialogTarvelComponent,
+    AdvancePaymentDialogComponent
   ],
   imports: [
     BrowserModule,
