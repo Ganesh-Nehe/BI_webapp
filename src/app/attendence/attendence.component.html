@@ -1,0 +1,138 @@
+<div class="page-container">
+    <h3>Attendence</h3>
+    <div fxLayout="row" fxLayoutGap="10px" class="monthYear">
+        <mat-form-field appearance="outline" fxFlex="20%">
+            <mat-label>Month</mat-label>
+            <mat-select [formControl]="selectMonth" (selectionChange)="onMonthYearChange()">
+                <mat-option *ngFor="let month of months; let i = index" [value]="i">
+                    {{ month }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" fxFlex="20%">
+            <mat-label>Year</mat-label>
+            <mat-select [formControl]="selectYear" (selectionChange)="onMonthYearChange()">
+                <mat-option *ngFor="let year of years" [value]="year">
+                    {{ year }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" fxFlex="20%" (click)="onLeaveDetailClick()" class="leave-button">Leave
+            Detail</button>
+    </div>
+    <mat-card class="table-card">
+        <div class="table-container">
+            <table mat-table [dataSource]="dataSource" matSort class="custom-table">
+                <ng-container matColumnDef="sr no">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header
+                        style="max-width: 20px; white-space: normal; word-wrap: break-word;"> Sr. no </th>
+                    <td mat-cell *matCellDef="let row; let i = index"
+                        style="max-width: 20px; white-space: normal; word-wrap: break-word;"> {{ getSerialNumber(i) }}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="attendenceId">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header style="max-width: 40px;"> Attendence Id </th>
+                    <td mat-cell *matCellDef="let row" style="max-width: 40px;">
+                        <span *ngIf="row.attendenceId; else noId">
+                            {{ row.attendenceId }}
+                        </span>
+                        <ng-template #noId>
+                            <span>--</span> <!-- Placeholder if no attendenceId -->
+                        </ng-template>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="date">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header style="max-width: 40px;"> Date </th>
+                    <td mat-cell *matCellDef="let row" style="max-width: 40px;"> {{ row.date }}
+                        <br *ngIf="row.leaveDetails">
+                        <span *ngIf="row.leaveDetails"> {{ row.leaveDetails }}</span>  </td>
+                </ng-container>
+
+                <ng-container matColumnDef="day">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header style="max-width: 40px;"> Day </th>
+                    <td mat-cell *matCellDef="let row" style="max-width: 40px;"> {{ row.day }} <td>
+                </ng-container>
+
+                <ng-container matColumnDef="punchIn">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Punch In </th>
+                    <td mat-cell *matCellDef="let row">
+                        <!-- Display the punchIn time if available, otherwise show a button -->
+                        <span *ngIf="row.punchIn; else punchInButton">
+                            {{ row.punchIn | date: 'shortTime' }}
+                        </span>
+                        <ng-template #punchInButton>
+                            <button mat-raised-button [color]="isToday(row.date) ? 'primary' : null"
+                                [disabled]="!isWithinAllowedRange(row.date) || isSunday(row.date) || row.isCompanyLeave || row.leaveType" (click)="punchTime(row, 'punchIn')">
+                                Punch In
+                            </button>
+                        </ng-template>
+                    </td>
+                </ng-container>
+                
+                <ng-container matColumnDef="punchOut">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Punch Out </th>
+                    <td mat-cell *matCellDef="let row">
+                        <!-- Display the punchOut time if available, otherwise show a button -->
+                        <span *ngIf="row.punchOut; else punchOutButton">
+                            {{ row.punchOut | date: 'shortTime' }}
+                        </span>
+                        <ng-template #punchOutButton>
+                            <button mat-raised-button [color]="isToday(row.date) ? 'primary' : null"
+                                [disabled]="!isWithinAllowedRange(row.date) || isSunday(row.date) || row.isCompanyLeave || row.leaveType" (click)="punchTime(row, 'punchOut')">
+                                Punch Out
+                            </button>
+                        </ng-template>
+                    </td>
+                </ng-container>
+                
+                <ng-container matColumnDef="leave">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header style="max-width: 70px;"> Leave </th>
+                    <td mat-cell *matCellDef="let row" style="max-width: 70px;">
+                      <button
+                        mat-raised-button
+                        *ngIf="row.leaveType; else leaveOptions"
+                        [ngStyle]="{'background-color': row.leaveType ? 'green' : 'red', 'color': 'white'}">
+                        {{ row.leaveType }}
+                      </button>
+                  
+                      <!-- Display checkbox or dropdown for leave selection -->
+                      <ng-template #leaveOptions>
+                        <mat-checkbox
+                          *ngIf="!row.leaveChecked"
+                          [(ngModel)]="row.leaveChecked"
+                          (change)="onLeaveCheckboxChange(row)"
+                          [disabled]="!isTodayOrLater(row.date) || isSunday(row.date) || row.isCompanyLeave || row.punchIn">
+                        </mat-checkbox>
+                  
+                        <mat-form-field *ngIf="row.leaveChecked" appearance="outline" class="leave-select">
+                          <mat-label>Leave Type</mat-label>
+                          <mat-select [(ngModel)]="row.leaveType" (selectionChange)="onLeaveSelect(row)">
+                            <mat-option value="Casual Leave">Casual Leave</mat-option>
+                            <mat-option value="Privilege Leave">Privilege Leave</mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                      </ng-template>
+                    </td>
+                  </ng-container>                  
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;" [class.yellow-background]="isSunday(row.date) || row.isCompanyLeave"></tr>
+
+                <!-- Row shown when there is no matching data. -->
+                <tr class="mat-row" *matNoDataRow>
+                    <!-- <td class="mat-cell" colspan="4">No data matching the filter"{{input.value}}"</td> -->
+                </tr>
+            </table>
+        </div>
+        <mat-paginator [pageSizeOptions]="[50 , 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+    </mat-card>
+
+
+    <div class="flex-grow-1">
+        <router-outlet></router-outlet>
+    </div>
+</div>

@@ -23,6 +23,9 @@
     "@angular/router": "^16.2.0",
     "bn-ng-idle": "^2.0.5",
     "cors": "^2.8.5",
+    "mat-timepicker": "^5.1.8",
+    "ngx-material-timepicker": "^13.1.1",
+    "particles.js": "^2.0.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.13.0"

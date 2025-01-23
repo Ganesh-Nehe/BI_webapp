@@ -11,11 +11,12 @@ body {
     padding: 20px;
     box-sizing: border-box;
     border-radius: 10px;
-    background-color: white;
+    background-color: rgb(255, 255, 255);
     transition: transform 0.3s, box-shadow 0.3s;
     transform: translateY(0);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    box-shadow: 
+        0 -4px 8px rgba(0, 0, 0, 0.2),
+        0 8px 16px rgba(0, 0, 0, 0.2);
   }
   
 .login-card:hover {
@@ -24,6 +25,18 @@ body {
   
 .mat-toolbar{
     border-radius: 8px;
+    display: flex;
+    justify-content: center;
+}
+
+.logo {
+  height: 60px; /* Adjust height of logo */
+  width: 300px;
+  /* margin-right: 10px; Space between logo and text */
+  border-radius: 5px; 
+  box-shadow: 
+      0 -2px 4px rgba(0, 0, 0, 0.2),
+      0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .login-button:hover {
@@ -40,3 +53,21 @@ body {
       font-size: 18px;
     }
   }
+
+  #particles-js {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: auto; 
+    background-color: #ffffff;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: 50% 50%;
+  }
+  
+  .login-container {
+    position: relative;
+    z-index: 1;
+  }
+  

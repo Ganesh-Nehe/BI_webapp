@@ -1,0 +1,28 @@
+<div mat-dialog-title>Add Leave Details</div>
+<form [formGroup]="leaveDetailsForm">
+    <div mat-dialog-content class="content">
+        <div fxLayout="column" fxLayoutGap="10px">
+            <mat-form-field appearance="outline" fxFlex="30%">
+                <mat-label>Expense Date</mat-label>
+                <input matInput [matDatepicker]="picker" formControlName="leaveDate" required>
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+                <mat-error>
+                    Leave Date is required
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" fxFlex="70%">
+                <mat-label>Leave Details</mat-label>
+                <input matInput type="text" formControlName="leaveDetails" required="">
+                <mat-error>
+                    Leave Detail is required
+                </mat-error>
+            </mat-form-field>
+        </div>
+    </div>
+    <div mat-dialog-actions class="action">
+        <button mat-dialog-close class="btn btn-outline-dark" mat-raised-button close->Cancel</button>
+        <button class="btn btn-outline-dark" mat-raised-button color="primary" (click)="addLeaveDetails()">Save</button>
+    </div>
+</form>

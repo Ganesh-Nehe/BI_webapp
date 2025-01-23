@@ -90,3 +90,17 @@ button.mat-raised-button {
   .custom-table {
     min-width: 2200px; /* Set a minimum width to ensure the table is scrollable */
   }
+
+  .sticky-column {
+    position: sticky;
+    left: 0;
+    background-color: white;  /* Optional: Set background color */
+    z-index: 1;  /* Ensure it's above other columns */
+  }
+  
+  .sticky-column-employee {
+    position: sticky;
+    left: 80px;  /* Adjust based on your column width */
+    background-color: white;
+    z-index: 2;  /* Ensure it is above the previous column */
+  }

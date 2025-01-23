@@ -16,6 +16,9 @@ import { CurrenyComponent } from './curreny/curreny.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { AddTravelHeadComponent } from './expense/add-travel-head/add-travel-head.component';
 import { TravelExpenseMasterComponent } from './travel-expense-master/travel-expense-master.component';
+import { AttendenceComponent } from './attendence/attendence.component';
+import { AttendenceMasterComponent } from './attendence-master/attendence-master.component';
+import { LeaveMasterComponent } from './attendence/leave-master/leave-master.component';
 
 const routes: Routes = [
   { 
@@ -56,12 +59,20 @@ const routes: Routes = [
         ]
       },
       {
+        path: 'attendence',
+        component: AttendenceComponent
+      },
+      {
         path: 'miscellaneous-summary',
         component: ExpenseMasterComponent
       },
       {
         path: 'travel-summary',
         component: TravelExpenseMasterComponent
+      },
+      {
+        path: 'attendence-summary',
+        component: AttendenceMasterComponent
       },
       {
         path: 'voucher-head',
@@ -74,6 +85,10 @@ const routes: Routes = [
       {
         path: 'currency',
         component: CurrenyComponent
+      },
+      {
+        path: 'leave',
+        component: LeaveMasterComponent
       },
       {
         path: 'profile',

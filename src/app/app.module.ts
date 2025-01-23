@@ -76,8 +76,14 @@ import { StatementPaymentDialogComponent } from './travel-expense-master/stateme
 import { DisapprovalDialogTravelComponent } from './travel-expense-master/disapproval-dialog-travel/disapproval-dialog-travel.component';
 import { DescriptionDialogTarvelComponent } from './travel-expense-master/description-dialog-tarvel/description-dialog-tarvel.component';
 import { AdvancePaymentDialogComponent } from './travel-expense-master/advance-payment-dialog/advance-payment-dialog.component';
+import { AttendenceComponent } from './attendence/attendence.component';
+import { AttendenceMasterComponent } from './attendence-master/attendence-master.component';
+import { PunchTimeDialogComponent } from './attendence/punch-time-dialog/punch-time-dialog.component';
+import { LeaveDetailsDialogComponent } from './attendence/leave-details-dialog/leave-details-dialog.component';
+import { LeaveMasterComponent } from './attendence/leave-master/leave-master.component';
+import { AddLeaveComponent } from './attendence/leave-master/add-leave/add-leave.component';
 
-@NgModule({
+@NgModule({ 
   declarations: [
     AppComponent,
     LoginComponent,
@@ -126,7 +132,13 @@ import { AdvancePaymentDialogComponent } from './travel-expense-master/advance-p
     StatementPaymentDialogComponent,
     DisapprovalDialogTravelComponent,
     DescriptionDialogTarvelComponent,
-    AdvancePaymentDialogComponent
+    AdvancePaymentDialogComponent,
+    AttendenceComponent,
+    AttendenceMasterComponent,
+    PunchTimeDialogComponent,
+    LeaveDetailsDialogComponent,
+    LeaveMasterComponent,
+    AddLeaveComponent
   ],
   imports: [
     BrowserModule,

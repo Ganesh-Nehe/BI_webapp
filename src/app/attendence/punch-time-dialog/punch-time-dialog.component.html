@@ -1,0 +1,23 @@
+<div mat-dialog-title>Add Punch Time</div>
+<form [formGroup]="punchTimeform">
+    <div mat-dialog-content class="content">
+        <div fxLayout="row" fxLayoutGap="10px">
+            <mat-form-field fxFlex="50%" appearance="outline">
+                <mat-label>HH</mat-label>
+                <input matInput type="number" formControlName="hour" min="0" max="23" required />
+                <mat-error *ngIf="punchTimeform.get('hour')?.hasError('min')">Min: 0</mat-error>
+                <mat-error *ngIf="punchTimeform.get('hour')?.hasError('max')">Max: 23</mat-error>
+            </mat-form-field>
+
+            <mat-form-field fxFlex="50%" appearance="outline">
+                <mat-label>MM</mat-label>
+                <input matInput type="number" formControlName="minute" min="0" max="59"  required />
+                <mat-error *ngIf="punchTimeform.get('minute')?.hasError('min')">Min: 0</mat-error>
+                <mat-error *ngIf="punchTimeform.get('minute')?.hasError('max')">Max: 59</mat-error>
+            </mat-form-field>
+        </div>
+    </div>
+    <div mat-dialog-actions class="action">
+        <button class="btn btn-outline-dark" mat-raised-button color="primary" (click)="addPunchTime()">Save</button>
+    </div>
+</form>

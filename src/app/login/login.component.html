@@ -1,8 +1,10 @@
+<div id="particles-js"></div>
+
 <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutAlign="center center" fxFlexFill>
     <mat-card fxFlex.gt-sm="25" fxFlex.sm="75" fxFlex.xs="90" fxFlex="25" class="login-card">
-        <mat-toolbar color="primary" class="mat-toolbar">
-            Login page
-        </mat-toolbar>
+        <div class="mat-toolbar">
+            <img src="assets/CAS logo/Expense logo.jpeg" alt="Logo" class="logo" />
+        </div>
         <form fxLayoutAlign="stretch" fxLayout="column" class="login-form" (ngSubmit)="onLogin()">
             <mat-form-field fxFlex appearance="outline">
                 <mat-label>Email</mat-label>

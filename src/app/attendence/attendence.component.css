@@ -1,0 +1,81 @@
+.page-container {
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2); 
+    padding: 20px; 
+}
+
+.filter-input {
+    margin-top: 10px;
+    width: 50%;
+}
+
+.table-card{
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.custom-table {
+    width: auto;
+    margin: auto;
+}
+
+.table-container {
+    display: flex;
+}
+ 
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+  
+th, td {
+    border-left: 1px solid grey;
+    padding: 5px;
+    text-align: justify;
+}
+  
+th:first-child, td:first-child {
+    border-left: none; 
+}
+
+tr:last-child td {
+    border-bottom: 1px solid grey;
+}
+
+.active-toggle {
+    color: white; 
+    background-color: #1976D2; 
+}
+
+.inactive-toggle {
+    color: #757575;
+    background-color: #E0E0E0; 
+}
+
+button.mat-icon-button {
+    font-size: 24px; 
+    width: 36px; 
+    height: 36px; 
+}
+
+/* Set different max-width values for each column */
+th.mat-header-cell:nth-child(1), td.mat-cell:nth-child(1) {
+    max-width: 10px; /* Serial Number column */
+}
+
+.leave-select {
+    width: 100%;
+  }
+.monthYear{
+    display: flex;
+    justify-content: flex-start;
+}
+
+.leave-button {
+    height: 54px; /* Match the height of mat-select */
+    display: flex;
+    align-items: center; /* Vertically center the text */
+    justify-content: center; /* Horizontally center the text */
+}
+
+.yellow-background {
+    color: red;
+}
