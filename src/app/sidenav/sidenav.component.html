@@ -29,6 +29,21 @@
         <i class="fa-solid fa-user-plus"></i>
         <span><a [routerLink]="'/attendence'">Attendence</a></span>
       </li>
+
+      <li *ngIf="hasPermission('Customer')" class="nav-list-item" (click)="navigateTo('/customer')">
+        <i class="fa-duotone fa-solid fa-user-tie"></i>
+        <span><a [routerLink]="'/customer'">Customer</a></span>
+      </li>
+
+      <li *ngIf="hasPermission('Material')" class="nav-list-item" (click)="navigateTo('/material')">
+        <i class="fa-solid fa-cart-shopping"></i>
+        <span><a [routerLink]="'/material'">Material</a></span>
+      </li>
+
+      <li *ngIf="hasPermission('Documentation')" class="nav-list-item" (click)="navigateTo('/documentation')">
+        <i class="fa-duotone fa-solid fa-folder-open"></i>
+        <span><a [routerLink]="'/documentation'">Documentation</a></span>
+      </li>
   
       <li *ngIf="hasPermission('Expense Master')" class="nav-list-item" (click)="navigateTo('/miscellaneous-summary')">
         <i class="fa-solid fa-file-invoice"></i>
@@ -60,10 +75,26 @@
         <span><a [routerLink]="'/currency'">Currency Master</a></span>
       </li>
 
-      <li *ngIf="hasPermission('Currency')" class="nav-list-item" (click)="navigateTo('/leave')">
-        <i class="fa-duotone fa-solid fa-house-lock"></i>
-        <span><a [routerLink]="'/leave'">Leave Master</a></span>
+      <li *ngIf="hasPermission('Currency')" class="nav-list-item">
+        <span></span>
       </li>
+
+      <li *ngIf="hasPermission('Currency')" class="nav-list-item">
+        <span></span>
+      </li>
+
+      <li *ngIf="hasPermission('Currency')" class="nav-list-item">
+        <span></span>
+      </li>
+
+      <li *ngIf="hasPermission('Currency')" class="nav-list-item">
+        <span></span>
+      </li>
+
+      <li *ngIf="hasPermission('Currency')" class="nav-list-item">
+        <span></span>
+      </li>
+      
   
     </ul>
   </div>

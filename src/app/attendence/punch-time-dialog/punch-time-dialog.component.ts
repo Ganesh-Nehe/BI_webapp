@@ -73,7 +73,7 @@ export class PunchTimeDialogComponent implements OnInit {
       //console.log(time);
       const res = await this.punchTimeDialogService.punchInTimeform(time);
       const dialog = this.dialogRef.close(PunchTimeDialogComponent)
-      this.snackBar.open('Leave Added Successfully !', 'Close', {
+      this.snackBar.open('Punch In Successfully !', 'Close', {
         duration: 3000,
         verticalPosition: 'top',
         horizontalPosition: 'center',
@@ -85,7 +85,7 @@ export class PunchTimeDialogComponent implements OnInit {
       //console.log(time);
       const res = await this.punchTimeDialogService.punchOutTimeform(time,attendenceId);
       const dialog = this.dialogRef.close(PunchTimeDialogComponent)
-      this.snackBar.open('Leave Added Successfully !', 'Close', {
+      this.snackBar.open('Punch Out Successfully !', 'Close', {
         duration: 3000,
         verticalPosition: 'top',
         horizontalPosition: 'center',

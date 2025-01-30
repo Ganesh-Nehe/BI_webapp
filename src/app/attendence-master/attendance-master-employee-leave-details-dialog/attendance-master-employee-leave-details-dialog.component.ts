@@ -6,19 +6,19 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
-  selector: 'app-leave-details-dialog',
-  templateUrl: './leave-details-dialog.component.html',
-  styleUrls: ['./leave-details-dialog.component.css']
+  selector: 'app-attendance-master-employee-leave-details-dialog',
+  templateUrl: './attendance-master-employee-leave-details-dialog.component.html',
+  styleUrls: ['./attendance-master-employee-leave-details-dialog.component.css']
 })
-export class LeaveDetailsDialogComponent implements OnInit {
+export class AttendanceMasterEmployeeLeaveDetailsDialogComponent {
 
-    casualLeaveColumns: string[] = ['totalLeave', 'totalLeaveTaken', 'currentMonthLeave', 'remainingLeave'];
-    privilegeLeaveColumns: string[] = ['totalLeave', 'totalLeaveTaken', 'currentMonthLeave', 'remainingLeave'];
-    LeaveDetailsColumns: string[] = ['leaveDate' , 'leaveDetail']
-    @ViewChild('dialogContent') dialogContent!: ElementRef;
+  casualLeaveColumns: string[] = ['totalLeave', 'totalLeaveTaken', 'currentMonthLeave', 'remainingLeave'];
+  privilegeLeaveColumns: string[] = ['totalLeave', 'totalLeaveTaken', 'currentMonthLeave', 'remainingLeave'];
+  LeaveDetailsColumns: string[] = ['leaveDate' , 'leaveDetail']
+  @ViewChild('dialogContent') dialogContent!: ElementRef;
 
   constructor(private snackBar: MatSnackBar,
-    private dialogRef: MatDialogRef<LeaveDetailsDialogComponent>,
+    private dialogRef: MatDialogRef<AttendanceMasterEmployeeLeaveDetailsDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) { }
 
@@ -37,14 +37,16 @@ export class LeaveDetailsDialogComponent implements OnInit {
   
       return leaveMonth === selectedMonth && leaveYear === selectedYear; // Filter by both month and year for monthly count
     });
+
+    this.data.currentMonthLeaveDetails = filteredLeavesForMonth;
   
     // Count casual and privilege leaves for the selected month
     const casualLeaveCountForMonth = filteredLeavesForMonth.filter((leave: any) => leave.leaveType === 'Casual Leave').length;
     const privilegeLeaveCountForMonth = filteredLeavesForMonth.filter((leave: any) => leave.leaveType === 'Privilege Leave').length;
   
     // Log or use the counts for the selected month
-    // console.log('Monthly Casual Leave Count:', casualLeaveCountForMonth);
-    // console.log('Monthly Privilege Leave Count:', privilegeLeaveCountForMonth);
+    console.log('Monthly Casual Leave Count:', casualLeaveCountForMonth);
+    console.log('Monthly Privilege Leave Count:', privilegeLeaveCountForMonth);
   
     // Filter leaves for the selected year (no month filter for yearly count)
     const filteredLeavesForYear = this.data.empLeave.data.filter((leave: any) => {
@@ -58,8 +60,8 @@ export class LeaveDetailsDialogComponent implements OnInit {
     const privilegeLeaveCountForYear = filteredLeavesForYear.filter((leave: any) => leave.leaveType === 'Privilege Leave').length;
   
     // Log or use the counts for the selected year
-    // console.log('Yearly Casual Leave Count:', casualLeaveCountForYear);
-    // console.log('Yearly Privilege Leave Count:', privilegeLeaveCountForYear);
+    console.log('Yearly Casual Leave Count:', casualLeaveCountForYear);
+    console.log('Yearly Privilege Leave Count:', privilegeLeaveCountForYear);
   
     // You can bind these counts to your table data or any other part of the UI as needed
     this.data.casualLeaveCount = {
@@ -74,7 +76,6 @@ export class LeaveDetailsDialogComponent implements OnInit {
       privilegeLeaveCountForYear: privilegeLeaveCountForYear
     };
 
-    // console.log('Updated Data:', this.data);
+    console.log('Updated Data:', this.data);
   }
-
 }

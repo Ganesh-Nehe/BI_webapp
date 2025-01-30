@@ -21,7 +21,7 @@ import { AdvancePaymentDialogComponent } from './advance-payment-dialog/advance-
   styleUrls: ['./travel-expense-master.component.css']
 })
 export class TravelExpenseMasterComponent {
-  displayedColumns: string[] = ['serialNumber', 'employeeName', 'projectName', 'startDate', 'endDate', 'purpose', 'location', 'modeOfTransport', 'totalEstimateCost', 'viewDetails', 'status', 'advancePayment', 'viewStatement', 'travelDocument', 'travelStatus', 'travelPayment'];
+  displayedColumns: string[] = ['serialNumber', 'employeeName', 'projectName', 'startDate', 'endDate', 'purpose', 'location', 'modeOfTransport', 'totalEstimateCost', 'viewDetails', 'status', 'advancePayment', 'viewStatement', 'travelDocument', 'travelStatus', 'payableAmount', 'travelPayment'];
   dataSource!: MatTableDataSource<any>;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;

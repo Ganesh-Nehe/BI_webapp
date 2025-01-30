@@ -19,6 +19,9 @@ import { TravelExpenseMasterComponent } from './travel-expense-master/travel-exp
 import { AttendenceComponent } from './attendence/attendence.component';
 import { AttendenceMasterComponent } from './attendence-master/attendence-master.component';
 import { LeaveMasterComponent } from './attendence/leave-master/leave-master.component';
+import { CustomerComponent } from './customer/customer.component';
+import { MaterialComponent } from './material/material.component';
+import { DocumentationComponent } from './documentation/documentation.component';
 
 const routes: Routes = [
   { 
@@ -61,6 +64,18 @@ const routes: Routes = [
       {
         path: 'attendence',
         component: AttendenceComponent
+      },
+      {
+        path: 'customer',
+        component: CustomerComponent
+      },
+      {
+        path: 'material',
+        component: MaterialComponent
+      },
+      {
+        path: 'documentation',
+        component: DocumentationComponent
       },
       {
         path: 'miscellaneous-summary',

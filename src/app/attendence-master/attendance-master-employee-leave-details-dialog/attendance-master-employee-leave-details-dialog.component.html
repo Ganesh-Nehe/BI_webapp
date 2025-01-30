@@ -1,0 +1,75 @@
+<div mat-dialog-content #dialogContent>
+    <h2 mat-dialog-title>Casual Leave</h2>
+    <table mat-table [dataSource]="[data.casualLeaveCount]" class="mat-elevation-z8">
+      <ng-container matColumnDef="totalLeave">
+        <th mat-header-cell *matHeaderCellDef>  Total Leave Given </th>
+        <td mat-cell *matCellDef="let element">{{element.totalCasualLeave}}  </td>
+      </ng-container>
+  
+      <ng-container matColumnDef="totalLeaveTaken">
+        <th mat-header-cell *matHeaderCellDef> {{data.selectedYear}}  Leave Taken </th>
+        <td mat-cell *matCellDef="let element"> {{element.casualLeaveCountForYear}}</td>
+      </ng-container>
+  
+      <ng-container matColumnDef="currentMonthLeave">
+        <th mat-header-cell *matHeaderCellDef>  {{data.selectedMonth}} Month Leave </th>
+        <td mat-cell *matCellDef="let element"> {{element.casualLeaveCountForMonth}}</td>
+      </ng-container>
+  
+      <ng-container matColumnDef="remainingLeave">
+        <th mat-header-cell *matHeaderCellDef> Remaining Leave </th>
+        <td mat-cell *matCellDef="let element"> {{(element.totalCasualLeave) - (element.casualLeaveCountForYear)}}</td>
+      </ng-container>
+  
+      <tr mat-header-row *matHeaderRowDef="casualLeaveColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: casualLeaveColumns;"></tr>
+    </table>
+  
+    <h2 mat-dialog-title>Privilege Leave</h2>
+    <table mat-table [dataSource]="[data.privilegeLeaveCount]" class="mat-elevation-z8">
+
+      <ng-container matColumnDef="totalLeave">
+        <th mat-header-cell *matHeaderCellDef> Total Leave Given </th>
+        <td mat-cell *matCellDef="let element"> {{element.totalPrivilegeLeave}}</td>
+      </ng-container>
+  
+      <ng-container matColumnDef="totalLeaveTaken">
+        <th mat-header-cell *matHeaderCellDef> {{data.selectedYear}} Leave Taken </th>
+        <td mat-cell *matCellDef="let element"> {{element.privilegeLeaveCountForYear}} </td>
+      </ng-container>
+  
+      <ng-container matColumnDef="currentMonthLeave">
+        <th mat-header-cell *matHeaderCellDef>  {{data.selectedMonth}} Month Leave </th>
+        <td mat-cell *matCellDef="let element">{{element.privilegeLeaveCountForMonth}}</td>
+      </ng-container>
+  
+      <ng-container matColumnDef="remainingLeave">
+        <th mat-header-cell *matHeaderCellDef> Remaining Leave </th>
+        <td mat-cell *matCellDef="let element">{{(element.totalPrivilegeLeave) - (element.privilegeLeaveCountForYear)}}</td>
+      </ng-container>
+  
+      <tr mat-header-row *matHeaderRowDef="privilegeLeaveColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: privilegeLeaveColumns;"></tr>
+    </table>
+
+    <h2 mat-dialog-title> {{data.selectedMonth}} Leave Details</h2>
+    <table mat-table [dataSource]="data.currentMonthLeaveDetails" class="mat-elevation-z8">
+      <ng-container matColumnDef="leaveDate">
+        <th mat-header-cell *matHeaderCellDef>  {{data.selectedYear}} Total Leave </th>
+        <td mat-cell *matCellDef="let element">{{ element.leaveDate | date:'mediumDate' }}</td>
+      </ng-container>
+  
+      <ng-container matColumnDef="leaveDetail">
+        <th mat-header-cell *matHeaderCellDef> Total Leave Taken </th>
+        <td mat-cell *matCellDef="let element">{{ element.leaveType }}</td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="LeaveDetailsColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: LeaveDetailsColumns;"></tr>
+    </table>
+
+  </div>
+  <div mat-dialog-actions class="action">
+    <button mat-button mat-dialog-close class="btn btn-outline-dark" mat-raised-button color="primary">Close</button>
+  </div>
+  

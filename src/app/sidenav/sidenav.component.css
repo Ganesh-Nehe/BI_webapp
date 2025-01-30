@@ -4,6 +4,7 @@
     margin-left: 10px;
     margin-right: 10px;
     margin-top: 10px;
+    overflow-y: auto;
 }
 .border-white{
     background-color: rgba(34, 34, 34, 0.99);

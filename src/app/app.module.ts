@@ -82,6 +82,12 @@ import { PunchTimeDialogComponent } from './attendence/punch-time-dialog/punch-t
 import { LeaveDetailsDialogComponent } from './attendence/leave-details-dialog/leave-details-dialog.component';
 import { LeaveMasterComponent } from './attendence/leave-master/leave-master.component';
 import { AddLeaveComponent } from './attendence/leave-master/add-leave/add-leave.component';
+import { AttendanceMasterEmployeeLeaveDetailsDialogComponent } from './attendence-master/attendance-master-employee-leave-details-dialog/attendance-master-employee-leave-details-dialog.component';
+import { GenerateSalarySlipDialogComponent } from './attendence-master/generate-salary-slip-dialog/generate-salary-slip-dialog.component';
+import { CustomerComponent } from './customer/customer.component';
+import { MaterialComponent } from './material/material.component';
+import { DocumentationComponent } from './documentation/documentation.component';
+import { AddCustomerDialogComponent } from './customer/add-customer-dialog/add-customer-dialog.component';
 
 @NgModule({ 
   declarations: [
@@ -138,7 +144,13 @@ import { AddLeaveComponent } from './attendence/leave-master/add-leave/add-leave
     PunchTimeDialogComponent,
     LeaveDetailsDialogComponent,
     LeaveMasterComponent,
-    AddLeaveComponent
+    AddLeaveComponent,
+    AttendanceMasterEmployeeLeaveDetailsDialogComponent,
+    GenerateSalarySlipDialogComponent,
+    CustomerComponent,
+    MaterialComponent,
+    DocumentationComponent,
+    AddCustomerDialogComponent
   ],
   imports: [
     BrowserModule,

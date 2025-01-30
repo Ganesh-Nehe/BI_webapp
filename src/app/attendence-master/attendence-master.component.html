@@ -1,1 +1,76 @@
-<p>attendence-master works!</p>
+<div class="page-container">
+  <h3>Attendance Summary</h3>
+
+  <div fxLayout="row" fxLayoutGap="10px" class="monthYear">
+    <mat-form-field appearance="outline" fxFlex="20%">
+      <mat-label>Month</mat-label>
+      <mat-select [formControl]="selectMonth" (selectionChange)="onMonthYearChange()">
+        <mat-option *ngFor="let month of months; let i = index" [value]="i">
+          {{ month }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" fxFlex="20%">
+      <mat-label>Year</mat-label>
+      <mat-select [formControl]="selectYear" (selectionChange)="onMonthYearChange()">
+        <mat-option *ngFor="let year of years" [value]="year">
+          {{ year }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <mat-card class="table-card">
+    <div class="table-container">
+      <table mat-table [dataSource]="dataSource" matSort class="custom-table">
+        <ng-container matColumnDef="serialNumber">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header
+            style="max-width: 20px; white-space: normal; word-wrap: break-word;"> Sr. no </th>
+          <td mat-cell *matCellDef="let row; let i = index"
+            style="max-width: 20px; white-space: normal; word-wrap: break-word;"> {{ getSerialNumber(i) }} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="employeeId">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Employee Id</th>
+          <td mat-cell *matCellDef="let row"> {{row.employeeId}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="employeeName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Employee Name </th>
+          <td mat-cell *matCellDef="let row"> {{row.employeeFirstName}} {{row.employeeLastName}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="leaveDetails">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Employee Leave Details </th>
+          <td mat-cell *matCellDef="let row">
+            <button mat-raised-button color="primary" (click)="employeeLeaveDetails(row.employeeId)"> Leave Details
+            </button>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="salarySlip">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Generate Salary slip </th>
+          <td mat-cell *matCellDef="let row">
+            <button mat-raised-button color="accent" (click)="generateSalarySlip(row)"> Salary slip
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+        <!-- Row shown when there is no matching data. -->
+        <tr class="mat-row" *matNoDataRow>
+          <!-- <td class="mat-cell" colspan="4">No data matching the filter"{{input.value}}"</td> -->
+        </tr>
+      </table>
+    </div>
+    <mat-paginator [pageSizeOptions]="[10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+  </mat-card>
+
+
+  <div class="flex-grow-1">
+    <router-outlet></router-outlet>
+  </div>
+</div>

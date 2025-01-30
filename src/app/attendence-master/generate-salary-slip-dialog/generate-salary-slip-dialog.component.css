@@ -1,0 +1,114 @@
+.action{
+    display: flex;
+    justify-content: flex-end;
+}
+
+.logo{
+    display: flex;
+    justify-content: flex-start;
+    width: 250px;
+    height: 60px;
+    padding-left: 20px;
+}
+
+.dialog-content {
+    display: flex; /* Ensures both tables appear side by side */
+    justify-content: space-evenly; /* Adds space between the tables */
+    gap: 20px; /* Ensures consistent space between both tables */
+    padding: 20px; /* Adds padding inside the dialog content */
+    box-sizing: border-box; /* Ensures padding is included in the element's width/height */
+}
+
+/* earning table */
+.table-format,
+.table-format-2{
+    width: 100%; /* Tables take full width of their container */
+}
+
+.table-format table,
+.table-format-2 table {
+    width: 100%; /* Tables span their container's width */
+    border-collapse: collapse; /* Merge borders for a clean look */
+}
+
+.table-format table th,
+.table-format table td,
+.table-format-2 table th,
+.table-format-2 table td{
+    padding: 8px; /* Cell padding */
+    border: 1px solid #000; /* Cell borders */
+    font-size: 14px; /* Adjust font size */
+    text-align: left; /* Center-align text */
+}
+
+.table-format table th,
+.table-format-2 table th {
+    font-weight: bold; /* Bold header text */
+    text-align: center;
+}
+
+.table-format table,
+.table-format-2 table{
+    text-align: left; /* Center-align headers with colspan/rowspan */
+}
+
+@media print {
+    body {
+      margin: 0;
+      padding: 0;
+      font-size: 12px;
+    }
+  
+    .logo img {
+      width: 330px;  /* Resize logo to fit */
+      height: auto;
+    }
+  
+    .dialog-content {
+      padding: 0;
+      margin-top: 20px;
+      box-sizing: border-box;
+    }
+  
+    /* Table layout: for side-by-side tables */
+    .table-container {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 20px;  /* Space between tables */
+    }
+  
+    /* Side-by-side tables */
+    .table-format,
+    .table-format-2 {
+      width: 48%;  /* Make tables take 48% of the width to allow space in between */
+      margin-bottom: 10px;
+      page-break-inside: avoid;  /* Prevent page breaks inside the table */
+    }
+  
+    /* Full width tables (stacked vertically) */
+    .table-format-full {
+        display: block; /* Force full width */
+        width: 100%;  /* Ensure full width for this table */
+        margin-bottom: 10px;
+        page-break-inside: avoid;  /* Prevent page breaks inside the table */
+      }
+  
+    /* General table styling */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+  
+    th, td {
+      padding: 8px;
+      border: 1px solid #000;
+      text-align: left;
+      font-size: 12px;
+    }
+  
+    th {
+      text-align: center;
+      font-weight: bold;
+    }
+  }
