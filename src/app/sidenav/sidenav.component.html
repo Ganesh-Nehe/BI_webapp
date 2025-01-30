@@ -25,7 +25,7 @@
         <button mat-menu-item [routerLink]="'/expense/miscellaneous'">Miscellaneous</button>
       </mat-menu>
 
-      <li *ngIf="hasPermission('Employee')" class="nav-list-item" (click)="navigateTo('/attendence')">
+      <li *ngIf="hasPermission('Expense')" class="nav-list-item" (click)="navigateTo('/attendence')">
         <i class="fa-solid fa-user-plus"></i>
         <span><a [routerLink]="'/attendence'">Attendence</a></span>
       </li>
