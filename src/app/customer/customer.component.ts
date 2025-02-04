@@ -35,7 +35,7 @@ export class CustomerComponent {
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
     } catch (err) {
-      this.snackBar.open('Error loading estimate travel expense list', 'Close', {
+      this.snackBar.open('Error loading customer list', 'Close', {
         duration: 3000,
         verticalPosition: 'top',
         horizontalPosition: 'center',
