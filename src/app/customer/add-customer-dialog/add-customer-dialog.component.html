@@ -1,59 +1,91 @@
-<div mat-dialog-title>Add Cutomer Details</div>
+
 <form [formGroup]="customerForm">
     <div mat-dialog-content class="content">
+        <div mat-dialog-title>Add Customer Details</div>
         <div fxLayout="row" fxLayoutGap="10px">
             <mat-form-field appearance="outline" fxFlex="50%">
-                <mat-label>Cutomer</mat-label>
-                <input matInput formControlName="projectName" required>
-                <mat-error>Customer Name is required</mat-error>
+                <mat-label>Customer Name</mat-label>
+                <input matInput formControlName="customerName" required>
+                <mat-error>Cutomer Name is required</mat-error>
             </mat-form-field>
 
-            <input type="file" required>
+            <input type="file"  (change)="onFileChange($event)">
         </div>
 
-        <div formArrayName="branch">
-            <div *ngFor="let branch of branches.controls; let i = index" [formGroupName]="i">
+        <div fxLayout="row" fxLayoutGap="10px">
+            <mat-form-field appearance="outline" fxFlex="50%">
+                <mat-label>Contact Person</mat-label>
+                <input matInput formControlName="contactPerson" required>
+                <mat-error>Contact Person is required</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" fxFlex="50%">
+                <mat-label>Contact Person No</mat-label>
+                <input matInput formControlName="contactPersonNo" type="number" required>
+                <mat-error>Contact Person No is required</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" fxFlex="50%">
+                <mat-label>GST NO</mat-label>
+                <input matInput formControlName="gstNo" type="number" required>
+                <mat-error>GST NO is required</mat-error>
+            </mat-form-field>
+        </div>
+        <hr>
+        <div mat-dialog-title>Add Customer Branch Addresses</div>
+        <div formArrayName="branchAddress">
+            <div *ngFor="let branch of branchAddress.controls; let i = index" [formGroupName]="i">
                 <div fxLayout="row" fxLayoutGap="10px">
-                    <mat-label>Branch no. {{i + 1}} </mat-label>
-                    <mat-form-field appearance="outline" fxFlex="50%">
-                        <mat-label>Local Area</mat-label>
-                        <input matInput formControlName="location" required>
-                        <mat-error>Local area is required</mat-error>
+                    <!-- Address Description -->
+                    <mat-form-field appearance="outline">
+                        <mat-label>Address Type</mat-label>
+                        <mat-select formControlName="addressTypeId" required>
+                            <mat-option *ngFor="let branch of addressTypes" [value]="branch.addressTypeId">{{
+                                branch.addressTypes }}</mat-option>
+                        </mat-select>
+                        <mat-error>Address Type is required</mat-error>
                     </mat-form-field>
 
-                    <mat-form-field appearance="outline" fxFlex="50%">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Local Area</mat-label>
+                        <input matInput formControlName="localArea" required>
+                        <mat-error>Local Area is required</mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
                         <mat-label>City</mat-label>
                         <input matInput formControlName="city" required>
-                        <mat-error>City area is required</mat-error>
+                        <mat-error>City is required</mat-error>
                     </mat-form-field>
 
-                    <mat-form-field appearance="outline" fxFlex="50%">
+                    <mat-form-field appearance="outline">
                         <mat-label>State</mat-label>
                         <input matInput formControlName="state" required>
                         <mat-error>State is required</mat-error>
                     </mat-form-field>
 
-                    <mat-form-field appearance="outline" fxFlex="50%">
+                    <mat-form-field appearance="outline">
                         <mat-label>Country</mat-label>
                         <input matInput formControlName="country" required>
                         <mat-error>Country is required</mat-error>
                     </mat-form-field>
 
-                    <mat-form-field appearance="outline" fxFlex="50%">
-                        <mat-label>Pin Code</mat-label>
-                        <input matInput formControlName="pinCode" required>
-                        <mat-error>Pin code is required</mat-error>
+                    <mat-form-field appearance="outline">
+                        <mat-label>PIN Code</mat-label>
+                        <input matInput formControlName="pinCode" type="number" required>
+                        <mat-error>Pin Code is required</mat-error>
                     </mat-form-field>
 
-                    
-
-                    <button mat-icon-button color="warn"  (click)="removeBranch(i)">
+                    <!-- Minus Button -->
+                    <button mat-icon-button color="warn" (click)="removeBranch(i)">
                         <mat-icon>remove</mat-icon>
                     </button>
                 </div>
             </div>
         </div>
-        <button mat-icon-button color="primary" type="button" (click)="addBranch()">
+
+        <!-- Plus Button -->
+        <button mat-icon-button color="primary" type="button" (click)="addBranches()">
             <mat-icon>add</mat-icon>
         </button>
     </div>
@@ -61,5 +93,5 @@
 
 <div mat-dialog-actions class="action" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px">
     <button mat-raised-button mat-dialog-close>Cancel</button>
-    <button mat-raised-button color="primary">{{ data ? 'Update' : 'Save' }}</button>
+    <button mat-raised-button color="primary" (click)="addCustomerDetails()" [disabled]="isSaving">{{ data ? 'Update' : 'Save' }}</button>
 </div>

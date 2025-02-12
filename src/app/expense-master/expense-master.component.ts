@@ -174,7 +174,7 @@ export class ExpenseMasterComponent {
     if (!voucherPayment && row.approval === 'Approved') {
       await this.dialog.open(PaymentDialogComponent, {
         width: '600px',
-        data: { voucherId: row.voucherId }
+        data: { voucherId: row.voucherId, empDetails: row}
       }).afterClosed().toPromise();
       await this.getVoucherExpenses();
     } else if (row.approval === 'Disapproved' || row.approval === 'Not Selected') {

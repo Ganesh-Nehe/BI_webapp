@@ -1,4 +1,4 @@
-<h2 mat-dialog-title>Add Payment Slip</h2>
+<h2 mat-dialog-title>Add Payment Slip of {{(data.empDetails.payableAmount) | currency:'INR':'symbol':'1.0-0'}} to {{data.empDetails.employeeFirstName}} {{data.empDetails.employeeLastName}} <br> Project Name : {{data.empDetails.projectName}}</h2>
 <mat-dialog-content>
     <div>
         <input type="file" (change)="onFileChange($event)">

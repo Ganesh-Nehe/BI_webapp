@@ -1,7 +1,13 @@
-<h2 mat-dialog-title>Add Advance Payment Slip</h2>
+<h2 mat-dialog-title>Add Advance Payment Slip to {{data.empDetails.employeeFirstName}} {{data.empDetails.employeeLastName}} <br> Project Name : {{data.empDetails.projectName}} </h2>
 <mat-dialog-content>
     <div>
-        <input type="file" (change)="onFileChange($event)">
+        <input 
+            type="file" 
+            (change)="onFileChange($event)" 
+            [disabled]="advancePaymentForm.get('advanceAmount')?.value === 0">
+        <p *ngIf="advancePaymentForm.get('advanceAmount')?.value === 0" style="color: red;">
+            System will attach an auto-generated PDF with text "NO ADVANCE AMOUNT PROVIDED".
+        </p>
     </div>
 </mat-dialog-content>
 <mat-dialog-content>
@@ -14,16 +20,16 @@
                     Advance Amount is required
                 </mat-error>
                 <mat-error *ngIf="advancePaymentForm.get('advanceAmount')?.hasError('min')">
-                    Amount must be greater than 0
+                    Amount must be 0 or greater than 0
                 </mat-error>
             </mat-form-field>
             <mat-form-field appearance="outline" fxFlex="50%">
-                <mat-label>Expense Date</mat-label>
+                <mat-label>Payment Date</mat-label>
                 <input matInput [matDatepicker]="picker" formControlName="advancePaymentDate" required>
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
                 <mat-error *ngIf="advancePaymentForm.get('advancePaymentDate')?.hasError('required')">
-                    Expense Date is required
+                    Payment Date is required
                 </mat-error>
             </mat-form-field>
         </div>

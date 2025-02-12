@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { APIService } from '../api.service';
 @Injectable({
@@ -20,7 +20,27 @@ export class CustomerService {
     };
 
     try {
-      const response = await this.http.get(`${baseApi}/API/customer?businessId=${businessId}`, httpOptions).toPromise();
+      const response = await this.http.get(`${baseApi}/API/getCustomerDetails/?businessId=${businessId}`, httpOptions).toPromise();
+      return response;
+    } catch (error) {
+      console.error('Error fetching all voucher expenses', error);
+      throw error; // Re-throw the error for further handling
+    }
+  }
+
+  async getCutomerDetailsById(customerId: any): Promise<any> {
+    const baseApi = this.apiService.getBaseApi();
+    const employeeId = localStorage.getItem('loggedInUserId');
+    const businessId = localStorage.getItem('businessId');
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + localStorage.getItem('loginToken')
+      })
+    };
+
+    try {
+      const response = await this.http.get(`${baseApi}/API/getCustomerDetailsbyId/?customerId=${customerId}`, httpOptions).toPromise();
       return response;
     } catch (error) {
       console.error('Error fetching all voucher expenses', error);

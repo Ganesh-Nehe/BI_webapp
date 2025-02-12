@@ -143,6 +143,7 @@ export class TravelExpenseMasterComponent {
   async openStatementDetailsDialog(row: any) {
     if (row.travelId !== null) {
       const res = await this.TravelExpenseMasterService.getTravelExpenseDetails(row);
+      console.log(res);
       const dialogRef = this.dialog.open(MasterTravelStatementDetailsComponent, {
         data: res
       });
@@ -208,7 +209,7 @@ export class TravelExpenseMasterComponent {
     if (!travelPayment && row.travelStatus === 'Approved') {
       await this.dialog.open(StatementPaymentDialogComponent, {
         width: '600px',
-        data: { travelId: row.travelId }
+        data: { travelId: row.travelId, empDetails: row }
       }).afterClosed().toPromise();
       await this.loadtravelEstimate();
     } else if (row.travelStatus === 'Disapproved' || row.travelStatus === 'Underprocess') {
@@ -287,7 +288,7 @@ export class TravelExpenseMasterComponent {
     if (!advancePayment && row.status === 'Approved') {
       await this.dialog.open(AdvancePaymentDialogComponent, {
         width: '600px',
-        data: { EstTravelHeadId : row.EstTravelHeadId  }
+        data: { EstTravelHeadId : row.EstTravelHeadId, empDetails: row }
       }).afterClosed().toPromise();
       await this.loadtravelEstimate();
     } else if (row.status === 'Disapproved' || row.status === 'Underprocess') {

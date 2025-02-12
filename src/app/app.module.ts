@@ -88,6 +88,11 @@ import { CustomerComponent } from './customer/customer.component';
 import { MaterialComponent } from './material/material.component';
 import { DocumentationComponent } from './documentation/documentation.component';
 import { AddCustomerDialogComponent } from './customer/add-customer-dialog/add-customer-dialog.component';
+import { AddressTypeComponent } from './address-type/address-type.component';
+import { AddAddressTypeDialogComponent } from './address-type/add-address-type-dialog/add-address-type-dialog.component';
+import { CustomerDetailsDialogComponent } from './customer/customer-details-dialog/customer-details-dialog.component';
+import { AddMaterialDialogComponent } from './material/add-material-dialog/add-material-dialog.component';
+import { AddChalanDialogComponent } from './documentation/add-chalan-dialog/add-chalan-dialog.component';
 
 @NgModule({ 
   declarations: [
@@ -150,7 +155,12 @@ import { AddCustomerDialogComponent } from './customer/add-customer-dialog/add-c
     CustomerComponent,
     MaterialComponent,
     DocumentationComponent,
-    AddCustomerDialogComponent
+    AddCustomerDialogComponent,
+    AddressTypeComponent,
+    AddAddressTypeDialogComponent,
+    CustomerDetailsDialogComponent,
+    AddMaterialDialogComponent,
+    AddChalanDialogComponent
   ],
   imports: [
     BrowserModule,

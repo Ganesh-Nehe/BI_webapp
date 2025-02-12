@@ -1,0 +1,54 @@
+<div mat-dialog-content #dialogContent>
+    <h2 mat-dialog-title>Cutomer Details</h2>
+    <table mat-table [dataSource]="[data.row]" class="mat-elevation-z8">
+      <ng-container matColumnDef="customerName">
+        <th mat-header-cell *matHeaderCellDef> Customer Name </th>
+        <td mat-cell *matCellDef="let element">{{ element.customerName }}</td>
+      </ng-container>
+  
+      <ng-container matColumnDef="contactPerson">
+        <th mat-header-cell *matHeaderCellDef> Contact Person</th>
+        <td mat-cell *matCellDef="let element">{{ element.contactPerson}}</td>
+      </ng-container>
+  
+      <ng-container matColumnDef="contactPersonNo">
+        <th mat-header-cell *matHeaderCellDef> Contact Person No </th>
+        <td mat-cell *matCellDef="let element">{{ element.contactPerson }}</td>
+      </ng-container>
+  
+      <ng-container matColumnDef="gstNo">
+        <th mat-header-cell *matHeaderCellDef> Gst No </th>
+        <td mat-cell *matCellDef="let element">{{ element.gstNo }}</td>
+      </ng-container>
+  
+      <tr mat-header-row *matHeaderRowDef="customerDetailsColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: customerDetailsColumns;"></tr>
+    </table>
+  
+    <h2 mat-dialog-title>Cutomer Branches</h2>
+    <table mat-table [dataSource]="data.res.data" class="mat-elevation-z8">
+  
+      <ng-container matColumnDef="branch">
+        <th mat-header-cell *matHeaderCellDef> Branch Type </th>
+        <td mat-cell *matCellDef="let element">{{element.addressTypes}} </td>
+      </ng-container>
+  
+      <ng-container matColumnDef="address">
+        <th mat-header-cell *matHeaderCellDef> Address </th>
+        <td mat-cell *matCellDef="let element">
+            {{element.localArea}},
+            {{element.city}},
+            {{element.state}},
+            {{element.country}},<br>
+            Pin: {{element.pinCode}}
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
+  <div mat-dialog-actions class="action">
+    <button mat-button mat-dialog-close class="btn btn-outline-dark" mat-raised-button color="primary">Close</button>
+  </div>
+  

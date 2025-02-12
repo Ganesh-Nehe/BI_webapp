@@ -35,7 +35,7 @@ export class AddTravelExpenseComponent implements OnInit {
       location: ['', Validators.required],
       purpose: ['', Validators.required],
       modeOfTransport: ['', Validators.required],
-      advanceRequest: ['' ,Validators.required],
+      advanceRequest: ['', Validators.required],
       estTravelExpenses: this.fb.array([])
     });
     this.travelExpenseForm.get('startDate')?.valueChanges.subscribe((startDate) => {
@@ -68,26 +68,37 @@ export class AddTravelExpenseComponent implements OnInit {
   private updateNoOfDays(): void {
     const startDate = this.travelExpenseForm.get('startDate')?.value;
     const endDate = this.travelExpenseForm.get('endDate')?.value;
-  
+
     if (startDate && endDate) {
       const start = new Date(startDate);
       const end = new Date(endDate);
-  
+
       // Calculate difference in days
       const diffTime = Math.abs(end.getTime() - start.getTime());
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1; // Include both start and end dates
-  
-      // Update each expense's noOfDays only if the field is enabled
+
       this.estTravelExpenses.controls.forEach((control) => {
         const noOfDaysControl = control.get('noOfDays');
-        if (noOfDaysControl?.enabled) {
-          noOfDaysControl.patchValue(diffDays, { emitEvent: false });
+        const travelHeadId = control.get('travelExpenseCatId')?.value;
+
+        if (noOfDaysControl) {
+          if (travelHeadId === 1 || travelHeadId === 5) {
+            noOfDaysControl.setValue(1, { emitEvent: false });
+            noOfDaysControl.disable();
+          } else {
+            if (!this.data) {
+              noOfDaysControl.enable();
+              if (!noOfDaysControl.dirty) {
+                noOfDaysControl.patchValue(diffDays, { emitEvent: false });
+              }
+            }
+          }
         }
       });
     }
     this.updateTotals();
   }
-  
+
 
   getAvailableHeads(index: number): any[] {
     const selectedHeads = this.estTravelExpenses.controls
@@ -130,7 +141,7 @@ export class AddTravelExpenseComponent implements OnInit {
 
   private populateExpenses(estTravelDetails: any) {
     this.estTravelExpenses.clear();
-  
+
     if (Array.isArray(estTravelDetails.data) && estTravelDetails.data.length > 0) {
       estTravelDetails.data.forEach((estExpense: any) => {
         const expenseGroup = this.createEstTravelExpenseGroup();
@@ -141,10 +152,10 @@ export class AddTravelExpenseComponent implements OnInit {
           noOfDays: estExpense.noOfDays,
           remark: estExpense.remark,
         });
-  
+
         // Trigger valueChanges logic for travelExpenseCatId
         expenseGroup.get('travelExpenseCatId')?.updateValueAndValidity();
-  
+
         this.estTravelExpenses.push(expenseGroup);
       });
     }
@@ -201,12 +212,12 @@ export class AddTravelExpenseComponent implements OnInit {
     const group = this.fb.group({
       travelExpenseCatId: ['', Validators.required],
       currencyId: ['', Validators.required],
-      unitCost: [0, Validators.required],     
+      unitCost: [0, Validators.required],
       noOfDays: [0, Validators.required],
       remark: ['', Validators.required],
       total: [0],
     });
-  
+
     group.get('travelExpenseCatId')?.valueChanges.subscribe((value) => {
       const noOfDaysControl = group.get('noOfDays');
       const numericValue = Number(value); // Convert to number for comparison
@@ -217,7 +228,7 @@ export class AddTravelExpenseComponent implements OnInit {
         noOfDaysControl?.enable(); // Allow changes for other IDs
       }
     });
-  
+
     return group;
   }
 
@@ -226,16 +237,16 @@ export class AddTravelExpenseComponent implements OnInit {
     this.isSaving = true;
     const userId = localStorage.getItem('loggedInUserId');
     const businessId = localStorage.getItem('businessId');
-  
+
     // Map form data to handle optional fields
     const formData = {
       ...this.travelExpenseForm.getRawValue(),
       employeeId: userId,
       businessId: businessId,
     };
-  
+
     if (this.travelExpenseForm.valid) {
-      try{
+      try {
         if (!this.data) {
           const result = await this.AddTravelExpenseService.addTravelEstimate(formData);
           this.dialogRef.close(true);
@@ -257,7 +268,7 @@ export class AddTravelExpenseComponent implements OnInit {
           });
         }
 
-      }catch{
+      } catch {
         console.error("Error !")
       } finally {
         this.isSaving = false; // Re-enable the button
@@ -267,5 +278,5 @@ export class AddTravelExpenseComponent implements OnInit {
       this.isSaving = false;
     }
   }
-  
+
 }

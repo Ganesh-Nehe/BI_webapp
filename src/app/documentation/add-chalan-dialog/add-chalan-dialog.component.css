@@ -1,0 +1,33 @@
+.content{
+    padding-top: 10px;
+}
+
+.row{
+    display: flex;
+    gap: 10px;
+}
+
+.action{
+    padding: 0px 25px 20px;
+    :is(button) {
+        flex: 1;
+    }
+}
+
+.dialog-header {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+    cursor: pointer;
+  }
+  
+  .header-link {
+    color: #3f51b5;
+    font-weight: bold;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  .header-link:hover {
+    color: #303f9f;
+  }
+  

@@ -8,7 +8,9 @@ import { AddVoucherExpenseComponent } from './add-voucher-expense/add-voucher-ex
 import { VoucherExpenseDetailsComponent } from './voucher-expense-details/voucher-expense-details.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DescriptionDetailDialogComponent } from './description-detail-dialog/description-detail-dialog.component';
-import { HttpResponse } from '@angular/common/http';
+import { HttpResponse, HttpClient, HttpHeaders } from '@angular/common/http';
+import { APIService } from 'src/app/api.service';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-voucher-expense',
@@ -17,13 +19,13 @@ import { HttpResponse } from '@angular/common/http';
 })
 export class VoucherExpenseComponent implements OnInit {
 
-  displayedColumns: string[] = ['serialNumber', 'ExpenseHead', 'CreateDate', 'TotalAmount', 'viewDetails', 'file_location','Status', 'edit', 'payment'];
+  displayedColumns: string[] = ['serialNumber', 'ExpenseHead', 'CreateDate', 'TotalAmount', 'viewDetails', 'file_location', 'Status', 'edit', 'submit', 'payment'];
   dataSource!: MatTableDataSource<any>;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private dialog: MatDialog, private voucherexpenseservice: VoucherExpenseService, private snackBar: MatSnackBar) { }
+  constructor(private dialog: MatDialog, private voucherexpenseservice: VoucherExpenseService, private snackBar: MatSnackBar, private http: HttpClient, private apiService: APIService) { }
 
   ngOnInit(): void {
     this.getVoucherExpenses();
@@ -47,16 +49,16 @@ export class VoucherExpenseComponent implements OnInit {
   }
 
   openDocument(file_location: string) {
-  
+
     // Replace backslashes with forward slashes if needed (for URL encoding)
     const normalizedLocation = file_location.replace(/\\/g, '/');
     const encodedFileLocation = encodeURIComponent(normalizedLocation);
-  
+
     this.voucherexpenseservice.getDocument(encodedFileLocation).subscribe((response: HttpResponse<Blob>) => {
       if (response.body) {
         // Create a Blob from the response body and specify the correct MIME type for PDF
         const blob = new Blob([response.body], { type: 'application/pdf' });
-  
+
         // Create a URL for the Blob and open it in a new tab
         const url = window.URL.createObjectURL(blob);
         window.open(url, '_blank');
@@ -132,12 +134,12 @@ export class VoucherExpenseComponent implements OnInit {
   }
 
   async openEditDialog(row: any) {
-    if (row.approval === 'Disapproved' || row.approval === 'Not Selected' ) {
+    if (row.approval === 'Disapproved' || row.approval === 'Not Selected') {
       const details = await this.voucherexpenseservice.getVoucherdetailsforId(row.voucherId);
       const dialogRef = this.dialog.open(AddVoucherExpenseComponent, {
-        data: {voucherHead : row, voucherDetails : details}, // Pass selected row data for editing
+        data: { voucherHead: row, voucherDetails: details }, // Pass selected row data for editing
       });
-    
+
       dialogRef.afterClosed().subscribe({
         next: (result) => {
           if (result) {
@@ -151,8 +153,40 @@ export class VoucherExpenseComponent implements OnInit {
         verticalPosition: 'top',
         horizontalPosition: 'center'
       });
-    }else{
+    } else {
       this.snackBar.open('Error', 'Close', {
+        duration: 3000,
+        verticalPosition: 'top',
+        horizontalPosition: 'center',
+        panelClass: ['snackbar-error']
+      });
+    }
+  }
+
+  async clickSubmit(row: any) {
+    const voucherId = row.voucherId;
+    const data = {submit: 'Submit'}
+    const baseApi = this.apiService.getBaseApi()
+    try {
+      const httpOptions = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + localStorage.getItem('loginToken')
+        })
+      };
+
+      const details = await firstValueFrom(
+        this.http.patch(`${baseApi}/API/expense/voucher/submission/${voucherId}`, {data}, httpOptions)
+      );
+      this.snackBar.open('Expense Submitted Successfully', 'Close', {
+        duration: 3000,
+        verticalPosition: 'top',
+        horizontalPosition: 'center',
+        panelClass: ['snackbar-success']
+      });
+      this.getVoucherExpenses();
+    } catch (error) {
+      this.snackBar.open('Error submitting expense', 'Close', {
         duration: 3000,
         verticalPosition: 'top',
         horizontalPosition: 'center',

@@ -22,6 +22,7 @@ import { LeaveMasterComponent } from './attendence/leave-master/leave-master.com
 import { CustomerComponent } from './customer/customer.component';
 import { MaterialComponent } from './material/material.component';
 import { DocumentationComponent } from './documentation/documentation.component';
+import { AddressTypeComponent } from './address-type/address-type.component';
 
 const routes: Routes = [
   { 
@@ -104,6 +105,10 @@ const routes: Routes = [
       {
         path: 'leave',
         component: LeaveMasterComponent
+      },
+      {
+        path: 'address-type',
+        component: AddressTypeComponent
       },
       {
         path: 'profile',

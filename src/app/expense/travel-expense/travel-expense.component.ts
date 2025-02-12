@@ -21,7 +21,7 @@ import * as e from 'cors';
 })
 export class TravelExpenseComponent implements OnInit {
 
-  displayedColumns: string[] = ['serialNumber', 'projectName', 'startDate', 'endDate', 'purpose', 'location', 'modeOfTransport', 'totalEstimateCost', 'viewDetails', 'status', 'edit', 'advancePayment', 'createStatement', 'viewStatementDetails', 'travelDocument', 'approval', 'editStatement', 'travelPayment'];
+  displayedColumns: string[] = ['serialNumber', 'projectName', 'startDate', 'endDate', 'purpose', 'location', 'modeOfTransport', 'totalEstimateCost', 'viewDetails', 'status', 'edit', 'advancePayment', 'createStatement', 'viewStatementDetails', 'travelDocument', 'approval', 'editStatement', 'submit', 'travelPayment'];
   dataSource!: MatTableDataSource<any>;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -51,7 +51,7 @@ export class TravelExpenseComponent implements OnInit {
   }
 
   async openAddDialog() {
-    const dialogRef = this.dialog.open(AddTravelExpenseComponent);
+    const dialogRef = this.dialog.open(AddTravelExpenseComponent,{disableClose: true});
     dialogRef.afterClosed().subscribe({
       next: (val) => {
         if (val) {
@@ -65,7 +65,8 @@ export class TravelExpenseComponent implements OnInit {
     const res = await this.TravelExpenseService.getEstTravelExpenseDetails(row);
     // console.log(res);
     const dialogRef = this.dialog.open(EstimateTravelExpenseDetailsComponent, {
-      data: { res, row }
+      data: { res, row },
+      disableClose: true
     });
     dialogRef.afterClosed().subscribe({
       next: (val) => {
@@ -84,6 +85,7 @@ export class TravelExpenseComponent implements OnInit {
           description: row.description
         },
         width: '500px',
+        disableClose: true
       });
     }
   }
@@ -93,6 +95,7 @@ export class TravelExpenseComponent implements OnInit {
       const details = await this.TravelExpenseService.getEstTraveldetailsforId(row.EstTravelHeadId);
       const dialogRef = this.dialog.open(AddTravelExpenseComponent, {
         data: { estTravelHead: row, estTravelDetails: details }, // Pass selected row data for editing
+        disableClose: true
       });
 
       dialogRef.afterClosed().subscribe({
@@ -126,7 +129,8 @@ export class TravelExpenseComponent implements OnInit {
     if (row.status === 'Approved' && row.travelId === null) {
       const details = await this.TravelExpenseService.getEstTraveldetailsforId(row.EstTravelHeadId);
       const dialogRef = this.dialog.open(TravelExpenseStatementComponent, {
-        data: { estTravelHead: row, form: 'saveStatement' } // Pass selected row data for editing
+        data: { estTravelHead: row, form: 'saveStatement' }, // Pass selected row data for editing
+        disableClose: true
       });
 
       dialogRef.afterClosed().subscribe({
@@ -163,7 +167,8 @@ export class TravelExpenseComponent implements OnInit {
     if (row.travelId !== null) {
       const res = await this.TravelExpenseService.getTravelExpenseDetails(row);
       const dialogRef = this.dialog.open(TravelStatementDetailComponent, {
-        data: res
+        data: res,
+        disableClose: true
       });
       dialogRef.afterClosed().subscribe({
         next: (val) => {
@@ -223,6 +228,26 @@ export class TravelExpenseComponent implements OnInit {
     }
   }
 
+    async clickSubmit(row: any) {
+      try {
+        const details = await this.TravelExpenseService.submitExpense(row.travelId)
+        this.snackBar.open('Travel Expense Submitted Successfully', 'Close', {
+          duration: 3000,
+          verticalPosition: 'top',
+          horizontalPosition: 'center',
+          panelClass: ['snackbar-success']
+        });
+        this.loadtravelEstimate();
+      } catch (error) {
+        this.snackBar.open('Error submitting Travel expense', 'Close', {
+          duration: 3000,
+          verticalPosition: 'top',
+          horizontalPosition: 'center',
+          panelClass: ['snackbar-error']
+        });
+      }
+    }
+
   async openPaymentDocument(travelPayment: boolean, file_location: string, row: any) {
     if (!travelPayment) {
       this.snackBar.open('Payment is not proceed yet !', 'Close', {
@@ -241,6 +266,7 @@ export class TravelExpenseComponent implements OnInit {
       const details = await this.TravelExpenseService.getTravelExpenseDetails(row);
       const dialogRef = this.dialog.open(TravelExpenseStatementComponent, {
         data: { TravelDetails: details, form: 'updateStatement' },
+        disableClose: true
       });
 
       dialogRef.afterClosed().subscribe({
@@ -277,9 +303,10 @@ export class TravelExpenseComponent implements OnInit {
       const dialogRef = this.dialog.open(DisapprovaldialogstatementComponent, {
         data: {
           travelId: row.travelId,
-          travelDescription: row.travelDescription
+          travelDescription: row.travelDescription,
         },
         width: '500px',
+        disableClose: true
       });
     }
   }

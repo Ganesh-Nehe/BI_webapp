@@ -1,0 +1,8 @@
+.action{
+    padding: 0px 25px 20px;
+    :is(button) {
+        flex: 1;
+    }
+    display: flex;
+    justify-content: flex-end;
+}

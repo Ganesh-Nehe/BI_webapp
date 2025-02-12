@@ -75,27 +75,20 @@
         <span><a [routerLink]="'/currency'">Currency Master</a></span>
       </li>
 
-      <li *ngIf="hasPermission('Currency')" class="nav-list-item">
-        <span></span>
+      <li *ngIf="hasPermission('Currency')" class="nav-list-item" (click)="navigateTo('/leave')">
+        <i class="fa-solid fa-dollar-sign"></i>
+        <span><a [routerLink]="'/leave'">Leave Master</a></span>
       </li>
 
-      <li *ngIf="hasPermission('Currency')" class="nav-list-item">
-        <span></span>
-      </li>
-
-      <li *ngIf="hasPermission('Currency')" class="nav-list-item">
-        <span></span>
-      </li>
-
-      <li *ngIf="hasPermission('Currency')" class="nav-list-item">
-        <span></span>
+      <li *ngIf="hasPermission('Currency')" class="nav-list-item" (click)="navigateTo('/address-type')">
+        <i class="fa-solid fa-dollar-sign"></i>
+        <span><a [routerLink]="'/address-type'">Address Type Master</a></span>
       </li>
 
       <li *ngIf="hasPermission('Currency')" class="nav-list-item">
         <span></span>
       </li>
       
-  
     </ul>
   </div>
   

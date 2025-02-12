@@ -26,6 +26,7 @@
     "mat-timepicker": "^5.1.8",
     "ngx-material-timepicker": "^13.1.1",
     "particles.js": "^2.0.0",
+    "pdf-lib": "^1.17.1",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.13.0"

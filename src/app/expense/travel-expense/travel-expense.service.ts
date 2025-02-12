@@ -101,4 +101,22 @@ export class TravelExpenseService {
       return this.http.get<HttpResponse<Blob>>(`${baseApi}/API/document/${encodedFileLocation}`, httpOptions);
     }
 
+    async submitExpense(travelId: number) {
+      const data = {submit: 'submit'};
+      const baseApi = this.apiService.getBaseApi();
+      const httpOptions = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + localStorage.getItem('loginToken')
+        })
+      };
+  
+      try {
+        const response = await this.http.patch(`${baseApi}/API/expense/travel/submission/${travelId}`, data, httpOptions).toPromise();
+        return response;
+      } catch (error) {
+        console.error('Error fetching voucher details', error);
+        throw error; // Re-throw the error for further handling
+      }
+    }
 }

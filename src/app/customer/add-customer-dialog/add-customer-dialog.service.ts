@@ -9,17 +9,16 @@ export class AddCustomerDialogService {
 
   constructor(private http: HttpClient, private apiService: APIService) { }
 
-  async addTravelEstimate(formData: any){
+  async addCustomerDeatils(formData: any){
     const baseApi = this.apiService.getBaseApi();
     const httpOptions = {
       headers: new HttpHeaders({
-        'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + localStorage.getItem('loginToken')
       })
     };
 
     try {
-      const response = await this.http.post(`${baseApi}/API/expense/addtravelEstimate`, formData, httpOptions).toPromise();
+      const response = await this.http.post(`${baseApi}/API/addCustomerDetails/`, formData, httpOptions).toPromise();
       return response;
     } catch (error) {
       console.error('Error:', error);
@@ -27,17 +26,16 @@ export class AddCustomerDialogService {
     }
   }
 
-  async updateTravelEstimate(formData: any) {
+  async updateCustomerDeatils(formData: any) {
     const baseApi = this.apiService.getBaseApi();
     const httpOptions = {
       headers: new HttpHeaders({
-        'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + localStorage.getItem('loginToken')
       })
     };
 
     try {
-      const response = await this.http.post(`${baseApi}/API/expense/updatetravelEstimate`, formData, httpOptions).toPromise();
+      const response = await this.http.post(`${baseApi}/API/updaterCustomerDetails/`, formData, httpOptions).toPromise();
       return response;
     } catch (error) {
       console.error('Error:', error);

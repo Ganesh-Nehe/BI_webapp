@@ -139,6 +139,19 @@
             </td>
           </ng-container>
 
+          
+          <ng-container matColumnDef="submit">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header style="max-width: 90px;">Expense Submission</th>
+            <td mat-cell *matCellDef="let row" style="max-width: 90px;">
+              <button mat-raised-button [color]="row.submission ? 'primary' : 'warn'"
+                [ngStyle]="{'background-color': row.submission ? 'green' : 'red', 'color': 'white'}"
+                *ngIf="!row.submission" (click)="clickSubmit(row)">
+                Submit
+              </button>
+              <span *ngIf="row.submission">Submitted!</span>
+            </td>
+          </ng-container>
+
           <ng-container matColumnDef="travelPayment">
             <th mat-header-cell *matHeaderCellDef mat-sort-header style="max-width: 80px;">Payment</th>
             <td mat-cell *matCellDef="let row" style="max-width: 80px;">

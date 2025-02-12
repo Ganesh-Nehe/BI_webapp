@@ -5,8 +5,9 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CustomerService } from './customer.service';
-import { AddCustomerDialogComponent } from './add-customer-dialog/add-customer-dialog.component'
-
+import { AddCustomerDialogComponent } from './add-customer-dialog/add-customer-dialog.component';
+import { CustomerDetailsDialogComponent } from './customer-details-dialog/customer-details-dialog.component'
+import { HttpResponse } from '@angular/common/http';
 @Component({
   selector: 'app-customer',
   templateUrl: './customer.component.html',
@@ -15,7 +16,7 @@ import { AddCustomerDialogComponent } from './add-customer-dialog/add-customer-d
 export class CustomerComponent {
 
 
-  displayedColumns: string[] = ['serialNumber','customerName'];
+  displayedColumns: string[] = ['serialNumber', 'customerName', 'contactPerson', 'contactPersonNo', 'gstNo', 'viewDetails', 'edit'];
   dataSource!: MatTableDataSource<any>;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -31,7 +32,7 @@ export class CustomerComponent {
     try {
       const res = await this.customerService.loadCustomerList();
       const dataArray = Array.isArray(res.data) ? res.data : [];
-      this.dataSource = new MatTableDataSource(dataArray.reverse());
+      this.dataSource = new MatTableDataSource(dataArray);
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
     } catch (err) {
@@ -44,8 +45,8 @@ export class CustomerComponent {
     }
   }
 
-  openAddDialog(){
-    const dialogRef = this.dialog.open(AddCustomerDialogComponent);
+  openAddDialog() {
+    const dialogRef = this.dialog.open(AddCustomerDialogComponent, {disableClose: true});
     dialogRef.afterClosed().subscribe({
       next: (val) => {
         if (val) {
@@ -54,9 +55,41 @@ export class CustomerComponent {
       }
     });
   }
-  
+
   getSerialNumber(index: number): number {
     return index + 1 + (this.paginator.pageIndex * this.paginator.pageSize);
+  }
+
+  async openCustomerDetailsDialog(row: any) {
+    const res = await this.customerService.getCutomerDetailsById(row.customerId);
+    const dialogRef = this.dialog.open(CustomerDetailsDialogComponent, {
+      data: { res, row},
+      width: '900px',
+      disableClose: true
+    });
+    dialogRef.afterClosed().subscribe({
+      next: (val) => {
+        if (val) {
+          this.loadCustomerList();
+        }
+      }
+    });
+  }
+
+  async openEditDialog(row: any) {
+    const res = await this.customerService.getCutomerDetailsById(row.customerId);
+    const dialogRef = this.dialog.open(AddCustomerDialogComponent, {
+      disableClose: true,
+      width: '900px',
+      data: { res, row}
+    });
+    dialogRef.afterClosed().subscribe({
+      next: (val) => {
+        if (val) {
+          this.loadCustomerList();
+        }
+      }
+    });
   }
 
   applyFilter(event: Event) {
@@ -67,5 +100,4 @@ export class CustomerComponent {
       this.dataSource.paginator.firstPage();
     }
   }
-
 }

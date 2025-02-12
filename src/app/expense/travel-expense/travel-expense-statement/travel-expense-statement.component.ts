@@ -92,6 +92,9 @@ export class TravelExpenseStatementComponent {
       purpose: travelHead.purpose,
       modeOfTransport: travelHead.modeOfTransport,
     });
+
+    this.travelExpenseForm.get('startDate')?.disable();
+    this.travelExpenseForm.get('endDate')?.disable();
   }
 
   private populateExpenses(estTravelDetails: any) {
@@ -127,6 +130,9 @@ export class TravelExpenseStatementComponent {
       purpose: travelheadDetails.purpose,
       modeOfTransport: travelheadDetails.modeOfTransport,
     });
+
+    this.travelExpenseForm.get('startDate')?.disable();
+    this.travelExpenseForm.get('endDate')?.disable();
   }
 
   populateExpenses_update(travelDetails:any){

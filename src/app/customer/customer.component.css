@@ -87,12 +87,3 @@ button.mat-raised-button {
     padding: 0 16px;
 }
 
-.scrollable-container {
-    overflow-x: auto;
-    max-width: 100%; /* Ensures the container doesn't overflow beyond the card */
-  }
-  
-  .custom-table {
-    min-width: 1500px; /* Set a minimum width to ensure the table is scrollable */
-  }
-
