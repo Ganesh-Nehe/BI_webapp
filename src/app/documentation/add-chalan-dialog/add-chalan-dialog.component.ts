@@ -6,6 +6,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AddChalanDialogService } from './add-chalan-dialog.service';
+import { MatSelectChange } from '@angular/material/select';
 
 @Component({
   selector: 'app-add-chalan-dialog',
@@ -18,6 +19,10 @@ export class AddChalanDialogComponent {
   chalanForm: FormGroup;
   addressTypes: any[] = [];
   selectedFile: File = null!;
+  customers: any[] = [];
+  selectedCustomer: any = null;
+  locations: any[] = [];
+  selectedLocation: any = null;
   isSaving = false;
 
   constructor(
@@ -30,53 +35,67 @@ export class AddChalanDialogComponent {
     private http: HttpClient
   ) {
     this.chalanForm = this.fb.group({
-      itemCode: ['', Validators.required],
-      itemDesc: ['', Validators.required],
-      SAC_HSNcode: ['', Validators.required],
-      quantity: ['', Validators.required],
-      unit: ['', Validators.required],
+      customerId: [, Validators.required],
+      addressId: [, Validators.required],
+      preparedBy: ['', Validators.required],
+      chalanDate: [, Validators.required],
+      isReturnable: [],
+      returnDate: [],
+      PoNo: ['', Validators.required],
+      PODate: [ , Validators.required],
       materials: this.fb.array([])
+    });
+    this.chalanForm.get('customerId')?.valueChanges.subscribe((customerId) => {
+      this.updateSelectedCustomer(customerId);
+      this.loadLocations();
+    });
+    this.chalanForm.get('addressId')?.valueChanges.subscribe((addressId) => {
+      this.updateSelectedAdress(addressId);
     });
   }
 
   ngOnInit(): void {
-    this.loadAddressTypes();
     this.addBranches();
+    this.loadCustomers();
 
-    // if (this.data) {
-    //   console.log(this.data);
-    //   this.populateForm(this.data.row);
-    //   this.populateBranches(this.data.res);
-    // }
+    if (this.data) {
+      console.log(this.data);
+      this.populateForm(this.data.row);
+      this.populateBranches(this.data.res);
+    }
   }
 
   private populateForm(customerDetails: any) {
     this.chalanForm.patchValue({
-      customerName: customerDetails.customerName,
-      contactPerson: customerDetails.contactPerson,
-      contactPersonNo: customerDetails.contactPersonNo,
-      gstNo: customerDetails.gstNo
-      // Any other fields from voucherHead can be populated here
+      customerId: customerDetails.customerId,
+      addressId: customerDetails.addressId,
+      preparedBy: customerDetails.preparedBy,
+      chalanDate: customerDetails.chalanDate,
+      isReturnable: customerDetails.isReturnable,
+      returnDate: customerDetails.returnDate,
+      PoNo: customerDetails.PoNo,
+      PODate: customerDetails.PODate,
+
     });
+    this.updateSelectedCustomer(customerDetails.customerId);
   }
 
-  private populateBranches(customerAddresses: any) {
+  private populateBranches(materials: any) {
     this.materials.clear(); // Clear existing form groups in the expenses array
 
-    if (Array.isArray(customerAddresses.data) && customerAddresses.data.length > 0) {
-      customerAddresses.data.forEach((branch: any) => {
-        const branchGroup = this.createBranchGroup();
+    if (Array.isArray(materials.data) && materials.data.length > 0) {
+      materials.data.forEach((branch: any) => {
+        const materialGroup = this.createBranchGroup();
 
-        branchGroup.patchValue({
-          addressTypeId: branch.addressTypeId,
-          localArea: branch.localArea,
-          city: branch.city,
-          state: branch.state,
-          country: branch.country,
-          pinCode: branch.pinCode
+        materialGroup.patchValue({
+          itemCode: branch.itemCode,
+          itemDesc: branch.itemDesc,
+          SAC_HSNcode: branch.SAC_HSNcode,
+          quantity : branch.quantity,
+          unit: branch.unit
         });
 
-        this.materials.push(branchGroup);
+        this.materials.push(materialGroup);
       });
     }
   }
@@ -87,13 +106,42 @@ export class AddChalanDialogComponent {
 
   createBranchGroup(): FormGroup {
     return this.fb.group({
-      addressTypeId: [, Validators.required],
-      localArea: ['', Validators.required],
-      city: ['', Validators.required],
-      state: ['', Validators.required],
-      country: ['', Validators.required],
-      pinCode: ['', Validators.required]
+      itemCode: ['', Validators.required],
+      itemDesc: ['', Validators.required],
+      SAC_HSNcode: ['', Validators.required],
+      quantity: ['', Validators.required],
+      unit: ['', Validators.required],
     });
+  }
+
+  updateSelectedCustomer(customerId: number) {
+    this.selectedCustomer = this.customers.find(c => c.customerId === customerId) || null;
+    console.log("Selected Customer Details:", this.selectedCustomer);
+  }
+
+  updateSelectedAdress(addressId: number) {
+    this.selectedLocation = this.locations.find(l => l.addressId === addressId) || null;
+    console.log("Selected Customer Details:", this.selectedLocation);
+  }
+
+  async loadCustomers() {
+    try {
+      const response = await this.addChalanDialogService.loadCustomerList()
+      this.customers = response.data;
+    } catch (error) {
+      console.error('Error fetching customer:', error);
+    }
+  }
+
+  async loadLocations() {
+    const customerId = this.chalanForm.get('customerId')?.value;
+    console.log(customerId)
+    try {
+      const response = await this.addChalanDialogService.loadLocationList(customerId)
+      this.locations = response.data;
+    } catch (error) {
+      console.error('Error fetching locations:', error);
+    }
   }
 
   addBranches(): void {
@@ -104,74 +152,66 @@ export class AddChalanDialogComponent {
     this.materials.removeAt(index);
   }
 
-  onFileChange(event: any) {
-    this.selectedFile = event.target.files[0];
-  }
-
-  async loadAddressTypes(): Promise<void> {
-    const baseApi = this.apiService.getBaseApi();
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + localStorage.getItem('loginToken')
-      })
-    };
-
-    try {
-      const response: any = await this.http.get(`${baseApi}/API/addressTypes/`, httpOptions).toPromise();
-      this.addressTypes = response.data;
-    } catch (error) {
-      console.error('Error fetching voucher heads:', error);
-    }
-  }
-
-  async addCustomerDetails(): Promise<void> {
+  async addChalanDetails(): Promise<void> {
     if (this.isSaving) return;
     this.isSaving = true;
-    const businessId = localStorage.getItem('businessId');
-    const baseApi = this.apiService.getBaseApi();
-    const formData = new FormData();
-
-    formData.append('customerName', this.chalanForm.value.customerName);
-    formData.append('contactPerson', this.chalanForm.value.contactPerson);
-    formData.append('contactPersonNo', this.chalanForm.value.contactPersonNo);
-    formData.append('gstNo', this.chalanForm.value.gstNo);
-    formData.append('businessId', businessId ?? '');
-
-    if (this.selectedFile) {
-      formData.append('file', this.selectedFile, this.selectedFile.name);
-    }
-
-    this.chalanForm.value.materials.forEach((materials: any, index: number) => {
-      Object.keys(materials).forEach(key => {
-        formData.append(`materials[${index}][${key}]`, materials[key]);
-      });
-    });
-
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Authorization': 'Bearer ' + localStorage.getItem('loginToken')
-      })
+    const formData = this.chalanForm.getRawValue();
+    const businessId: number = Number(localStorage.getItem('businessId'));
+    const requestData = { 
+      ...formData, 
+      businessId, 
+      returnDate: formData.returnDate ? formData.returnDate : null,
+      isReturnable: formData.isReturnable ? true : null
     };
-    if (this.chalanForm.valid) {
+    
+    //console.log(requestData);
+
+    const requiredFields = ['customerId', 'addressId', 'preparedBy', 'chalanDate', 'PoNo', 'PODate']; 
+    const isFormValid = requiredFields.every(field => requestData[field]); // check every field except returnDate and isReturnable
+    if (isFormValid) {
       if (!this.data) {
         try {
-          const res = await this.addChalanDialogService.addCustomerDeatils(formData);
-          console.log('API Response:', res);
+          const res = await this.addChalanDialogService.addChalanDetails(requestData);
+          this.snackBar.open('Chalan Details Addess Successsfully', 'Close', {
+            duration: 3000,
+            verticalPosition: 'top',
+            horizontalPosition: 'center',
+            panelClass: ['snackbar-success']
+          });
           this.dialogRef.close(true);
         } catch (error) {
-          console.error('API Error:', error);
+          this.snackBar.open('Error Adding Chalam Details', 'Close', {
+            duration: 3000,
+            verticalPosition: 'top',
+            horizontalPosition: 'center',
+            panelClass: ['snackbar-error']
+          });
         } finally {
           this.isSaving = false;
         }
       } else {
-        formData.append('customerId', this.data.row.customerId);
         try {
-          const res = await this.addChalanDialogService.updateCustomerDeatils(formData);
-          console.log('API Response:', res);
+          const chalanId = this.data.row.chalanId;
+          const updateData = { 
+            ...requestData, 
+            chalanId,
+
+          };
+          const res = await this.addChalanDialogService.updateChalanDetails(updateData);
+          this.snackBar.open('Chalan Details Updated Successfully', 'Close', {
+            duration: 3000,
+            verticalPosition: 'top',
+            horizontalPosition: 'center',
+            panelClass: ['snackbar-error']
+          });
           this.dialogRef.close(true);
         } catch (error) {
-          console.error('API Error:', error);
+          this.snackBar.open('Error Updating Chalan Details', 'Close', {
+            duration: 3000,
+            verticalPosition: 'top',
+            horizontalPosition: 'center',
+            panelClass: ['snackbar-error']
+          });
         } finally {
           this.isSaving = false;
         }

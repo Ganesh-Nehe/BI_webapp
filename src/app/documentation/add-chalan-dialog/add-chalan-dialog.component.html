@@ -1,16 +1,94 @@
-
 <form [formGroup]="chalanForm">
     <div mat-dialog-content class="content">
         <div mat-dialog-title>Add Customer Details</div>
-        <div fxLayout="row" fxLayoutGap="10px">
+        <div fxLayout="row" fxLayoutGap="10px" class="customer">
             <mat-form-field appearance="outline" fxFlex="20%">
-                <mat-select>Choose Customer</mat-select>
-                <input matInput formControlName="customerId" required>
-                <mat-error>Cutomer is required</mat-error>
+                <mat-label>Customer</mat-label>
+                <mat-select formControlName="customerId">
+                    <mat-option *ngFor="let customer of customers" [value]="customer.customerId">{{
+                        customer.customerName }}</mat-option>
+                </mat-select>
+                <mat-error>Customer is required</mat-error>
             </mat-form-field>
+
+            <mat-form-field *ngIf="chalanForm.get('customerId')?.value" appearance="outline" fxFlex="20%">
+                <mat-label>Delivery Location</mat-label>
+                <mat-select formControlName="addressId">
+                    <mat-option *ngFor="let location of locations" [value]="location.addressId">{{
+                        location.addressTypes }}</mat-option>
+                </mat-select>
+                <mat-error>Location is required</mat-error>
+            </mat-form-field>
+            <span *ngIf="selectedCustomer">
+                <strong>Customer :</strong> {{ selectedCustomer.customerName || '' }} <br>
+                <strong>GST No :</strong> {{ selectedCustomer.gstNo || '' }}<br>
+            </span>
+            <span *ngIf="selectedCustomer">
+                <strong>Contact Person No :</strong> {{ selectedCustomer.contactPerson || '' }} <br>
+                <strong>Contact Person :</strong> {{ selectedCustomer.contactPersonNo || '' }}<br>
+            </span>
+            <br>
+        </div>
+        <div class="delivery-address">
+            <span *ngIf="selectedLocation">
+                <strong>Delivery Address :</strong> 
+                {{ selectedLocation.addressTypes || '' }} :
+                {{ selectedLocation.localArea || '' }}
+                {{ selectedLocation.city || '' }}
+                {{ selectedLocation.state || '' }}
+                {{ selectedLocation.country || '' }}
+                {{ selectedLocation.pinCode || '' }}
+            </span>
         </div>
 
         <hr>
+
+        <div fxLayout="row" fxLayoutGap="10px" class="customer"> 
+            <mat-form-field appearance="outline" fxFlex="50%">
+                <mat-label>Prepared By:</mat-label>
+                <input matInput formControlName="preparedBy" required>
+                <mat-error>Prepared By is required</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline"  fxFlex="50%">
+                <mat-label>Challan Date</mat-label>
+                <input matInput [matDatepicker]="chalanDatepicker" formControlName="chalanDate" required
+                    [value]="chalanForm.get('chalanDate')?.value | date: 'yyyy-MM-dd'">
+                <mat-datepicker-toggle matSuffix [for]="chalanDatepicker"></mat-datepicker-toggle>
+                <mat-datepicker #chalanDatepicker></mat-datepicker>
+                <mat-error>Challan Date is required</mat-error>
+            </mat-form-field>
+
+            <mat-checkbox formControlName="isReturnable"  fxFlex="50%">
+                Is Returnable
+            </mat-checkbox>
+
+            <mat-form-field appearance="outline"  fxFlex="50%">
+                <mat-label>Return Date</mat-label>
+                <input matInput [matDatepicker]="returnDatepicker" formControlName="returnDate" required
+                    [value]="chalanForm.get('returnDate')?.value | date: 'yyyy-MM-dd'">
+                <mat-datepicker-toggle matSuffix [for]="returnDatepicker"></mat-datepicker-toggle>
+                <mat-datepicker #returnDatepicker></mat-datepicker>
+                <mat-error>Return Date is required</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" fxFlex="50%">
+                <mat-label>PO No.</mat-label>
+                <input matInput formControlName="PoNo" required>
+                <mat-error>PO No. is required</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline"  fxFlex="50%">
+                <mat-label>PO Date</mat-label>
+                <input matInput [matDatepicker]="PODatepicker" formControlName="PODate" required
+                    [value]="chalanForm.get('PODate')?.value | date: 'yyyy-MM-dd'">
+                <mat-datepicker-toggle matSuffix [for]="PODatepicker"></mat-datepicker-toggle>
+                <mat-datepicker #PODatepicker></mat-datepicker>
+                <mat-error>PO Date is required</mat-error>
+            </mat-form-field>
+        </div>
+
+        <hr>        
 
         <div mat-dialog-title>Add Materials</div>
         <div formArrayName="materials">
@@ -23,7 +101,7 @@
                         <mat-error>Item Code is required</mat-error>
                     </mat-form-field>
 
-                    <mat-form-field appearance="outline">
+                    <mat-form-field appearance="outline" fxFlex="40%">
                         <mat-label>Description</mat-label>
                         <input matInput formControlName="itemDesc" required>
                         <mat-error>Description is required</mat-error>
@@ -31,13 +109,13 @@
 
                     <mat-form-field appearance="outline">
                         <mat-label>SAC/HSN Code</mat-label>
-                        <input matInput formControlName="SAC_HSNcode" required>
+                        <input matInput formControlName="SAC_HSNcode" type="number" required>
                         <mat-error>SAC/HSN Code is required</mat-error>
                     </mat-form-field>
 
                     <mat-form-field appearance="outline">
                         <mat-label>Quantity</mat-label>
-                        <input matInput formControlName="quantity" required>
+                        <input matInput formControlName="quantity" type="number" required>
                         <mat-error>Quantity is required</mat-error>
                     </mat-form-field>
 
@@ -64,5 +142,6 @@
 
 <div mat-dialog-actions class="action" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px">
     <button mat-raised-button mat-dialog-close>Cancel</button>
-    <button mat-raised-button color="primary" (click)="addCustomerDetails()" [disabled]="isSaving">{{ data ? 'Update' : 'Save' }}</button>
+    <button mat-raised-button color="primary" (click)="addChalanDetails()" [disabled]="isSaving">{{ data ? 'Update' :
+        'Save' }}</button>
 </div>

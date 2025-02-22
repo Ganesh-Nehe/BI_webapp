@@ -229,17 +229,26 @@ export class TravelExpenseComponent implements OnInit {
   }
 
     async clickSubmit(row: any) {
-      try {
-        const details = await this.TravelExpenseService.submitExpense(row.travelId)
-        this.snackBar.open('Travel Expense Submitted Successfully', 'Close', {
-          duration: 3000,
-          verticalPosition: 'top',
-          horizontalPosition: 'center',
-          panelClass: ['snackbar-success']
-        });
-        this.loadtravelEstimate();
-      } catch (error) {
-        this.snackBar.open('Error submitting Travel expense', 'Close', {
+      if (row.travelId !== null && row.travelId !== undefined){
+        try {
+          const details = await this.TravelExpenseService.submitExpense(row.travelId)
+          this.snackBar.open('Travel Expense Submitted Successfully', 'Close', {
+            duration: 3000,
+            verticalPosition: 'top',
+            horizontalPosition: 'center',
+            panelClass: ['snackbar-success']
+          });
+          this.loadtravelEstimate();
+        } catch (error) {
+          this.snackBar.open('Error submitting Travel expense', 'Close', {
+            duration: 3000,
+            verticalPosition: 'top',
+            horizontalPosition: 'center',
+            panelClass: ['snackbar-error']
+          });
+        }
+      } else{
+        this.snackBar.open('Travel Statement not created yet !', 'Close', {
           duration: 3000,
           verticalPosition: 'top',
           horizontalPosition: 'center',

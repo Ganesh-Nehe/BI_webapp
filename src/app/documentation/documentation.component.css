@@ -3,10 +3,10 @@
     padding: 20px; 
 }
 
-.filter-input {
+/* .filter-input {
     margin-top: 10px;
     width: 50%;
-}
+} */
 
 .table-card{
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
@@ -86,4 +86,3 @@ button.mat-raised-button {
     margin: 0;
     padding: 0 16px;
 }
-

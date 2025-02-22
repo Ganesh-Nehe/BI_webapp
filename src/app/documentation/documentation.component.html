@@ -1,38 +1,99 @@
 <div class="page-container">
-    <h3>Documentation</h3>
-    <div class="d-flex">
-      <button class="btn btn-outline-dark ms-auto" type="submit" (click)="openAddDialog()">Create Chalan</button>
-    </div>
-  
-    <mat-form-field class="filter-input">
+  <h3>Documentation</h3>
+  <div class="d-flex">
+    <button class="btn btn-outline-dark ms-auto" type="submit" (click)="openAddDialog()">Fill Challan Details</button>
+  </div>
+
+  <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px" class="filter">
+    <mat-form-field class="filter-input" fxFlex="40%">
       <mat-label>Filter</mat-label>
       <input matInput (keyup)="applyFilter($event)" placeholder="">
     </mat-form-field>
-  
-    <mat-card class="table-card">
-      <div class="table-container">
-          <table mat-table [dataSource]="dataSource" matSort class="custom-table">
-            <ng-container matColumnDef="serialNumber">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header
-                style="max-width: 20px; white-space: normal; word-wrap: break-word;"> Sr. no </th>
-              <td mat-cell *matCellDef="let row; let i = index"
-                style="max-width: 20px; white-space: normal; word-wrap: break-word;"> {{ getSerialNumber(i) }} </td>
-            </ng-container>
-  
-            <ng-container matColumnDef="customerName">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header> Customer Name </th>
-              <td mat-cell *matCellDef="let row"> {{row.customerName}}</td>
-            </ng-container>
-  
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-  
-            <!-- Row shown when there is no matching data. -->
-            <tr class="mat-row" *matNoDataRow>
-              <!-- <td class="mat-cell" colspan="4">No data matching the filter"{{input.value}}"</td> -->
-            </tr>
-          </table>
-      </div>
-      <mat-paginator [pageSizeOptions]="[10, 25, 100]" aria-label="Select page of users"></mat-paginator>
-    </mat-card>
+    <mat-checkbox fxFlex="15%" [(ngModel)]="filterAll" (change)="toggleAllFilter()" >All</mat-checkbox>
+    <mat-checkbox fxFlex="15%" [(ngModel)]="filterNonReturnable" (change)="toggleCheckboxFilter()" >Non Returnable</mat-checkbox>
+    <mat-checkbox fxFlex="15%" [(ngModel)]="filterReturnable" (change)="toggleCheckboxFilter()">Returnable</mat-checkbox>
+    <mat-checkbox fxFlex="15%" [(ngModel)]="filterReturned" (change)="toggleCheckboxFilter()">Returned</mat-checkbox>
   </div>
+
+  <mat-card class="table-card">
+    <div class="table-container">
+      <table mat-table [dataSource]="dataSource" matSort class="custom-table">
+        <ng-container matColumnDef="serialNumber">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header
+            style="max-width: 20px; white-space: normal; word-wrap: break-word;"> Sr. no </th>
+          <td mat-cell *matCellDef="let row; let i = index"
+            style="max-width: 20px; white-space: normal; word-wrap: break-word;"> {{ getSerialNumber(i) }} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="chalanId">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Chalan IDs </th>
+          <td mat-cell *matCellDef="let row"> {{row.chalanNo}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="customerName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Customer Name </th>
+          <td mat-cell *matCellDef="let row"> {{row.customerName}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="contactPerson">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Contact Details </th>
+          <td mat-cell *matCellDef="let row"> {{row.contactPerson}} <br>No.: {{row.contactPersonNo}}
+          <td>
+        </ng-container>
+
+        <ng-container matColumnDef="deliveryLocation">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Delivery Location </th>
+          <td mat-cell *matCellDef="let row"> {{row.localArea}}, <Br>
+            {{row.city}}, {{row.state}}, {{row.country}}, {{row.pinCode}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="viewDetails">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> View Challan Details </th>
+          <td mat-cell *matCellDef="let row"> <button mat-raised-button color="primary"
+              (click)="openDetailsDialog(row)"> View </button></td>
+        </ng-container>
+
+        <ng-container matColumnDef="edit">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Edit Challan Details </th>
+          <td mat-cell *matCellDef="let row"> <button mat-raised-button color="accent" (click)="openEditDialog(row)">
+              Edit </button></td>
+        </ng-container>
+
+        <ng-container matColumnDef="print">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Print Chalan </th>
+          <td mat-cell *matCellDef="let row"> <button mat-raised-button style="background-color: yellow; color: black;"
+              (click)="printChalan(row)"> Print </button></td>
+        </ng-container>
+
+        <ng-container matColumnDef="isReturned">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Returned Challan </th>
+          <td mat-cell *matCellDef="let row">
+            <ng-container *ngIf="row.isReturnable !== null && row.isReturned === null; else returned">
+              <button mat-raised-button color="primary" (click)="isReturned(true , row.chalanId)"
+                style="background-color: rgb(0, 156, 13); color: white;">
+                Returned? </button>
+            </ng-container>
+            <ng-template #returned>
+              <ng-container *ngIf="row.isReturned !== null && row.isReturnable !== null; else notReturned">
+                {{(row.returnedDate) | date: 'mediumDate'}}
+              </ng-container>
+            </ng-template>
+            <ng-template #notReturned>
+              <ng-container>
+              </ng-container>
+            </ng-template>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+        <!-- Row shown when there is no matching data. -->
+        <tr class="mat-row" *matNoDataRow>
+          <!-- <td class="mat-cell" colspan="4">No data matching the filter"{{input.value}}"</td> -->
+        </tr>
+      </table>
+    </div>
+    <mat-paginator [pageSizeOptions]="[10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+  </mat-card>
+</div>

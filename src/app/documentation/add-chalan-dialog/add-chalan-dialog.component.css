@@ -30,4 +30,13 @@
   .header-link:hover {
     color: #303f9f;
   }
+
+.customer{
+    display: flex;
+    justify-content: flex-start;
+}
+
+.delivery-address {
+    padding-left: 42%;
+}
   

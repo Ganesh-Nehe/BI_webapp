@@ -93,6 +93,7 @@ import { AddAddressTypeDialogComponent } from './address-type/add-address-type-d
 import { CustomerDetailsDialogComponent } from './customer/customer-details-dialog/customer-details-dialog.component';
 import { AddMaterialDialogComponent } from './material/add-material-dialog/add-material-dialog.component';
 import { AddChalanDialogComponent } from './documentation/add-chalan-dialog/add-chalan-dialog.component';
+import { ViewChalanDialogComponent } from './documentation/view-chalan-dialog/view-chalan-dialog.component';
 
 @NgModule({ 
   declarations: [
@@ -160,7 +161,8 @@ import { AddChalanDialogComponent } from './documentation/add-chalan-dialog/add-
     AddAddressTypeDialogComponent,
     CustomerDetailsDialogComponent,
     AddMaterialDialogComponent,
-    AddChalanDialogComponent
+    AddChalanDialogComponent,
+    ViewChalanDialogComponent
   ],
   imports: [
     BrowserModule,

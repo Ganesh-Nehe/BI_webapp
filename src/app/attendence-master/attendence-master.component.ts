@@ -16,7 +16,7 @@ import { GenerateSalarySlipDialogComponent } from './generate-salary-slip-dialog
 })
 export class AttendenceMasterComponent implements OnInit {
 
-  displayedColumns: string[] = ['serialNumber', 'employeeId', 'employeeName', 'leaveDetails', 'salarySlip'];
+  displayedColumns: string[] = ['serialNumber', 'employeeId', 'employeeName', 'privilegeLeave', 'casualLeave', 'totalLeaveTaken', 'totalLeaveRemaining', 'salarySlip'];
   dataSource!: MatTableDataSource<any>;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -28,7 +28,7 @@ export class AttendenceMasterComponent implements OnInit {
     'November', 'December'
   ];
   years: number[] = [];
-  selectMonth = new FormControl(new Date().getMonth());
+  selectMonth = new FormControl(new Date().getMonth() - 1);
   selectYear = new FormControl(new Date().getFullYear());
 
   constructor(private dialog: MatDialog, private snackBar: MatSnackBar, private AttendenceMasterService: AttendenceMasterService) { }
@@ -47,49 +47,49 @@ export class AttendenceMasterComponent implements OnInit {
   }
 
   onMonthYearChange(): void {
+    this.getEmployeeAttendence()
   }
 
   async getEmployeeAttendence() {
-    try {
-      const res = await this.AttendenceMasterService.getEmployeeAttendance();
-      const dataArray = Array.isArray(res.data) ? res.data : [];
-      this.dataSource = new MatTableDataSource(dataArray);
-      this.dataSource.sort = this.sort;
-      this.dataSource.paginator = this.paginator;
-    } catch (error) {
-      console.error('Error fetching voucher head list:', error);
+    
+    if (this.selectMonth.value !== null && this.selectMonth.value !== undefined) {
+      const selectedMonth = this.selectMonth.value;
+      const selectedYear: any = this.selectYear.value;
+
+      const monthfirstDayUTC = new Date(Date.UTC(selectedYear, selectedMonth, 1))
+      const monthfirstDayIST = new Date(monthfirstDayUTC.getTime() - (5.5 * 60 * 60 * 1000));  
+      const monthfirstDay = monthfirstDayIST.toISOString();
+      const monthlastDay = new Date(Date.UTC(selectedYear, selectedMonth + 1, 0, 0, 0, 0)).toISOString();
+
+      const yearfirstDayUTC = new Date(Date.UTC(selectedYear, 0, 1, 0, 0, 0));  
+      const yearfirstDayIST = new Date(yearfirstDayUTC.getTime() - (5.5 * 60 * 60 * 1000));  
+      const yearfirstDay = yearfirstDayIST.toISOString();  
+
+      const yearlastDay = new Date(Date.UTC(selectedYear + 1, 0, 0, 0, 0, 0)).toISOString();  
+      
+      console.log(yearfirstDay);
+      console.log(yearlastDay);
+
+      try {
+        const res = await this.AttendenceMasterService.getEmployeeAttendanceLeave(monthfirstDay,monthlastDay,yearfirstDay,yearlastDay);
+        const dataArray = Array.isArray(res.data) ? res.data : [];
+        this.dataSource = new MatTableDataSource(dataArray);
+        this.dataSource.sort = this.sort;
+        this.dataSource.paginator = this.paginator;
+      } catch (error) {
+        console.error('Error fetching voucher head list:', error);
+      }
     }
   }
 
-  async employeeLeaveDetails(employeeId: number) {
-    const selectedMonthIndex = this.selectMonth.value;
-    if (selectedMonthIndex !== null && selectedMonthIndex !== undefined) {
-      const selectedMonth = this.months[selectedMonthIndex];
-      const selectedYear = this.selectYear.value;
-      const empLeave = await this.AttendenceMasterService.getEmployeeLeave(employeeId);
-      const dialogRef = this.dialog.open(AttendanceMasterEmployeeLeaveDetailsDialogComponent, {
-        data: { selectedMonth,selectedYear,empLeave },
-        width: '900px'
-      });
-      dialogRef.afterClosed().subscribe({
-        next: (val) => {
-          if (val) {
-            // this.updateDates();
-          }
-        }
-      });
-    }
-  }
-
-  async generateSalarySlip(row: any){
+  async generateSalarySlip(row: any) {
     const employeeId = row.employeeId;
     const selectedMonthIndex = this.selectMonth.value;
     if (selectedMonthIndex !== null && selectedMonthIndex !== undefined) {
       const selectedMonth = this.months[selectedMonthIndex];
       const selectedYear = this.selectYear.value;
-      const empLeave = await this.AttendenceMasterService.getEmployeeLeave(employeeId);
       const dialogRef = this.dialog.open(GenerateSalarySlipDialogComponent, {
-        data: { selectedMonth,selectedYear,empLeave },
+        data: { selectedMonth, selectedYear },
         width: '60rem'
       });
       dialogRef.afterClosed().subscribe({
@@ -99,16 +99,6 @@ export class AttendenceMasterComponent implements OnInit {
           }
         }
       });
-    }
-  }
-
-
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
     }
   }
 }
