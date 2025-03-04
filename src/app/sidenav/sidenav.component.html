@@ -1,94 +1,120 @@
-<div class="side-nav-content">
-    <ul class="nav-list" [ngClass]="{'nav-list-open': sideNavStatus}">
-  
+<div class="side-nav-container">
+  <!-- MAIN SIDE NAV -->
+  <div class="side-nav-content" *ngIf="!isSubMenuOpen">
+    <ul class="nav-list">
       <li *ngIf="hasPermission('Dashboard')" class="nav-list-item" (click)="navigateTo('/dashboard')">
         <i class="fa-solid fa-house"></i>
         <span><a [routerLink]="'/dashboard'">Dashboard</a></span>
       </li>
-  
+      
       <li *ngIf="hasPermission('Business')" class="nav-list-item" (click)="navigateTo('/business')">
         <i class="fa-solid fa-briefcase"></i>
         <span><a [routerLink]="'/business'">Business</a></span>
       </li>
-  
+
       <li *ngIf="hasPermission('Employee')" class="nav-list-item" (click)="navigateTo('/employee')">
         <i class="fa-solid fa-user-tie"></i>
         <span><a [routerLink]="'/employee'">Employee</a></span>
       </li>
-  
-      <li *ngIf="hasPermission('Expense')" class="nav-list-item dropstart" mat-menu-trigger [matMenuTriggerFor]="expenseMenu">
-        <i class="fa-solid fa-comments-dollar"></i>
-        <span><a [routerLink]="">Expense</a></span>
-      </li>
-      <mat-menu #expenseMenu="matMenu" xPosition="before" class="custom-menu">
-        <button mat-menu-item [routerLink]="'/expense/travel'">Travel</button>
-        <button mat-menu-item [routerLink]="'/expense/miscellaneous'">Miscellaneous</button>
-      </mat-menu>
 
       <li *ngIf="hasPermission('Expense')" class="nav-list-item" (click)="navigateTo('/attendence')">
         <i class="fa-solid fa-user-plus"></i>
         <span><a [routerLink]="'/attendence'">Attendence</a></span>
       </li>
-
-      <li *ngIf="hasPermission('Customer')" class="nav-list-item" (click)="navigateTo('/customer')">
-        <i class="fa-duotone fa-solid fa-user-tie"></i>
-        <span><a [routerLink]="'/customer'">Customer</a></span>
-      </li>
-
-      <li *ngIf="hasPermission('Material')" class="nav-list-item" (click)="navigateTo('/material')">
-        <i class="fa-solid fa-cart-shopping"></i>
-        <span><a [routerLink]="'/material'">Material</a></span>
-      </li>
-
-      <li *ngIf="hasPermission('Documentation')" class="nav-list-item" (click)="navigateTo('/documentation')">
-        <i class="fa-duotone fa-solid fa-folder-open"></i>
-        <span><a [routerLink]="'/documentation'">Documentation</a></span>
-      </li>
-  
-      <li *ngIf="hasPermission('Expense Master')" class="nav-list-item" (click)="navigateTo('/miscellaneous-summary')">
-        <i class="fa-solid fa-file-invoice"></i>
-        <span><a [routerLink]="'/miscellaneous-summary'">Miscellaneous Summary</a></span>
-      </li>
-
-      <li *ngIf="hasPermission('Expense Master')" class="nav-list-item" (click)="navigateTo('/travel-summary')">
-        <i class="fa-solid fa-file-invoice-dollar"></i>
-        <span><a [routerLink]="'/travel-summary'">Travel Summary</a></span>
-      </li>
-
-      <li *ngIf="hasPermission('Expense Master')" class="nav-list-item" (click)="navigateTo('/attendence-summary')">
-        <i class="fa-solid fa-users-rectangle"></i>
-        <span><a [routerLink]="'/attendence-summary'">Attendence Summary</a></span>
-      </li>
-  
-      <li *ngIf="hasPermission('Voucher Head')" class="nav-list-item" (click)="navigateTo('/voucher-head')">
-        <i class="fa-solid fa-briefcase"></i>
-        <span><a [routerLink]="'/voucher-head'">Voucher Head Master</a></span>
-      </li>
-
-      <li *ngIf="hasPermission('Voucher Head')" class="nav-list-item" (click)="navigateTo('/travel-head')">
-        <i class="fa-sharp fa-solid fa-briefcase"></i>
-        <span><a [routerLink]="'/travel-head'">Travel Head Master</a></span>
-      </li>
-  
-      <li *ngIf="hasPermission('Currency')" class="nav-list-item" (click)="navigateTo('/currency')">
-        <i class="fa-solid fa-dollar-sign"></i>
-        <span><a [routerLink]="'/currency'">Currency Master</a></span>
-      </li>
-
-      <li *ngIf="hasPermission('Currency')" class="nav-list-item" (click)="navigateTo('/leave')">
-        <i class="fa-solid fa-dollar-sign"></i>
-        <span><a [routerLink]="'/leave'">Leave Master</a></span>
-      </li>
-
-      <li *ngIf="hasPermission('Currency')" class="nav-list-item" (click)="navigateTo('/address-type')">
-        <i class="fa-solid fa-dollar-sign"></i>
-        <span><a [routerLink]="'/address-type'">Address Type Master</a></span>
-      </li>
-
-      <li *ngIf="hasPermission('Currency')" class="nav-list-item">
-        <span></span>
+      
+      <li *ngIf="hasPermission('Expense')" class="nav-list-item" (click)="openSubMenu('expense')">
+        <i class="fa-solid fa-comments-dollar"></i>
+        <span><a>Expense</a></span>
       </li>
       
+      <li *ngIf="hasPermission('Documentation')" class="nav-list-item" (click)="openSubMenu('documentation')">
+        <i class="fa-solid fa-file"></i>
+        <span><a>Documentation Module</a></span>  
+      </li>
+
+      <li *ngIf="hasPermission('Expense Master')" class="nav-list-item" (click)="openSubMenu('summary')">
+        <i class="fa-solid fa-file-invoice"></i>
+        <span><a>Summary Module</a></span>  
+      </li>
+      
+      <li *ngIf="hasPermission('Currency')" class="nav-list-item" (click)="openSubMenu('master')">
+        <i class="fa-solid fa-screwdriver-wrench"></i>
+        <span><a>Master Module</a></span>
+      </li>
     </ul>
   </div>
-  
+
+  <!-- SUB SIDE NAV -->
+  <div class="side-nav-content sub-menu" *ngIf="isSubMenuOpen">
+    <ul class="nav-list">
+      <li class="nav-list-item back-button" (click)="closeSubMenu()">
+        <i class="fa-solid fa-right-from-bracket"></i>
+        <span><a>Back</a></span>
+      </li>
+      
+      <ng-container *ngIf="activeSubMenu === 'expense'">
+        <li class="nav-list-item" (click)="navigateTo('/expense/travel')">
+          <i class="fa-solid fa-comments-dollar" mat-button></i>
+          <span><a [routerLink]="'/expense/travel'">Travel</a></span>
+        </li>
+        <li class="nav-list-item" (click)="navigateTo('/expense/miscellaneous')">
+          <i class="fa-solid fa-comments-dollar"></i>
+          <span><a [routerLink]="'/expense/miscellaneous'">Miscellaneous</a></span>
+        </li>
+      </ng-container>
+
+      <ng-container *ngIf="activeSubMenu === 'documentation'">
+        <li class="nav-list-item" (click)="navigateTo('/documentation-challan')">
+          <i class="fa-solid fa-file"></i>
+          <span><a [routerLink]="'/documentation-challan'">Challan</a></span>
+        </li>
+        <li class="nav-list-item" (click)="navigateTo('/documentation-challan')">
+          <i class="fa-solid fa-file"></i>
+          <span><a [routerLink]="'/documentation-challan'">Purchase Order</a></span>
+        </li>
+        <li class="nav-list-item" (click)="navigateTo('/documentation-challan')">
+          <i class="fa-solid fa-file"></i>
+          <span><a [routerLink]="'/documentation-challan'">Invoice</a></span>
+        </li>
+      </ng-container>
+      
+      <ng-container *ngIf="activeSubMenu === 'summary'">
+        <li class="nav-list-item" (click)="navigateTo('/miscellaneous-summary')">
+          <i class="fa-solid fa-file-invoice"></i>
+          <span><a [routerLink]="'/miscellaneous-summary'">Miscellaneous Summary</a></span>
+        </li>
+        <li class="nav-list-item" (click)="navigateTo('/travel-summary')">
+          <i class="fa-solid fa-file-invoice"></i>
+          <span><a [routerLink]="'/travel-summary'">Travel Summary</a></span>
+        </li>
+        <li class="nav-list-item" (click)="navigateTo('/attendence-summary')">
+          <i class="fa-solid fa-file-invoice"></i>
+          <span><a [routerLink]="'/attendence-summary'">Attendence Summary</a></span>
+        </li>
+      </ng-container>
+      
+      <ng-container *ngIf="activeSubMenu === 'master'">
+        <li class="nav-list-item" (click)="navigateTo('/miscellaneous-head-master')">
+          <i class="fa-solid fa-screwdriver-wrench"></i>
+          <span><a [routerLink]="'/miscellaneous-head-master'">Miscellaneous Head Master</a></span>
+        </li>
+        <li class="nav-list-item" (click)="navigateTo('/travel-head-master')">
+          <i class="fa-solid fa-screwdriver-wrench"></i>
+          <span><a [routerLink]="'/travel-head-master'">Travel Head Master</a></span>
+        </li>
+        <li class="nav-list-item" (click)="navigateTo('/currency-master')">
+          <i class="fa-solid fa-screwdriver-wrench"></i>
+          <span><a [routerLink]="'/currency-master'">Currency Masters</a></span>
+        </li>
+        <li class="nav-list-item" (click)="navigateTo('/holiday-master')">
+          <i class="fa-solid fa-screwdriver-wrench"></i>
+          <span><a [routerLink]="'/holiday-master'">Leave Master</a></span>
+        </li>
+        <li class="nav-list-item" (click)="navigateTo('/address-type-master')">
+          <i class="fa-solid fa-screwdriver-wrench"></i>
+          <span><a [routerLink]="'/address-type-master'">Address Type Master</a></span>
+        </li>
+      </ng-container>
+    </ul>
+  </div>
+</div>

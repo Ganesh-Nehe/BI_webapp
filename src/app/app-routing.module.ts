@@ -75,7 +75,7 @@ const routes: Routes = [
         component: MaterialComponent
       },
       {
-        path: 'documentation',
+        path: 'documentation-challan',
         component: DocumentationComponent
       },
       {
@@ -91,23 +91,23 @@ const routes: Routes = [
         component: AttendenceMasterComponent
       },
       {
-        path: 'voucher-head',
+        path: 'miscellaneous-head-master',
         component: AddVoucherheadComponent
       },
       {
-        path: 'travel-head',
+        path: 'travel-head-master',
         component: AddTravelHeadComponent
       },
       {
-        path: 'currency',
+        path: 'currency-master',
         component: CurrenyComponent
       },
       {
-        path: 'leave',
+        path: 'holiday-master',
         component: LeaveMasterComponent
       },
       {
-        path: 'address-type',
+        path: 'address-type-master',
         component: AddressTypeComponent
       },
       {

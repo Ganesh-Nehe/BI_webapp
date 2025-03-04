@@ -94,6 +94,7 @@ import { CustomerDetailsDialogComponent } from './customer/customer-details-dial
 import { AddMaterialDialogComponent } from './material/add-material-dialog/add-material-dialog.component';
 import { AddChalanDialogComponent } from './documentation/add-chalan-dialog/add-chalan-dialog.component';
 import { ViewChalanDialogComponent } from './documentation/view-chalan-dialog/view-chalan-dialog.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({ 
   declarations: [
@@ -192,7 +193,8 @@ import { ViewChalanDialogComponent } from './documentation/view-chalan-dialog/vi
     MatMenuModule,
     CommonModule,
     MatSnackBarModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatProgressSpinnerModule
   ],
   providers: [BnNgIdleService,BusinessAddEditComponent],
   bootstrap: [AppComponent]

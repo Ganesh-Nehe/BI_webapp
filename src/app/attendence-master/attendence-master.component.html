@@ -61,6 +61,14 @@
           <td mat-cell *matCellDef="let row"> {{28 - ((row.yearlyPrivilegeLeaveCount) + (row.yearlyCasualLeaveCount))}} </td>
         </ng-container>
 
+        <ng-container matColumnDef="leaveDetails">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Employee Leave Details </th>
+          <td mat-cell *matCellDef="let row">
+            <button mat-raised-button color="primary" (click)="employeeLeaveDetails(row.employeeId)"> Leave Details
+            </button>
+          </td>
+        </ng-container>
+
         <ng-container matColumnDef="salarySlip">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Generate Salary slip </th>
           <td mat-cell *matCellDef="let row">

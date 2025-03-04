@@ -1,1 +1,46 @@
-<p>profile works!</p>
+<div class="page-container">
+    <mat-card class="user-icon-card">
+      <div class="user-icon-container">
+        <img *ngIf="selectedImage" [src]="selectedImage" alt="User Photo" class="user-photo">
+        <i *ngIf="!selectedImage" class="fa-regular fa-circle-user"></i>
+      </div>
+      <button mat-icon-button class="edit-button" matTooltip="Edit Profile Photo" matTooltipPosition="above" (click)="openFilePicker()">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <input type="file" #fileInput accept="image/*" (change)="onFileSelected($event)" hidden>
+    </mat-card>
+    <div class="card-container">
+      <mat-card class="user-details">
+        <div *ngIf="empDetails; else loading">
+          <p><strong>Name:</strong> <span>{{empDetails.data.employeeFirstName}} {{empDetails.data.employeeLastName}}</span></p>
+          <p><strong>Email:</strong><span> {{ empDetails.data.emailId }}</span></p>
+          <p><strong>Phone:</strong><span> {{ empDetails.data.mobile_no }}</span></p>
+          <p><strong>Address:</strong> <span></span></p>
+        </div>
+        <ng-template #loading>
+        </ng-template>
+      </mat-card>
+      <mat-card class="user-bank-details">
+        <div *ngIf="empDetails; else loading">
+          <p><strong>Bank Name:</strong><span> State Bank of India</span></p>
+          <p><strong>Account NO:</strong><span> {{ empDetails.data.mobile_no }}</span></p>
+          <p><strong>IFSC Code:</strong><span> {{ empDetails.data.mobile_no }}</span></p>
+          <p><strong>Adhar NO:</strong><span> {{ empDetails.data.mobile_no }}</span></p>
+          <p><strong>Pan NO:</strong><span> {{ empDetails.data.mobile_no }}</span></p>
+        </div>
+        <ng-template #loading>
+        </ng-template>
+      </mat-card>
+      <mat-card class="user-company">
+        <div *ngIf="empDetails; else loading">
+          <p><strong>Company:</strong> <span>{{ empDetails.data.businessname }}</span></p>
+          <p><strong>Address:</strong> <span></span></p>
+        </div>
+        <ng-template #loading>
+        </ng-template>
+      </mat-card>
+    </div>
+    <div class="flex-grow-1">
+      <router-outlet></router-outlet>
+    </div>
+  </div>

@@ -16,7 +16,7 @@ import { GenerateSalarySlipDialogComponent } from './generate-salary-slip-dialog
 })
 export class AttendenceMasterComponent implements OnInit {
 
-  displayedColumns: string[] = ['serialNumber', 'employeeId', 'employeeName', 'privilegeLeave', 'casualLeave', 'totalLeaveTaken', 'totalLeaveRemaining', 'salarySlip'];
+  displayedColumns: string[] = ['serialNumber', 'employeeId', 'employeeName', 'privilegeLeave', 'casualLeave', 'totalLeaveTaken', 'totalLeaveRemaining', 'leaveDetails', 'salarySlip'];
   dataSource!: MatTableDataSource<any>;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -79,6 +79,26 @@ export class AttendenceMasterComponent implements OnInit {
       } catch (error) {
         console.error('Error fetching voucher head list:', error);
       }
+    }
+  }
+
+  async employeeLeaveDetails(employeeId: number) {
+    const selectedMonthIndex = this.selectMonth.value;
+    if (selectedMonthIndex !== null && selectedMonthIndex !== undefined) {
+      const selectedMonth = this.months[selectedMonthIndex];
+      const selectedYear = this.selectYear.value;
+      const empLeave = await this.AttendenceMasterService.getEmployeeLeave(employeeId);
+      const dialogRef = this.dialog.open(AttendanceMasterEmployeeLeaveDetailsDialogComponent, {
+        data: { selectedMonth,selectedYear,empLeave },
+        width: '900px'
+      });
+      dialogRef.afterClosed().subscribe({
+        next: (val) => {
+          if (val) {
+            // this.updateDates();
+          }
+        }
+      });
     }
   }
 

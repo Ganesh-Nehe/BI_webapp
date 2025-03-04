@@ -1,73 +1,102 @@
 .login-form{
-    padding: 20px;
+  padding: 20px;
+}
+
+.reset-form{
+padding: 20px;
 }
 
 body {
-  background-color: #837f7f;
+background-color: #837f7f;
 }
 .login-card {
-    width: 300px;
-    margin: 20px;
-    padding: 20px;
-    box-sizing: border-box;
-    border-radius: 10px;
-    background-color: rgb(255, 255, 255);
-    transition: transform 0.3s, box-shadow 0.3s;
-    transform: translateY(0);
-    box-shadow: 
-        0 -4px 8px rgba(0, 0, 0, 0.2),
-        0 8px 16px rgba(0, 0, 0, 0.2);
-  }
-  
-.login-card:hover {
-    transform: translateY(-5px);
+  width: 300px;
+  margin: 20px;
+  padding: 20px;
+  box-sizing: border-box;
+  border-radius: 40px;
+  background-color: rgb(255, 255, 255);
+  transition: transform 0.3s, box-shadow 0.3s;
+  transform: translateY(0);
+  box-shadow: 
+      0 -4px 8px rgba(0, 0, 0, 0.2),
+      0 8px 16px rgba(0, 0, 0, 0.2);
 }
-  
+
+.login-card:hover {
+  transform: translateY(-5px);
+}
+
 .mat-toolbar{
-    border-radius: 8px;
-    display: flex;
-    justify-content: center;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
 }
 
 .logo {
-  height: 60px; /* Adjust height of logo */
-  width: 300px;
-  /* margin-right: 10px; Space between logo and text */
-  border-radius: 5px; 
-  box-shadow: 
-      0 -2px 4px rgba(0, 0, 0, 0.2),
-      0 4px 8px rgba(0, 0, 0, 0.2);
+height: 60px; /* Adjust height of logo */
+width: 300px;
+/* margin-right: 10px; Space between logo and text */
+border-radius: 5px; 
+box-shadow: 
+    0 -2px 4px rgba(0, 0, 0, 0.2),
+    0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .login-button:hover {
-    background-color: #1565C0;
+  background-color: #1565C0;
 
 }
 
+.reset-button:hover {
+background-color: #1565C0;
+
+}
+
+.passReset{
+display: flex;
+justify-content: flex-end;
+color: #1565C0;
+}
+
+.reset-card {
+width: auto;
+margin: 20px;
+padding: 20px;
+box-sizing: border-box;
+border-radius: 40px;
+background-color: rgb(255, 255, 255);
+transition: transform 0.3s, box-shadow 0.3s;
+transform: translateY(0);
+box-shadow: 
+    0 -4px 8px rgba(0, 0, 0, 0.2),
+    0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
 @media only screen and (max-width: 600px) {
-    .login-card {
-      width: 90%;
-    }
-  
-    .mat-toolbar {
-      font-size: 18px;
-    }
+  .login-card {
+    width: 90%;
   }
 
-  #particles-js {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    z-index: 0;
-    pointer-events: auto; 
-    background-color: #ffffff;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: 50% 50%;
+  .mat-toolbar {
+    font-size: 18px;
   }
-  
-  .login-container {
-    position: relative;
-    z-index: 1;
-  }
-  
+}
+
+#particles-js {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: auto; 
+  background-color: #ffffff;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: 50% 50%;
+}
+
+.login-container {
+  position: relative;
+  z-index: 1;
+}
+

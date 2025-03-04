@@ -1,7 +1,7 @@
 <div id="particles-js"></div>
 
 <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutAlign="center center" fxFlexFill>
-    <mat-card fxFlex.gt-sm="25" fxFlex.sm="75" fxFlex.xs="90" fxFlex="25" class="login-card">
+    <mat-card *ngIf="!isFlip" fxFlex.gt-sm="25" fxFlex.sm="75" fxFlex.xs="90" fxFlex="25" class="login-card">
         <div class="mat-toolbar">
             <img src="assets/CAS logo/Expense logo.jpeg" alt="Logo" class="logo" />
         </div>
@@ -16,5 +16,44 @@
             </mat-form-field>
             <button mat-raised-button type="submit" class="login-button">Login</button>
         </form>
+        <div class="passReset">
+            <h3 (click)="passReset()">Forget Password?</h3>
+        </div>
+    </mat-card>
+
+    <mat-card *ngIf="isFlip" fxFlex.gt-sm="25" fxFlex.sm="75" fxFlex.xs="90" fxFlex="25" class="reset-card">
+        <div class="mat-toolbar">
+            <img src="assets/CAS logo/Expense logo.jpeg" alt="Logo" class="logo" />
+        </div>
+        <form fxLayoutAlign="stretch" fxLayout="column" fxLayoutGap="10px" class="reset-form" (ngSubmit)="onReset()">
+
+            <mat-form-field fxFlex appearance="outline">
+                <mat-label>Email</mat-label>
+                <input matInput name="Email" [(ngModel)]="reset.emailId" placeholder="" required>
+            </mat-form-field>
+
+            <button *ngIf="!isSent" mat-raised-button color="accent" (click)="isSentOTP()" [disabled]="isLoading || isSent">
+                <span *ngIf="!isLoading">Send OTP</span>
+                <mat-spinner *ngIf="isLoading" diameter="20"></mat-spinner>
+            </button>
+
+            <mat-form-field *ngIf="isSent" fxFlex appearance="outline">
+                <mat-label>Enter OTP</mat-label>
+                <input matInput type="number" name="otp" [(ngModel)]="reset.otp" placeholder="" required>
+                <mat-hint *ngIf="countdown > 0">Resend OTP in {{ countdown }} sec</mat-hint>
+            </mat-form-field>
+
+            <mat-form-field *ngIf="isSent" fxFlex appearance="outline">
+                <mat-label>New Password</mat-label>
+                <input matInput type="password" name="newPass" [(ngModel)]="reset.newPass" placeholder="" required>
+            </mat-form-field>
+
+            <button mat-raised-button class="reset-button">Reset Password</button>
+
+        </form>
+
+        <div class="passReset">
+            <h3 (click)="backToLogin()">Back To Login</h3>
+        </div>
     </mat-card>
 </div>

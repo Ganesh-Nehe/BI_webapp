@@ -41,8 +41,8 @@ export class AddChalanDialogComponent {
       chalanDate: [, Validators.required],
       isReturnable: [],
       returnDate: [],
-      PoNo: ['', Validators.required],
-      PODate: [ , Validators.required],
+      PoNo: [],
+      PODate: [],
       materials: this.fb.array([])
     });
     this.chalanForm.get('customerId')?.valueChanges.subscribe((customerId) => {
@@ -166,7 +166,7 @@ export class AddChalanDialogComponent {
     
     //console.log(requestData);
 
-    const requiredFields = ['customerId', 'addressId', 'preparedBy', 'chalanDate', 'PoNo', 'PODate']; 
+    const requiredFields = ['customerId', 'addressId', 'preparedBy', 'chalanDate']; 
     const isFormValid = requiredFields.every(field => requestData[field]); // check every field except returnDate and isReturnable
     if (isFormValid) {
       if (!this.data) {

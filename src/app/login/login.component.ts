@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { APIService } from '../api.service';
 import { Validators } from '@angular/forms';
 import { AuthService } from '../service/auth.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 declare const particlesJS: any; 
 
@@ -13,19 +14,29 @@ declare const particlesJS: any;
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-
+  countdown: number = 50;
+  interval: any;
+  isFlip = false;
+  isSent = false;
+  isLoading = false;
   loginObj: any = {
     "emailId": "",
     "password": ""
   };
 
+  reset: any = {
+    "emailId": "",
+    "otp": "",
+    "newPass":""
+  };
+
   responseMessage: string = '';
 
-  constructor(private http: HttpClient, private router: Router, private apiService: APIService, private authService: AuthService) { }
+  constructor(private http: HttpClient, private router: Router, private apiService: APIService, private authService: AuthService,  private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
-    console.log("Initializing particles.js");
-    this.loadParticles();
+    // console.log("Initializing particles.js");
+    this.loadParticles();  
   }
 
   ngOnDestroy(): void {
@@ -141,12 +152,116 @@ export class LoginComponent implements OnInit {
         localStorage.setItem('businessId', res.businessId);
         localStorage.setItem('permissions', JSON.stringify(res.permission_name));
         localStorage.setItem('employeeFirstName', res.employeeFirstName);
+        localStorage.setItem('profilephoto', res.profilephoto);
       } else {
         alert("Email & Password are Incorrect");
         console.log('Login failed:', res.message);
       }
     } catch (error) {
       console.error('Error during login:', error);
+    }
+  }
+
+  passReset() {
+    this.isFlip = true;
+  }
+
+  startCountdown() {
+    this.countdown = 50; 
+    if (this.interval) {
+      clearInterval(this.interval); 
+    }
+    this.interval = setInterval(() => {
+      if (this.countdown > 0) {
+        this.countdown--;
+      } else {
+        clearInterval(this.interval);
+        this.isSent = false; 
+      }
+    }, 1000);
+  }
+
+  async isSentOTP() {
+    if (this.reset.emailId !== null && this.reset.emailId !== undefined && this.reset.emailId !== ""){
+      this.isLoading = true;
+      const baseApi = this.apiService.getBaseApi();
+      const httpOptions = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+        }),
+          mode: 'cors',
+          credentials: 'include'
+      };
+    
+      try {
+        const res: any = await this.http.post(`${baseApi}/API/searchEmail/`, this.reset, httpOptions).toPromise();
+        
+        if (res.success === 1) {
+          this.isSent = true;
+          this.snackBar.open('OTP Sent to '+this.reset.emailId, 'Close', {
+            duration: 3000,
+            verticalPosition: 'top',
+            horizontalPosition: 'center',
+            panelClass: ['snackbar-success']
+          });
+        } else {
+          alert("No Profile Found");
+          console.log('Login failed:', res.message);
+        }
+      } catch (error) {
+        console.error('Error during login:', error);
+      } finally {
+        this.isLoading = false; 
+        this.startCountdown();
+      }
+    }else{
+      this.snackBar.open('Enter a valid Email ID', 'Close', {
+        duration: 3000,
+        verticalPosition: 'top',
+        horizontalPosition: 'center',
+        panelClass: ['snackbar-error']
+      });
+    }
+  }
+  
+  backToLogin() {
+    this.isFlip = false; // Show login, hide forgot password
+    this.isSent = false;
+  }
+
+  async onReset(){
+    if (this.reset.emailId !== "" && this.reset.otp !== "" && this.reset.newPass !== ""){
+      const baseApi = this.apiService.getBaseApi();
+      const httpOptions = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+        }),
+          mode: 'cors',
+          credentials: 'include'
+      };
+    
+      try {
+        const res: any = await this.http.patch(`${baseApi}/API/updatePassword/`, this.reset, httpOptions).toPromise();
+        
+        if (res.success === 1) {
+          this.snackBar.open('Password Reset Successfully', 'Close', {
+            duration: 3000,
+            verticalPosition: 'top',
+            horizontalPosition: 'center',
+            panelClass: ['snackbar-success']
+          });
+          this.backToLogin();
+        }
+      } catch (error) {
+        this.snackBar.open('Error Resetting Password', 'Close', {
+          duration: 3000,
+          verticalPosition: 'top',
+          horizontalPosition: 'center',
+          panelClass: ['snackbar-error']
+        });
+      }
+    }else{
+      alert("Invalid form")
     }
   }
 }

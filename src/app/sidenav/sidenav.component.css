@@ -17,6 +17,10 @@
     list-style: none;
 }
 
+.side-list:hover {
+    background-color: rgb(210, 220, 228);
+    border-radius: 10px;
+}
 .nav-list-item i {
     font-size: 20px;
     height: 25px;
@@ -33,7 +37,7 @@
     height: 50px;
 }
 
-.nav-list-open .nav-list-item:hover {
+.side-list:hover {
     background-color: rgb(210, 220, 228);
     border-radius: 10px;
 }

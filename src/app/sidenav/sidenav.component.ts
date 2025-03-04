@@ -13,6 +13,9 @@ export class SidenavComponent implements OnInit {
   isSubmenuVisible: boolean = false;
   permissions: string[] = [];
 
+  isSubMenuOpen: boolean = false;
+  activeSubMenu: string = '';
+
   constructor(private router: Router) { }
 
   ngOnInit(): void {
@@ -29,6 +32,16 @@ export class SidenavComponent implements OnInit {
       console.log('No permissions found in localStorage.');
       this.permissions = []; // Default to empty array if no permissions are set
     }
+  }
+
+  openSubMenu(menu: string) {
+    this.activeSubMenu = menu;
+    this.isSubMenuOpen = true;
+  }
+
+  closeSubMenu() {
+    this.isSubMenuOpen = false;
+    this.activeSubMenu = '';
   }
 
   hasPermission(permission: string): boolean {
