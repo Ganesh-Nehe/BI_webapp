@@ -95,6 +95,8 @@ import { AddMaterialDialogComponent } from './material/add-material-dialog/add-m
 import { AddChalanDialogComponent } from './documentation/add-chalan-dialog/add-chalan-dialog.component';
 import { ViewChalanDialogComponent } from './documentation/view-chalan-dialog/view-chalan-dialog.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { ConfirmationReturnedDialogComponent } from './documentation/confirmation-returned-dialog/confirmation-returned-dialog.component';
+import { ConfirmLeaveDialogComponent } from './attendence/confirm-leave-dialog/confirm-leave-dialog.component';
 
 @NgModule({ 
   declarations: [
@@ -163,7 +165,9 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     CustomerDetailsDialogComponent,
     AddMaterialDialogComponent,
     AddChalanDialogComponent,
-    ViewChalanDialogComponent
+    ViewChalanDialogComponent,
+    ConfirmationReturnedDialogComponent,
+    ConfirmLeaveDialogComponent
   ],
   imports: [
     BrowserModule,

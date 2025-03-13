@@ -145,14 +145,14 @@ export class LoginComponent implements OnInit {
       const res: any = await this.http.post(`${baseApi}/API/login`, this.loginObj, httpOptions).toPromise();
   
       if (res.success === 1) {
-        this.authService.setLoggedIn(true);
-        this.router.navigate(['/dashboard']);
         localStorage.setItem("loginToken", res.token);
         localStorage.setItem('loggedInUserId', res.employeeId);
         localStorage.setItem('businessId', res.businessId);
         localStorage.setItem('permissions', JSON.stringify(res.permission_name));
         localStorage.setItem('employeeFirstName', res.employeeFirstName);
         localStorage.setItem('profilephoto', res.profilephoto);
+        this.authService.setLoggedIn(true);
+        this.router.navigate(['/dashboard']);
       } else {
         alert("Email & Password are Incorrect");
         console.log('Login failed:', res.message);

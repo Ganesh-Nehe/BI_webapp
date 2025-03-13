@@ -41,6 +41,11 @@ tr:last-child td {
     
 }
 
+th {
+  border-top: 1px solid grey;
+  border-bottom: 1px solid grey;
+}
+
 .active-toggle {
     color: white; 
     background-color: #1976D2; 

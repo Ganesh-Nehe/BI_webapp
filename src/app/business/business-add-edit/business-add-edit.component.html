@@ -9,7 +9,7 @@
 
             <mat-form-field appearance="outline" fxFlex="50%">
                 <mat-label>CIN no</mat-label>
-                <input matInput placeholder="" type="number" formControlName="CIN_no" required>
+                <input matInput placeholder="" type="text" formControlName="CIN_no" required>
                 <!-- <mat-hint>ABCD</mat-hint> -->
             </mat-form-field>
         </div>
@@ -20,6 +20,8 @@
             </mat-form-field>
             <input type="file" (change)="onFileChange($event)">
         </div>
+
+        <hr>
         <h3>
             Enter address
         </h3>
@@ -30,16 +32,12 @@
                 <input matInput placeholder="Enter Address Type" formControlName="addressTypeId" required>
             </mat-form-field>
             <mat-form-field fxFlex="50%" appearance="outline">
-                <mat-label>addressLine_1</mat-label>
-                <input matInput placeholder="" formControlName="addressLine_1" required>
+                <mat-label>Local Address</mat-label>
+                <input matInput placeholder="" formControlName="localAddress" required>
             </mat-form-field>
         </div>
 
         <div fxLayout="row" fxLayoutGap="10px">
-            <mat-form-field fxFlex="50%" appearance="outline">
-                <mat-label>addressLine_2</mat-label>
-                <input matInput placeholder="" type="text" formControlName="addressLine_2" required>
-            </mat-form-field>
             <mat-form-field fxFlex="50%" appearance="outline">
                 <mat-label>city</mat-label>
                 <input matInput placeholder="" formControlName="city" required>
@@ -60,13 +58,15 @@
                 <input matInput placeholder="" type="text" formControlName="pinCode" required>
             </mat-form-field>
         </div>
-        
+
         <div *ngIf="data" fxLayout="row" fxLayoutGap="10px">
             <mat-form-field fxFlex="100%" appearance="outline">
                 <mat-label>Description</mat-label>
                 <input matInput formControlName="auditDetail" type="text" required>
             </mat-form-field>
         </div>
+
+        <hr>
 
         <!-- Admin Section (Only for new businesses) -->
         <div *ngIf="!data" style="margin-top: 20px;">
@@ -84,6 +84,10 @@
                     <mat-label> Last Name</mat-label>
                     <input matInput formControlName="employeeLastName" required>
                 </mat-form-field>
+                <mat-form-field appearance="outline" fxFlex="50%">
+                    <mat-label> Mobile No.</mat-label>
+                    <input matInput type="number" formControlName="mobile_no" required>
+                </mat-form-field>
             </div>
 
             <div fxLayout="row" fxLayoutGap="10px">
@@ -94,20 +98,6 @@
                 <mat-form-field *ngIf="!data" appearance="outline" fxFlex="50%">
                     <mat-label> Password</mat-label>
                     <input matInput formControlName="password" type="password" required>
-                </mat-form-field>
-            </div>
-            <div fxLayout="row" fxLayoutGap="10px">
-                <mat-form-field appearance="outline" fxFlex="50%">
-                    <mat-label> Mobile No.</mat-label>
-                    <input matInput type="number" formControlName="mobile_no" required>
-                </mat-form-field>
-                <mat-form-field appearance="outline" fxFlex="50%">
-                    <mat-label> Bank No.</mat-label>
-                    <input matInput type="number" formControlName="bankId" required>
-                </mat-form-field>
-                <mat-form-field appearance="outline" fxFlex="50%">
-                    <mat-label> Profile Photo</mat-label>
-                    <input matInput type="text" formControlName="profilephoto" required>
                 </mat-form-field>
             </div>
         </div>

@@ -8,6 +8,7 @@ import { DocumentationService } from './documentation.service';
 import { AddChalanDialogComponent } from './add-chalan-dialog/add-chalan-dialog.component';
 import { ViewChalanDialogComponent } from './view-chalan-dialog/view-chalan-dialog.component';
 import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
+import { ConfirmationReturnedDialogComponent } from './confirmation-returned-dialog/confirmation-returned-dialog.component'
 
 @Component({
   selector: 'app-documentation',
@@ -102,14 +103,18 @@ export class DocumentationComponent {
 
   async isReturned(returnValue: any, chalanId: number) {
     try {
-      const res = await this.documentationService.isReturned(returnValue, chalanId);
-      this.snackBar.open('Challan Returned Saved Successfully', 'Close', {
-        duration: 3000,
-        verticalPosition: 'top',
-        horizontalPosition: 'center',
-        panelClass: ['snackbar-success']
+      // const res = await this.documentationService.isReturned(returnValue, chalanId);
+      const dialogRef = this.dialog.open(ConfirmationReturnedDialogComponent, {
+        disableClose: true,
+        data: { returnValue, chalanId }
       });
-      this.loadChalanList();
+      dialogRef.afterClosed().subscribe({
+        next: (val) => {
+          if (val) {
+            this.loadChalanList();
+          }
+        }
+      });
     } catch (error) {
       this.snackBar.open('Error Saving Returned Challan', 'Close', {
         duration: 3000,

@@ -5,9 +5,10 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { FormControl } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { PunchTimeDialogComponent } from './punch-time-dialog/punch-time-dialog.component'
-import { LeaveDetailsDialogComponent } from './leave-details-dialog/leave-details-dialog.component'
-import { AttendenceService } from './attendence.service'
+import { PunchTimeDialogComponent } from './punch-time-dialog/punch-time-dialog.component';
+import { LeaveDetailsDialogComponent } from './leave-details-dialog/leave-details-dialog.component';
+import { AttendenceService } from './attendence.service';
+import { ConfirmLeaveDialogComponent } from './confirm-leave-dialog/confirm-leave-dialog.component';
 // Define the interface for attendance data
 interface Attendance {
   attendenceId: number;
@@ -251,32 +252,17 @@ export class AttendenceComponent implements OnInit {
     const dateISO = row.date;
     const parsedDate = new Date(dateISO);
     const leaveType = row.leaveType;
-    try {
-      const res = await this.attendenceService.addLeave(parsedDate, leaveType);
-      if (res.success === 1) {
-        this.snackBar.open(`${leaveType} added successfully`, 'Close', {
-          duration: 3000,
-          verticalPosition: 'top',
-          horizontalPosition: 'center',
-          panelClass: ['snackbar-success'],
-        });
-      } else {
-        this.snackBar.open(`Error adding ${leaveType}`, 'Close', {
-          duration: 3000,
-          verticalPosition: 'top',
-          horizontalPosition: 'center',
-          panelClass: ['snackbar-success'],
-        });
-      }
-    } catch (error) {
-      this.snackBar.open(`Error adding ${leaveType}`, 'Close', {
-        duration: 3000,
-        verticalPosition: 'top',
-        horizontalPosition: 'center',
-        panelClass: ['snackbar-success'],
-      });
-    }
 
+      const dialogRef = this.dialog.open(ConfirmLeaveDialogComponent, {
+        data: { parsedDate, leaveType },        
+      });
+      dialogRef.afterClosed().subscribe({
+        next: (val) => {
+          if (val) {
+            this.updateDates();
+          }
+        }
+      });
   }
 
   getSerialNumber(index: number): number {

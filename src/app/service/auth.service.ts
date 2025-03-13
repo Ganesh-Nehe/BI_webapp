@@ -10,6 +10,7 @@ export class AuthService {
 
   constructor() {
     const storedStatus = localStorage.getItem('loggedIn');
+    // console.log(storedStatus);
     if (storedStatus !== null) {
       this.loggedIn = JSON.parse(storedStatus);
     }

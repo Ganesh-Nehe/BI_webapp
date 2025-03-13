@@ -32,8 +32,7 @@ export class BusinessAddEditComponent implements OnInit {
       CIN_no: ['', Validators.required],
       PAN_no: ['', Validators.required],
       addressTypeId: ['', Validators.required],
-      addressLine_1: ['', Validators.required],
-      addressLine_2: ['', Validators.required],
+      localAddress: ['', Validators.required],
       city: ['', Validators.required],
       state: ['', Validators.required],
       isoCountryCode: ['', Validators.required],
@@ -46,8 +45,6 @@ export class BusinessAddEditComponent implements OnInit {
       emailId: this.data ? null : ['', [Validators.required, Validators.email]],
       password: this.data ? null : ['', Validators.required],
       mobile_no: this.data ? null : ['', Validators.required],
-      bankId: this.data ? null : ['', Validators.required],
-      profilephoto: this.data ? null : ['', Validators.required],
       // Checkbox controls for permissions
       dashboard: [false],
       employee: [false],

@@ -6,6 +6,7 @@
     margin-top: 10px;
     overflow-y: auto;
 }
+
 .border-white{
     background-color: rgba(34, 34, 34, 0.99);
 }
@@ -51,3 +52,7 @@ mat-menu {
     background-color: black;
 }
 
+.back-button i {
+    transform: scaleX(-1);
+    display: inline-block;
+} 

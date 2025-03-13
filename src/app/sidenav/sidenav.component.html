@@ -21,6 +21,11 @@
         <i class="fa-solid fa-user-plus"></i>
         <span><a [routerLink]="'/attendence'">Attendence</a></span>
       </li>
+
+      <li *ngIf="hasPermission('Customer')" class="nav-list-item" (click)="navigateTo('/customer')">
+        <i class="fa-duotone fa-solid fa-user-tie"></i>
+        <span><a [routerLink]="'/customer'">Customer</a></span>
+      </li>
       
       <li *ngIf="hasPermission('Expense')" class="nav-list-item" (click)="openSubMenu('expense')">
         <i class="fa-solid fa-comments-dollar"></i>

@@ -1,5 +1,7 @@
 .login-form{
-  padding: 20px;
+  padding: 5px;
+  padding-top: 10%;
+  padding-bottom: 10%;
 }
 
 .reset-form{
@@ -10,7 +12,7 @@ body {
 background-color: #837f7f;
 }
 .login-card {
-  width: 300px;
+  width: auto;
   margin: 20px;
   padding: 20px;
   box-sizing: border-box;
@@ -34,9 +36,8 @@ background-color: #837f7f;
 }
 
 .logo {
-height: 60px; /* Adjust height of logo */
-width: 300px;
-/* margin-right: 10px; Space between logo and text */
+height: 100%; 
+width: 100%;
 border-radius: 5px; 
 box-shadow: 
     0 -2px 4px rgba(0, 0, 0, 0.2),
@@ -76,11 +77,21 @@ box-shadow:
 @media only screen and (max-width: 600px) {
   .login-card {
     width: 90%;
+    height: 50%;
+    margin: 45%;
   }
 
-  .mat-toolbar {
-    font-size: 18px;
+  .reset-card {
+    width: 90%;
+    min-height: auto;
+    display: flex;
+    flex-direction: column;
+    margin: 45%;
   }
+
+  /* .mat-toolbar {
+    font-size: 18px;
+  } */
 }
 
 #particles-js {

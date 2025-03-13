@@ -1,5 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-header',
@@ -10,13 +11,16 @@ export class HeaderComponent implements OnInit {
   @Output() sideNavToggled = new EventEmitter<boolean>();
   menuStatus: boolean = true;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private location: Location) {}
 
   ngOnInit(): void {}
 
   logout() {
     localStorage.removeItem("loginToken");
-    this.router.navigate(['/login']);
+    localStorage.removeItem("loggedIn");
+    this.router.navigate(['/login'], { replaceUrl: true }).then(() => {
+      window.location.reload(); // Forces a full reload to clear cached data
+    });
   }
 
   SideNavToggle() {
