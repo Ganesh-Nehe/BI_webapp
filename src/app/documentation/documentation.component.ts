@@ -187,6 +187,7 @@ export class DocumentationComponent {
                       ${row.city} - ${row.pinCode}<br>
                       ${row.state}, ${row.country} <br>
                       GST No.: ${row.gstNo} <br>
+                      ${row.contactPerson} / +91 ${row.contactPersonNo}
                     </div>
                   </td>
                   <td colspan="2" style="width: 35%;">

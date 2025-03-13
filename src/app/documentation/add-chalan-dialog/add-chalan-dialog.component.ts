@@ -108,7 +108,7 @@ export class AddChalanDialogComponent {
     return this.fb.group({
       itemCode: ['', Validators.required],
       itemDesc: ['', Validators.required],
-      SAC_HSNcode: ['', Validators.required],
+      SAC_HSNcode: [''],
       quantity: ['', Validators.required],
       unit: ['', Validators.required],
     });
