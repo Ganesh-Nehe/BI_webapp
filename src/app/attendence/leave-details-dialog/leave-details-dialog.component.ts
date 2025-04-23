@@ -69,7 +69,7 @@ export class LeaveDetailsDialogComponent implements OnInit {
     };
   
     this.data.privilegeLeaveCount = {
-      totalPrivilegeLeave: 18,
+      totalPrivilegeLeave: 16,
       privilegeLeaveCountForMonth: privilegeLeaveCountForMonth,
       privilegeLeaveCountForYear: privilegeLeaveCountForYear
     };

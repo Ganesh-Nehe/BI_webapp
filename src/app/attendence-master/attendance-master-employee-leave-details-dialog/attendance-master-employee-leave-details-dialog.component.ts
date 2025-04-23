@@ -71,7 +71,7 @@ export class AttendanceMasterEmployeeLeaveDetailsDialogComponent {
     };
   
     this.data.privilegeLeaveCount = {
-      totalPrivilegeLeave: 18,
+      totalPrivilegeLeave: 16,
       privilegeLeaveCountForMonth: privilegeLeaveCountForMonth,
       privilegeLeaveCountForYear: privilegeLeaveCountForYear
     };

@@ -162,9 +162,22 @@ export class AttendenceComponent implements OnInit {
   isWithinAllowedRange(dateString: string): boolean {
     const date = new Date(dateString);
     const today = new Date();
-
-    // Disable buttons for tomorrow and beyond
-    return date <= today && date.getFullYear() === today.getFullYear();
+  
+    // Get first and last day of the current and previous months
+    const firstDayOfCurrentMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+    const firstDayOfPreviousMonth = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+    const lastDayOfPreviousMonth = new Date(today.getFullYear(), today.getMonth(), 0); // Last day of last month
+  
+    // Check if today's date is past the 5th
+    const isPast5th = today.getDate() > 20;
+  
+    if (isPast5th) {
+      // After 5th, only allow current month till today
+      return date >= firstDayOfCurrentMonth && date <= today;
+    } else {
+      // Before 5th, allow previous month and current month till today
+      return (date >= firstDayOfPreviousMonth && date <= lastDayOfPreviousMonth) || (date >= firstDayOfCurrentMonth && date <= today);
+    }
   }
 
   isTodayOrLater(dateString: string): boolean {
@@ -222,7 +235,7 @@ export class AttendenceComponent implements OnInit {
         console.log(attendenceId);
         const dialogRef = this.dialog.open(PunchTimeDialogComponent, {
           data: { date, text, attendenceId },
-          width: '400px'
+          // width: '400px'
         });
         dialogRef.afterClosed().subscribe({
           next: (val) => {
@@ -236,7 +249,7 @@ export class AttendenceComponent implements OnInit {
       const date = row.date;
       const dialogRef = this.dialog.open(PunchTimeDialogComponent, {
         data: { date, text },
-        width: '400px'
+        // width: '400px'
       });
       dialogRef.afterClosed().subscribe({
         next: (val) => {

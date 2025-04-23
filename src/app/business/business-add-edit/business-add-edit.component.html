@@ -1,9 +1,11 @@
 <div mat-dialog-title>Business Form</div>
 <form [formGroup]="businessForm">
     <div mat-dialog-content class="content">
+        <hr>
+        <h3>Organization Details</h3>
         <div fxLayout="row" fxLayoutGap="10px">
             <mat-form-field fxFlex="50%" appearance="outline">
-                <mat-label>Company Name</mat-label>
+                <mat-label>Organization Name</mat-label>
                 <input matInput placeholder="" type="text" formControlName="businessName" required>
             </mat-form-field>
 
@@ -29,11 +31,15 @@
         <div fxLayout="row" fxLayoutGap="10px">
             <mat-form-field fxFlex="50%" appearance="outline">
                 <mat-label>Address Type</mat-label>
-                <input matInput placeholder="Enter Address Type" formControlName="addressTypeId" required>
+                <mat-select formControlName="addressTypeId" required>
+                    <mat-option *ngFor="let branch of addressTypes" [value]="branch.addressTypeId">{{
+                        branch.addressTypes }}</mat-option>
+                </mat-select>
+                <mat-error>Address Type is required</mat-error>
             </mat-form-field>
             <mat-form-field fxFlex="50%" appearance="outline">
                 <mat-label>Local Address</mat-label>
-                <input matInput placeholder="" formControlName="localAddress" required>
+                <input matInput placeholder="" formControlName="localArea" required>
             </mat-form-field>
         </div>
 
@@ -42,16 +48,13 @@
                 <mat-label>city</mat-label>
                 <input matInput placeholder="" formControlName="city" required>
             </mat-form-field>
-        </div>
-
-        <div fxLayout="row" fxLayoutGap="10px">
             <mat-form-field fxFlex="50%" appearance="outline">
                 <mat-label>state</mat-label>
                 <input matInput placeholder="" type="text" formControlName="state" required>
             </mat-form-field>
             <mat-form-field fxFlex="50%" appearance="outline">
-                <mat-label>isoCountryCode</mat-label>
-                <input matInput placeholder="" formControlName="isoCountryCode" required>
+                <mat-label>Country</mat-label>
+                <input matInput placeholder="" formControlName="country" required>
             </mat-form-field>
             <mat-form-field fxFlex="50%" appearance="outline">
                 <mat-label>pinCode</mat-label>
@@ -117,7 +120,7 @@
     </div>
 
     <div mat-dialog-actions class="action">
-        <button class="btn btn-outline-dark" mat-raised-button (click)="dialogclose()">Cancel</button>
+        <button class="btn btn-outline-dark" mat-dialog-close mat-raised-button>Cancel</button>
         <button class="btn btn-outline-dark" mat-raised-button [disabled]="businessForm.invalid"
             (click)="addBusinessData()">
             {{ data ? 'Update' : 'Save' }}

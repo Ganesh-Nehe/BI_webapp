@@ -9,11 +9,11 @@ export class PunchTimeDialogService {
 
   constructor(private apiService: APIService, private http: HttpClient) { }
 
-  async punchInTimeform(time: any): Promise<any> {
+  async punchInTimeform(time: any, locationDesc: any): Promise<any> {
     const baseApi = this.apiService.getBaseApi();
     const businessId = localStorage.getItem('businessId')
     const employeeId = localStorage.getItem('loggedInUserId');
-    const punchData = {time: time, employeeId: employeeId, businessId: businessId};
+    const punchData = {time: time, employeeId: employeeId, businessId: businessId, locationDesc: locationDesc};
     console.log(punchData);
     const httpOptions = {
       headers: new HttpHeaders({

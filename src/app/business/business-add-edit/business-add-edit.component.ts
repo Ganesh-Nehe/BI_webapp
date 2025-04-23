@@ -16,6 +16,7 @@ export class BusinessAddEditComponent implements OnInit {
   businessForm: FormGroup;
   selectedFile: File = null!;
   selectAll: boolean = false;
+  addressTypes: any[] = [];
 
   constructor(
     private fb: FormBuilder,
@@ -31,11 +32,12 @@ export class BusinessAddEditComponent implements OnInit {
       businessName: ['', Validators.required],
       CIN_no: ['', Validators.required],
       PAN_no: ['', Validators.required],
+      // business address
       addressTypeId: ['', Validators.required],
-      localAddress: ['', Validators.required],
+      localArea: ['', Validators.required],
       city: ['', Validators.required],
       state: ['', Validators.required],
-      isoCountryCode: ['', Validators.required],
+      country: ['', Validators.required],
       pinCode: ['', Validators.required],
       auditDetail: [this.data ? '' : null, this.data ? [Validators.required, Validators.minLength(20)] : null],
       // Admin controls (Only for adding)
@@ -55,10 +57,9 @@ export class BusinessAddEditComponent implements OnInit {
     });
 
   }
-  dialogclose() {
-    this.dialogRef.close();
-  }
+
   ngOnInit(): void {
+    this.loadAddressTypes();
     this.businessForm.patchValue(this.data)
   }
 
@@ -76,6 +77,23 @@ export class BusinessAddEditComponent implements OnInit {
     this.selectedFile = event.target.files[0];
   }
 
+  async loadAddressTypes(): Promise<void> {
+    const baseApi = this.apiService.getBaseApi();
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + localStorage.getItem('loginToken')
+      })
+    };
+    
+    try {
+      const response: any = await this.http.get(`${baseApi}/API/addressTypes/`, httpOptions).toPromise();
+      this.addressTypes = response.data;
+    } catch (error) {
+      console.error('Error fetching voucher heads:', error);
+    }
+  }
+  
   async addBusinessData() {
     if (this.businessForm.valid) {
       const formData = new FormData();
@@ -87,11 +105,10 @@ export class BusinessAddEditComponent implements OnInit {
   
       // Append address data
       formData.append('addressTypeId', this.businessForm.get('addressTypeId')?.value);
-      formData.append('addressLine_1', this.businessForm.get('addressLine_1')?.value);
-      formData.append('addressLine_2', this.businessForm.get('addressLine_2')?.value);
+      formData.append('localArea', this.businessForm.get('localArea')?.value);
       formData.append('city', this.businessForm.get('city')?.value);
       formData.append('state', this.businessForm.get('state')?.value);
-      formData.append('isoCountryCode', this.businessForm.get('isoCountryCode')?.value);
+      formData.append('country', this.businessForm.get('country')?.value);
       formData.append('pinCode', this.businessForm.get('pinCode')?.value);
   
       // Append file if exists
@@ -131,8 +148,8 @@ export class BusinessAddEditComponent implements OnInit {
           formData.append('emailId', this.businessForm.get('emailId')?.value);
           formData.append('password', this.businessForm.get('password')?.value);
           formData.append('mobile_no', this.businessForm.get('mobile_no')?.value);
-          formData.append('bankId', this.businessForm.get('bankId')?.value);
-          formData.append('profilephoto', this.businessForm.get('profilephoto')?.value);
+          formData.append('bankId', this.businessForm.get('bankId')?.value || null);
+          formData.append('profilephoto', this.businessForm.get('profilephoto')?.value || null);
   
           // Add new business with file
           await this.businessService.addBusiness(formData);

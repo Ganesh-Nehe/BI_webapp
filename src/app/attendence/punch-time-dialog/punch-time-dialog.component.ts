@@ -4,7 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { APIService } from 'src/app/api.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { PunchTimeDialogService } from './punch-time-dialog.service'
+import { PunchTimeDialogService } from './punch-time-dialog.service';
 
 @Component({
   selector: 'app-punch-time-dialog',
@@ -23,10 +23,19 @@ export class PunchTimeDialogComponent implements OnInit {
     private punchTimeDialogService: PunchTimeDialogService
   ) {
     this.punchTimeform = this.fb.group({
-      hour: [0,[Validators.required, Validators.min(0), Validators.max(23)],
-      ],
-      minute: [0,[Validators.required, Validators.min(0), Validators.max(59)],
-      ],
+      hour: [0,[Validators.required, Validators.min(0), Validators.max(23)],],
+      minute: [0,[Validators.required, Validators.min(0), Validators.max(59)],],
+      location: ['inOffice',Validators.required],
+      locationDesc: [{ value: 'In Office', disabled: true }, Validators.required]
+    });
+    this.punchTimeform.get('location')?.valueChanges.subscribe((selectedLocation) => {
+      if (selectedLocation === 'inOffice') {
+        this.punchTimeform.get('locationDesc')?.setValue('In Office');
+        this.punchTimeform.get('locationDesc')?.disable(); // Disable input field
+      } else {
+        this.punchTimeform.get('locationDesc')?.setValue('');
+        this.punchTimeform.get('locationDesc')?.enable(); // Enable input field
+      }
     });
   }
 
@@ -69,10 +78,11 @@ export class PunchTimeDialogComponent implements OnInit {
   async addPunchTime() {
 
     if (this.punchTimeform.valid && this.data.text === 'punchIn') {
-      const time  = this.convertToUST()
+      const time  = await this.convertToUST()
+      const locationDesc =  this.punchTimeform.get('locationDesc')?.value;
       //console.log(time);
-      const res = await this.punchTimeDialogService.punchInTimeform(time);
-      const dialog = this.dialogRef.close(PunchTimeDialogComponent)
+      const res = await this.punchTimeDialogService.punchInTimeform(time, locationDesc);
+      this.dialogRef.close(PunchTimeDialogComponent)
       this.snackBar.open('Punch In Successfully !', 'Close', {
         duration: 3000,
         verticalPosition: 'top',
@@ -84,7 +94,7 @@ export class PunchTimeDialogComponent implements OnInit {
       const attendenceId = this.data.attendenceId;
       //console.log(time);
       const res = await this.punchTimeDialogService.punchOutTimeform(time,attendenceId);
-      const dialog = this.dialogRef.close(PunchTimeDialogComponent)
+      this.dialogRef.close(PunchTimeDialogComponent)
       this.snackBar.open('Punch Out Successfully !', 'Close', {
         duration: 3000,
         verticalPosition: 'top',
