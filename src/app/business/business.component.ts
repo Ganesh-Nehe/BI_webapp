@@ -6,6 +6,7 @@ import { BusinessService } from './business.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { Overlay } from '@angular/cdk/overlay';
 
 @Component({
   selector: 'app-business',
@@ -13,20 +14,19 @@ import { MatTableDataSource } from '@angular/material/table';
   styleUrls: ['./business.component.css']
 })
 export class BusinessComponent implements OnInit {
-  displayedColumns: string[] = ['serialNumber', 'businessName', 'CIN_no', 'PAN_no', 'city', 'state', 'pinCode', 'action'];
+  displayedColumns: string[] = ['serialNumber', 'businessName', 'CIN_no', 'PAN_no', 'address','view', 'edit', 'toggle'];
   dataSource!: MatTableDataSource<any>;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private dialog: MatDialog, private businessService: BusinessService) { }
+  constructor(private dialog: MatDialog, private businessService: BusinessService, private overlay: Overlay) { }
 
   async openDetailsDialog(data: any) {
     try {
       const details = await this.businessService.getBusinessDetails(data.businessID);
       this.dialog.open(BusinessDetailsComponent, {
-        data: { businessData: data, businessDetails: details.data },
-        width: '400px',
+        data: { details },
       });
     } catch (error) {
       console.error('Error fetching business details:', error);
@@ -34,7 +34,13 @@ export class BusinessComponent implements OnInit {
   }
 
   async openAddEditDialog() {
-    const dialogRef = this.dialog.open(BusinessAddEditComponent);
+    const dialogRef = this.dialog.open(BusinessAddEditComponent, 
+      { 
+        autoFocus: true,
+        disableClose: true,
+        hasBackdrop: true,
+        scrollStrategy: this.overlay.scrollStrategies.block()
+      });
     const result = await dialogRef.afterClosed().toPromise();
     if (result) {
       await this.getBusinessList();

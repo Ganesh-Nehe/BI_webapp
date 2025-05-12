@@ -1,12 +1,26 @@
-<h2 mat-dialog-title>Employee Details</h2>
-<div mat-dialog-content *ngIf="data.employeeDetails">
-    <p><strong>Employee first name: </strong>{{data.employeeDetails.employeeFirstName}}</p>
-    <p><strong>Employee Middle name: </strong>{{data.employeeDetails.employeeMiddleName}}</p>
-    <p><strong>Employee Last name: </strong>{{data.employeeDetails.employeeLastName}}</p>
-    <p><strong>Email: </strong>{{data.employeeDetails.emailId}}</p>
-    <p><strong>Mobile no: </strong>{{data.employeeDetails.mobile_no}}</p>
-    <p><strong>Bank no: </strong>{{data.employeeDetails.bankId}}</p>
-</div>
-<div mat-dialog-actions>
-    <button mat-button mat-dialog-close>Close</button>
-</div>
+<div mat-dialog-content #dialogContent>
+    <h2 mat-dialog-title>Employee Details</h2>
+    <table mat-table [dataSource]="[data.employeeDetails]" class="mat-elevation-z8">
+      <ng-container matColumnDef="empName">
+        <th mat-header-cell *matHeaderCellDef> Employee Name </th>
+        <td mat-cell *matCellDef="let element">{{element.employeeFirstName}} {{element.employeeLastName}}</td>
+      </ng-container>
+  
+      <ng-container matColumnDef="mobile">
+        <th mat-header-cell *matHeaderCellDef> Mobile number</th>
+        <td mat-cell *matCellDef="let element">{{element.mobile_no}}</td>
+      </ng-container>
+  
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef> Email </th>
+        <td mat-cell *matCellDef="let element">{{element.emailId}}</td>
+      </ng-container>
+  
+      <tr mat-header-row *matHeaderRowDef="empDetailsColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: empDetailsColumns;"></tr>
+    </table>
+    
+  </div>
+  <div mat-dialog-actions class="action">
+    <button mat-button mat-dialog-close class="btn btn-outline-dark" mat-raised-button color="primary">Close</button>
+  </div>

@@ -2,6 +2,6 @@
     <div mat-dialog-title>Confirm {{data.leaveType}} on {{data.parsedDate | date:'mediumDate'}}</div>
 </div>
 <div mat-dialog-actions class="action" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px">
-    <button mat-raised-button style="background-color: red; color: white;" (click)="dialogClose()">Cancel</button>
+    <button mat-raised-button style="background-color: red; color: white;" mat-dialog-close>Cancel</button>
     <button mat-raised-button style="background-color: green; color: white;" (click)="confirmLeave()">Confirm</button>
 </div>  

@@ -1,7 +1,7 @@
 <div mat-dialog-title>Business Form</div>
 <form [formGroup]="businessForm">
     <div mat-dialog-content class="content">
-        <hr>
+
         <h3>Organization Details</h3>
         <div fxLayout="row" fxLayoutGap="10px">
             <mat-form-field fxFlex="50%" appearance="outline">
@@ -69,10 +69,10 @@
             </mat-form-field>
         </div>
 
-        <hr>
 
         <!-- Admin Section (Only for new businesses) -->
         <div *ngIf="!data" style="margin-top: 20px;">
+            <hr>
             <h3>Admin Details</h3>
             <div fxLayout="row" fxLayoutGap="10px">
                 <mat-form-field appearance="outline" fxFlex="50%">
@@ -107,21 +107,29 @@
 
         <!-- Checkbox Section -->
         <div *ngIf="!data" fxLayout="column" fxLayoutGap="10px" style="margin-top: 20px;">
+            <hr>
+            <h3>Admin Access</h3>
             <mat-checkbox [checked]="selectAll" (change)="toggleAllCheckboxes()">Select All</mat-checkbox>
-            <div fxLayout="row" fxLayoutGap="20px">
-                <mat-checkbox formControlName="dashboard">Dashboard</mat-checkbox>
-                <mat-checkbox formControlName="employee">Employee</mat-checkbox>
-                <mat-checkbox formControlName="expense">Expense</mat-checkbox>
-                <mat-checkbox formControlName="expenseMaster">Expense Master</mat-checkbox>
-                <mat-checkbox formControlName="voucherHead">Voucher Head</mat-checkbox>
-                <mat-checkbox formControlName="currency">Currency</mat-checkbox>
+            <div fxLayout="row" fxLayoutGap="120px" style="padding-left: 20px;">
+                <div fxLayout="column" fxLayoutGap="20px">
+                    <mat-checkbox formControlName="dashboard">Dashboard</mat-checkbox>
+                    <mat-checkbox formControlName="employee">Employee</mat-checkbox>
+                    <mat-checkbox formControlName="attendance">Attendance</mat-checkbox>
+                    <mat-checkbox formControlName="customer">Customer</mat-checkbox>
+                </div>
+                <div fxLayout="column" fxLayoutGap="20px">
+                    <mat-checkbox formControlName="expense">Expense</mat-checkbox>
+                    <mat-checkbox formControlName="summary">Summary Module</mat-checkbox>
+                    <mat-checkbox formControlName="documentation">Documentation Module</mat-checkbox>
+                    <mat-checkbox formControlName="master">Master Module</mat-checkbox>
+                </div>
             </div>
         </div>
     </div>
 
     <div mat-dialog-actions class="action">
         <button class="btn btn-outline-dark" mat-dialog-close mat-raised-button>Cancel</button>
-        <button class="btn btn-outline-dark" mat-raised-button [disabled]="businessForm.invalid"
+        <button class="btn btn-outline-dark" color="primary" mat-raised-button [disabled]="businessForm.invalid || (!data && !isAnyPermissionChecked())"
             (click)="addBusinessData()">
             {{ data ? 'Update' : 'Save' }}
         </button>

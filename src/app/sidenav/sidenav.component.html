@@ -17,7 +17,7 @@
         <span><a [routerLink]="'/employee'">Employee</a></span>
       </li>
 
-      <li *ngIf="hasPermission('Expense')" class="nav-list-item" (click)="navigateTo('/attendence')">
+      <li *ngIf="hasPermission('Attendance')" class="nav-list-item" (click)="navigateTo('/attendence')">
         <i class="fa-solid fa-user-plus"></i>
         <span><a [routerLink]="'/attendence'">Attendence</a></span>
       </li>
@@ -37,12 +37,12 @@
         <span><a>Documentation Module</a></span>  
       </li>
 
-      <li *ngIf="hasPermission('Expense Master')" class="nav-list-item" (click)="openSubMenu('summary')">
+      <li *ngIf="hasPermission('Summary')" class="nav-list-item" (click)="openSubMenu('summary')">
         <i class="fa-solid fa-file-invoice"></i>
         <span><a>Summary Module</a></span>  
       </li>
       
-      <li *ngIf="hasPermission('Currency')" class="nav-list-item" (click)="openSubMenu('master')">
+      <li *ngIf="hasPermission('Master')" class="nav-list-item" (click)="openSubMenu('master')">
         <i class="fa-solid fa-screwdriver-wrench"></i>
         <span><a>Master Module</a></span>
       </li>

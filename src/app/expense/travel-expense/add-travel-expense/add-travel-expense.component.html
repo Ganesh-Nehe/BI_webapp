@@ -96,7 +96,7 @@
                         <strong>Total:</strong> {{ estTravelExpense.get('total')?.value || 0 }} 
                     </div>
 
-                    <button mat-icon-button color="warn"  (click)="removeExpense(i)">
+                    <button mat-icon-button color="warn" *ngIf="i !== 0" (click)="removeExpense(i)">
                         <mat-icon>remove</mat-icon>
                     </button>
                 </div>

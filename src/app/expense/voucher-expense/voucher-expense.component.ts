@@ -49,6 +49,15 @@ export class VoucherExpenseComponent implements OnInit {
   }
 
   openDocument(file_location: string) {
+    if(file_location === null || file_location === ''){
+      this.snackBar.open('No file Created for this expense', 'Close', {
+        duration: 3000,
+        verticalPosition: 'top',
+        horizontalPosition: 'center',
+        panelClass: ['snackbar-error'],
+      });
+      return;
+    }
 
     // Replace backslashes with forward slashes if needed (for URL encoding)
     const normalizedLocation = file_location.replace(/\\/g, '/');
@@ -108,7 +117,7 @@ export class VoucherExpenseComponent implements OnInit {
   async openDetailsDialog(row: any) {
     try {
       const details = await this.voucherexpenseservice.getVoucherdetails(row.voucherId);
-      const dialogRef = this.dialog.open(VoucherExpenseDetailsComponent, {
+      this.dialog.open(VoucherExpenseDetailsComponent, {
         data: { voucherDetails: details.data },
         width: '700px',
       });

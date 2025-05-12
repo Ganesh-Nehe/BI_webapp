@@ -17,16 +17,8 @@
                     <td mat-cell *matCellDef="let row; let i = index"> {{ i + 1 }} </td>
                   </ng-container>
                   <ng-container matColumnDef="employeeFirstName">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header style="max-width: 130px; white-space: normal; word-wrap: break-word;"> First Name </th>
-                    <td mat-cell *matCellDef="let row" style="max-width: 130px; white-space: normal; word-wrap: break-word;"> {{row.employeeFirstName}}</td>
-                  </ng-container>
-                  <ng-container matColumnDef="employeeMiddleName">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Middle Name </th>
-                    <td mat-cell *matCellDef="let row">{{row.employeeMiddleName}} </td>
-                  </ng-container>
-                  <ng-container matColumnDef="employeeLastName">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Last Name </th>
-                    <td mat-cell *matCellDef="let row">{{row.employeeLastName}} </td>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header style="max-width: 130px; white-space: normal; word-wrap: break-word;"> Employee Name </th>
+                    <td mat-cell *matCellDef="let row" style="max-width: 130px; white-space: normal; word-wrap: break-word;"> {{row.employeeFirstName}} {{row.employeeLastName}}</td>
                   </ng-container>
                   <ng-container matColumnDef="mobile_no">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Mobile no </th>
@@ -40,14 +32,25 @@
                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Password </th>
                     <td mat-cell *matCellDef="let row"> </td>
                   </ng-container>
-                  <ng-container matColumnDef="action">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Action </th>
+
+                  <ng-container matColumnDef="view">
+                    <th mat-header-cell *matHeaderCellDef > view Details </th>
+                    <td mat-cell *matCellDef="let row" > <button mat-raised-button color="primary"
+                        (click)="openDetailsDialog(row)">view</button></td>
+                  </ng-container>
+          
+                  <ng-container matColumnDef="edit">
+                    <th mat-header-cell *matHeaderCellDef > Edit </th>
+                    <td mat-cell *matCellDef="let row" > <button mat-raised-button color="accent"
+                        (click)="openEditForm(row)">Edit</button></td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="toggle">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Active </th>
                     <td mat-cell *matCellDef="let row">
-                      <button mat-icon-button color="primary" (click)="openEditForm(row)">
-                        <mat-icon>edit</mat-icon>
-                      </button>
-                      <button mat-icon-button style="color: rgb(197, 197, 98);" (click)="openDetailsDialog(row)">
-                        <mat-icon>visibility</mat-icon>
+                      <button mat-icon-button [ngClass]="{ 'active-toggle': row.isActive, 'inactive-toggle': !row.isActive }"
+                        (click)="toggleEmployee(row)">
+                        <mat-icon>{{ row.isActive ? 'toggle_on' : 'toggle_off' }}</mat-icon>
                       </button>
                     </td>
                   </ng-container>

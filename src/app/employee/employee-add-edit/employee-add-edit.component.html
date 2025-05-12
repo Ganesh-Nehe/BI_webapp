@@ -14,6 +14,10 @@
                 <mat-label> Last Name</mat-label>
                 <input matInput formControlName="employeeLastName" required>
             </mat-form-field>
+            <mat-form-field appearance="outline" fxFlex="50%">
+                <mat-label> Mobile No.</mat-label>
+                <input matInput type="number" formControlName="mobile_no" required>
+            </mat-form-field>
         </div>
         <div fxLayout="row" fxLayoutGap="10px">
             <mat-form-field appearance="outline" fxFlex="50%">
@@ -25,21 +29,6 @@
                 <input matInput formControlName="password" type="password" required>
             </mat-form-field>
         </div>
-        <div fxLayout="row" fxLayoutGap="10px">
-            <mat-form-field appearance="outline" fxFlex="50%">
-                <mat-label> Mobile No.</mat-label>
-                <input matInput type="number" formControlName="mobile_no" required>
-            </mat-form-field>
-            <mat-form-field appearance="outline" fxFlex="50%">
-                <mat-label> Bank No.</mat-label>
-                <input matInput type="number" formControlName="bankId" required>
-            </mat-form-field>
-            <mat-form-field appearance="outline" fxFlex="50%">
-                <mat-label> Profile Photo</mat-label>
-                <input matInput type="text" formControlName="profilephoto" required>
-            </mat-form-field>
-        </div>
-
         <div *ngIf="data" fxLayout="row" fxLayoutGap="10px">
             <mat-form-field fxFlex="100%" appearance="outline">
                 <mat-label>Description</mat-label>
@@ -54,18 +43,25 @@
         <!-- Checkbox section -->
         <div *ngIf="!data" fxLayout="column" fxLayoutGap="10px">
             <mat-checkbox [checked]="selectAll" (change)="toggleAllCheckboxes()">Select All</mat-checkbox>
-            <div fxLayout="row" fxLayoutGap="20px">
-              <mat-checkbox formControlName="dashboard">Dashboard</mat-checkbox>
-              <mat-checkbox formControlName="employee">Employee</mat-checkbox>
-              <mat-checkbox formControlName="expense">Expense</mat-checkbox>
-              <mat-checkbox formControlName="expenseMaster">Expense Master</mat-checkbox>
-              <mat-checkbox formControlName="voucherHead">Voucher Head</mat-checkbox>
-              <mat-checkbox formControlName="currency">Currency</mat-checkbox>
+            <div fxLayout="row" fxLayoutGap="120px" style="padding-left: 20px;">
+                <div fxLayout="column" fxLayoutGap="20px">
+                    <mat-checkbox formControlName="dashboard">Dashboard</mat-checkbox>
+                    <mat-checkbox formControlName="employee">Employee</mat-checkbox>
+                    <mat-checkbox formControlName="attendance">Attendance</mat-checkbox>
+                    <mat-checkbox formControlName="customer">Customer</mat-checkbox>
+                </div>
+                <div fxLayout="column" fxLayoutGap="20px">
+                    <mat-checkbox formControlName="expense">Expense</mat-checkbox>
+                    <mat-checkbox formControlName="summary">Summary Module</mat-checkbox>
+                    <mat-checkbox formControlName="documentation">Documentation Module</mat-checkbox>
+                    <mat-checkbox formControlName="master">Master Module</mat-checkbox>
+                </div>
             </div>
           </div>
     </div>
     <div mat-dialog-actions class="action">
         <button class="btn btn-outline-dark" mat-raised-button (click)="dialogclose()">Cancel</button>
-        <button class="btn btn-outline-dark" mat-raised-button [disabled]="employeeForm.invalid" (click)="addEmployeeData()">{{data ? 'Update' : 'Save'}}</button>
+        <button class="btn btn-outline-dark" mat-raised-button color="primary" [disabled]="employeeForm.invalid || (!data && !isAnyPermissionChecked())" (click)="addEmployeeData()">{{data ? 'Update' : 'Save'}}</button>
     </div>
 </form>
+    

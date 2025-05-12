@@ -13,7 +13,7 @@ import { EmployeeDetailsComponent } from './employee-details/employee-details.co
   styleUrls: ['./employee.component.css']
 })
 export class EmployeeComponent implements OnInit {
-  displayedColumns: string[] = ['serialNumber', 'employeeFirstName', 'employeeMiddleName', 'employeeLastName', 'mobile_no', 'emailId', 'action'];
+  displayedColumns: string[] = ['serialNumber', 'employeeFirstName', 'mobile_no', 'emailId', 'view', 'edit', 'toggle'];
   dataSource!: MatTableDataSource<any>;
 
   @ViewChild(MatSort) sort!: MatSort;
@@ -28,7 +28,11 @@ export class EmployeeComponent implements OnInit {
   async getEmployeeList(): Promise<void> {
     try {
       const res = await this.employeeService.getEmployeeList();
-      this.dataSource = new MatTableDataSource(res.data);
+      const dataArray = Array.isArray(res.data) ? res.data : [];
+      this.dataSource = new MatTableDataSource(dataArray);
+      dataArray.forEach((item: any) => {
+        item.isActive = item.live_sleep === 1;
+      });
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
     } catch (err) {
@@ -72,6 +76,19 @@ export class EmployeeComponent implements OnInit {
       console.log('Error getting user details:', error);
     }
   }
+
+  async toggleEmployee(row: any) {
+    row.isActive = !row.isActive;
+    const live_sleepValue = row.isActive ? 1 : 0;
+
+    try {
+      await this.employeeService.updateEmployeeStatus(row.employeeId, live_sleepValue);
+    } catch (error) {
+      console.error('Error updating Employee status:', error);
+      row.isActive = !row.isActive;
+    }
+  }
+
 
   applyFilter(event: Event): void {
     const filterValue = (event.target as HTMLInputElement).value;

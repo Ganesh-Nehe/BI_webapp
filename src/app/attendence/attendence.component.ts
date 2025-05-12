@@ -169,7 +169,7 @@ export class AttendenceComponent implements OnInit {
     const lastDayOfPreviousMonth = new Date(today.getFullYear(), today.getMonth(), 0); // Last day of last month
   
     // Check if today's date is past the 5th
-    const isPast5th = today.getDate() > 20;
+    const isPast5th = today.getDate() > 4;
   
     if (isPast5th) {
       // After 5th, only allow current month till today

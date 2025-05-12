@@ -17,12 +17,14 @@ export class EmployeeAddEditComponent implements OnInit {
   selectAll: boolean = false;
 
   checkboxes = {
-    dashboard: false,
-    employee: false,
-    expense: false,
-    expenseMaster: false,
-    voucherHead: false,
-    currency: false
+    dashboard: [false],
+    employee: [false],
+    attendance: [false],
+    customer: [false],
+    expense: [false],
+    summary: [false],
+    documentation: [false],
+    master: [false]
   };
 
   constructor(
@@ -41,16 +43,15 @@ export class EmployeeAddEditComponent implements OnInit {
       emailId: ['', Validators.required],
       password: ['', !this.data ? Validators.required : null],
       mobile_no: ['', Validators.required],
-      bankId: ['', Validators.required],
-      profilephoto: ['', Validators.required],
       auditDetail: [this.data ? '' : null, this.data ? Validators.required : null],
       dashboard: [false],
-      business: [false],
       employee: [false],
+      attendance: [false],
+      customer: [false],
       expense: [false],
-      expenseMaster: [false],
-      voucherHead: [false],
-      currency: [false]
+      summary: [false],
+      documentation: [false],
+      master: [false]
     });
   }
 
@@ -61,7 +62,7 @@ export class EmployeeAddEditComponent implements OnInit {
   toggleAllCheckboxes() {
     this.selectAll = !this.selectAll;
     Object.keys(this.employeeForm.controls).forEach(key => {
-      if (['dashboard', 'employee', 'expense', 'expenseMaster', 'voucherHead', 'currency'].includes(key)) {
+      if (['dashboard', 'employee', 'attendance', 'attendance', 'customer', 'expense', 'summary', 'documentation', 'master'].includes(key)) {
         this.employeeForm.controls[key].setValue(this.selectAll);
       }
     });
@@ -69,6 +70,20 @@ export class EmployeeAddEditComponent implements OnInit {
 
   dialogclose() {
     this.dialogRef.close();
+  }
+
+  isAnyPermissionChecked(): boolean {
+    const controls = this.employeeForm.controls;
+    return (
+      controls['dashboard'].value ||
+      controls['employee'].value ||
+      controls['attendance'].value ||
+      controls['customer'].value ||
+      controls['expense'].value ||
+      controls['summary'].value ||
+      controls['documentation'].value ||
+      controls['master'].value
+    );
   }
 
   async addEmployeeData() {
@@ -84,8 +99,6 @@ export class EmployeeAddEditComponent implements OnInit {
       formData.append('employeeLastName', this.employeeForm.get('employeeLastName')?.value);
       formData.append('emailId', this.employeeForm.get('emailId')?.value);
       formData.append('mobile_no', this.employeeForm.get('mobile_no')?.value);
-      formData.append('bankId', this.employeeForm.get('bankId')?.value);
-      formData.append('profilephoto', this.employeeForm.get('profilephoto')?.value);
       formData.append('auditDetail', this.employeeForm.get('auditDetail')?.value);
 
       if (businessId !== null) {
@@ -102,14 +115,18 @@ export class EmployeeAddEditComponent implements OnInit {
       if (!this.data) {
         formData.append('password', this.employeeForm.get('password')?.value);
         
-        // Collect permissions into an array for new employee only
+        // Collect permissions into [an array for new employee only
         const permissions: number[] = [];
-        if (this.employeeForm.get('dashboard')?.value) permissions.push(1);
-        if (this.employeeForm.get('employee')?.value) permissions.push(3);
-        if (this.employeeForm.get('expense')?.value) permissions.push(4);
-        if (this.employeeForm.get('expenseMaster')?.value) permissions.push(5);
-        if (this.employeeForm.get('voucherHead')?.value) permissions.push(6);
-        if (this.employeeForm.get('currency')?.value) permissions.push(7);
+        if (this.employeeForm.get('dashboard')?.value === true) permissions.push(1); // Dashboard
+        if (this.employeeForm.get('employee')?.value === true) permissions.push(3); // Employee
+        if (this.employeeForm.get('attendance')?.value === true) permissions.push(4); // Attendance
+        if (this.employeeForm.get('customer')?.value === true) permissions.push(5); // customer
+        if (this.employeeForm.get('expense')?.value === true) permissions.push(6); // Expense
+        if (this.employeeForm.get('summary')?.value === true) permissions.push(7); // Summary Module
+        if (this.employeeForm.get('documentation')?.value === true) permissions.push(8); // Ducumentation Module
+        if (this.employeeForm.get('master')?.value === true) permissions.push(9); // Master Module
+
+
   
         // Append the permissions array as a JSON string
         formData.append('permissions', JSON.stringify(permissions));

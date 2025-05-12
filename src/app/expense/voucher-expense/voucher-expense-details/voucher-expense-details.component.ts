@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
+import { HttpResponse } from '@angular/common/http';
 import { Component, Inject, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { VoucherExpenseDetailsService } from "./voucher-expense-details.service"
@@ -16,7 +16,7 @@ export class VoucherExpenseDetailsComponent implements OnInit {
   constructor(@Inject(MAT_DIALOG_DATA) public data: any, private voucherExpenseDetailsService: VoucherExpenseDetailsService) { }
 
   ngOnInit(): void {
-    console.log('VoucherExpenseDetailsComponent initialized with data:', this.data);
+    console.log(this.data);  
   }
 
   viewBill(billLocation: string) {

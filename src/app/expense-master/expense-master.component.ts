@@ -82,6 +82,15 @@ export class ExpenseMasterComponent {
   }
 
   openDocument(file_location: string) {
+    if(file_location === null || file_location === ''){
+      this.snackBar.open('No file Created for this expense', 'Close', {
+        duration: 3000,
+        verticalPosition: 'top',
+        horizontalPosition: 'center',
+        panelClass: ['snackbar-error'],
+      });
+      return;
+    }
 
     // Replace backslashes with forward slashes if needed (for URL encoding)
     const normalizedLocation = file_location.replace(/\\/g, '/');

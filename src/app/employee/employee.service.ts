@@ -44,4 +44,18 @@ export class EmployeeService {
       throw error; // Propagate the error for handling in the calling component
     }
   }
+
+  async updateEmployeeStatus(employeeId: string, live_sleep: number): Promise<any> {
+    const baseApi = this.apiService.getBaseApi();
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + localStorage.getItem('loginToken')
+      })
+    };
+    
+    const requestBody = { employeeId, live_sleep };
+    
+    return this.http.patch(`${baseApi}/API/user/update-status/${employeeId}`, requestBody, httpOptions).toPromise();
+  }
 }

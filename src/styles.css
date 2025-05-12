@@ -5,3 +5,9 @@ body { margin: 0; font-family: "Poppins", sans-serif; }
 .mat-menu-panel {
     background-color: blue;
 }
+
+.cdk-global-scrollblock {
+    overflow: hidden !important;
+    position: fixed !important;
+    width: 100%;
+  }

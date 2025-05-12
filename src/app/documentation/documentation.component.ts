@@ -7,7 +7,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { DocumentationService } from './documentation.service';
 import { AddChalanDialogComponent } from './add-chalan-dialog/add-chalan-dialog.component';
 import { ViewChalanDialogComponent } from './view-chalan-dialog/view-chalan-dialog.component';
-import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 import { ConfirmationReturnedDialogComponent } from './confirmation-returned-dialog/confirmation-returned-dialog.component'
 
 @Component({
@@ -15,8 +14,7 @@ import { ConfirmationReturnedDialogComponent } from './confirmation-returned-dia
   templateUrl: './documentation.component.html',
   styleUrls: ['./documentation.component.css']
 })
-export class DocumentationComponent {
-
+export class DocumentationComponent implements OnInit {
 
   displayedColumns: string[] = ['serialNumber', 'chalanId', 'customerName', 'contactPerson', 'deliveryLocation', 'viewDetails', 'edit', 'print', 'isReturned'];
   dataSource!: MatTableDataSource<any>;
@@ -130,9 +128,14 @@ export class DocumentationComponent {
 
     const printWindow = window.open('', '', 'height=800,width=1200');
 
+    const businessId = localStorage.getItem('businessId');
+
+    const businessName = businessId === '1' ? 'VISTA ENGINEERING SERVICES' : 'VISTA ENGINEERING SERVICES'
+
     if (printWindow) {
       // Convert image to Base64 first
-      const base64Image = await this.convertImageToBase64('assets/CAS logo/challan Logo.png');
+      const image = businessId === '1' ? 'assets/VISTA logo/Challan logo.jpg' : 'assets/VISTA logo/Challan logo.jpg'
+      const base64Image = await this.convertImageToBase64(image);
 
       const isReturnable = row.isReturnable? 'RETURNABLE': 'NON RETURNABLE';
 
@@ -169,7 +172,7 @@ export class DocumentationComponent {
                     <div class="logo-container">
                       <img src="${base64Image}" alt="Logo" class="logo" />
                       <span class="company-name"> 
-                        <b>CONVERGE AUTOMATICS SOLUTION PVT LTD</b> <br> 
+                        <b>${businessName}</b> <br> 
                         Lotus Valley, Survey no 83/2 Waghmare Vasti, Lohegaon Pune 411047 Maharashtra <br>
                         Tele: +91 98332 24708 / +91 92255 14708 <br> Email: info@casglobals.com <br>
                         GSTIN: 27AAJCC5689B1ZG | PAN No: AAJCC5689B 

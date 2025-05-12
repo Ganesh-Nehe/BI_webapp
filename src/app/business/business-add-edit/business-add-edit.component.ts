@@ -1,6 +1,6 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { APIService } from '../../api.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { BusinessAddEditService } from './business-add-edit.service';
@@ -50,10 +50,12 @@ export class BusinessAddEditComponent implements OnInit {
       // Checkbox controls for permissions
       dashboard: [false],
       employee: [false],
+      attendance: [false],
+      customer: [false],
       expense: [false],
-      expenseMaster: [false],
-      voucherHead: [false],
-      currency: [false]
+      summary: [false],
+      documentation: [false],
+      master: [false]
     });
 
   }
@@ -67,10 +69,24 @@ export class BusinessAddEditComponent implements OnInit {
     const checkState = !this.selectAll;
     this.selectAll = checkState;
     Object.keys(this.businessForm.controls).forEach(key => {
-      if (['dashboard', 'employee', 'expense', 'expenseMaster', 'voucherHead', 'currency'].includes(key)) {
+      if (['dashboard', 'employee', 'attendance','customer', 'expense', 'summary', 'documentation', 'master'].includes(key)) {
         this.businessForm.get(key)?.setValue(checkState);
       }
     });
+  }
+
+  isAnyPermissionChecked(): boolean {
+    const controls = this.businessForm.controls;
+    return (
+      controls['dashboard'].value ||
+      controls['employee'].value ||
+      controls['attendance'].value ||
+      controls['customer'].value ||
+      controls['expense'].value ||
+      controls['summary'].value ||
+      controls['documentation'].value ||
+      controls['master'].value
+    );
   }
 
   onFileChange(event: any) {
@@ -120,10 +136,12 @@ export class BusinessAddEditComponent implements OnInit {
       const permissions: number[] = [];
       if (this.businessForm.get('dashboard')?.value === true) permissions.push(1); // Dashboard
       if (this.businessForm.get('employee')?.value === true) permissions.push(3); // Employee
-      if (this.businessForm.get('expense')?.value === true) permissions.push(4); // Expense
-      if (this.businessForm.get('expenseMaster')?.value === true) permissions.push(5); // Expense Master
-      if (this.businessForm.get('voucherHead')?.value === true) permissions.push(6); // Voucher Head
-      if (this.businessForm.get('currency')?.value === true) permissions.push(7); // Currency
+      if (this.businessForm.get('attendance')?.value === true) permissions.push(4); // Attendance
+      if (this.businessForm.get('customer')?.value === true) permissions.push(5); // customer
+      if (this.businessForm.get('expense')?.value === true) permissions.push(6); // Expense
+      if (this.businessForm.get('summary')?.value === true) permissions.push(7); // Summary Module
+      if (this.businessForm.get('documentation')?.value === true) permissions.push(8); // Ducumentation Module
+      if (this.businessForm.get('master')?.value === true) permissions.push(9); // Master Module
   
       // Append permissions as JSON string
       formData.append('permissions', JSON.stringify(permissions));
@@ -148,8 +166,6 @@ export class BusinessAddEditComponent implements OnInit {
           formData.append('emailId', this.businessForm.get('emailId')?.value);
           formData.append('password', this.businessForm.get('password')?.value);
           formData.append('mobile_no', this.businessForm.get('mobile_no')?.value);
-          formData.append('bankId', this.businessForm.get('bankId')?.value || null);
-          formData.append('profilephoto', this.businessForm.get('profilephoto')?.value || null);
   
           // Add new business with file
           await this.businessService.addBusiness(formData);

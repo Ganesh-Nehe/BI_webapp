@@ -18,24 +18,23 @@ export class ConfirmLeaveDialogComponent implements OnInit  {
   ) { }
 
   ngOnInit(): void {
-    console.log(this.data)
+    // console.log(this.data)
   }
 
-  async dialogClose(){
-    await this.dialogRef.close(true);
-  }
   async confirmLeave(){
     try {
-      const res = await this.confirmLeaveDialogService.addLeave(this.data.parsedDate, this.data.leaveType);
-      this.snackBar.open('Chalan Details Addess Successsfully', 'Close', {
+      const date = this.data.parsedDate;
+      const istString = date.toLocaleDateString('en-IN', { timeZone: 'Asia/Kolkata' });
+      await this.confirmLeaveDialogService.addLeave(this.data.parsedDate, this.data.leaveType);
+      this.snackBar.open(`${this.data.leaveType} Addess Successsfully on ${istString}`, 'Close', {
         duration: 3000,
         verticalPosition: 'top',
         horizontalPosition: 'center',
         panelClass: ['snackbar-success']
       });
       this.dialogRef.close(true);
-    }catch{
-      this.snackBar.open('Error saving returned date', 'Close', {
+    }catch(err){
+      this.snackBar.open(`error saving ${this.data.leaveType}`, 'Close', {
         duration: 3000,
         verticalPosition: 'top',
         horizontalPosition: 'center',

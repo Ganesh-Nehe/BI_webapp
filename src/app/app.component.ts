@@ -24,7 +24,7 @@ export class AppComponent {
             // If not on the login page, show alert and navigate to login
             console.log('Session expired. Redirecting to login.');
             alert('Your session has expired. Please log in again.');
-            this.router.navigateByUrl('/login');
+            window.location.href = '/login';
           }
         }
       },

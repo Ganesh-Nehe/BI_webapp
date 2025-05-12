@@ -1,4 +1,4 @@
-import { Component, OnInit,Inject } from '@angular/core';
+import { Component, OnInit,Inject, ViewChild, ElementRef } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
@@ -8,15 +8,15 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 })
 export class BusinessDetailsComponent implements OnInit {
 
-  businessDetails: any;
-  
+  businessDetails : any;
 
+  customerDetailsColumns: string[] = ['businessName', 'CIN_no', 'PAN_no', 'address'];
+  @ViewChild('dialogContent') dialogContent!: ElementRef;
   constructor(@Inject(MAT_DIALOG_DATA) public data: any) {}
 
-  ngOnInit() {
-    console.log('BusinessDetailsDialogComponent initialized.');
-    console.log('Received data:', this.data);
-    this.businessDetails = this.data.businessDetails;
+  ngOnInit(): void{
+    this.businessDetails = this.data.details.data;
+    console.log("data recieved : ",this.data.details.data);
   }
 }
 
