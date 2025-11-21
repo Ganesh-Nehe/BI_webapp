@@ -130,11 +130,11 @@ export class DocumentationComponent implements OnInit {
 
     const businessId = localStorage.getItem('businessId');
 
-    const businessName = businessId === '1' ? 'VISTA ENGINEERING SERVICES' : 'VISTA ENGINEERING SERVICES'
+    const businessName = businessId === '1' ? 'CONVERGE AUTOMATICS SOLUTION PVT LTD' : 'VISTA ENGINEERING SERVICES'
 
     if (printWindow) {
       // Convert image to Base64 first
-      const image = businessId === '1' ? 'assets/VISTA logo/Challan logo.jpg' : 'assets/VISTA logo/Challan logo.jpg'
+      const image = businessId === '1' ? 'assets/CAS logo/challan Logo.png' : 'assets/VISTA logo/Challan logo.jpg'
       const base64Image = await this.convertImageToBase64(image);
 
       const isReturnable = row.isReturnable? 'RETURNABLE': 'NON RETURNABLE';
@@ -173,7 +173,7 @@ export class DocumentationComponent implements OnInit {
                       <img src="${base64Image}" alt="Logo" class="logo" />
                       <span class="company-name"> 
                         <b>${businessName}</b> <br> 
-                        Lotus Valley, Survey no 83/2 Waghmare Vasti, Lohegaon Pune 411047 Maharashtra <br>
+                        A-824, Gera's Imperium Gateway, Nashik Phata Metro, Bhosari, Pune 411047 Maharashtra <br>
                         Tele: +91 98332 24708 / +91 92255 14708 <br> Email: info@casglobals.com <br>
                         GSTIN: 27AAJCC5689B1ZG | PAN No: AAJCC5689B 
                       </span>
@@ -225,7 +225,7 @@ export class DocumentationComponent implements OnInit {
                       2) Any discrepancy should be reported immediately with full particulars within seven days  
                     </div>
                     <div class="row-signature">
-                      for CONVERGE AUTOMATICS SOLUTION PVT. LTD <br><br><br><br><br><br><br> Authorized Signatory
+                      for ${businessName} <br><br><br><br><br><br><br> Authorized Signatory
                     </div>
                   </div>
                 </td>

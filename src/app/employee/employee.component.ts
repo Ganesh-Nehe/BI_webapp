@@ -69,8 +69,7 @@ export class EmployeeComponent implements OnInit {
     try {
       const details = await this.employeeService.getEmployeeDetails(data.employeeId);
       const dialogRef = this.dialog.open(EmployeeDetailsComponent, {
-        data: { employeeDetails: details.data },
-        width: '400px',
+        data: { employeeDetails: details.data }
       });
     } catch (error) {
       console.log('Error getting user details:', error);

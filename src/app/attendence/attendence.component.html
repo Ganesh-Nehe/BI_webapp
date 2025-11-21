@@ -105,7 +105,7 @@
                           *ngIf="!row.leaveChecked"
                           [(ngModel)]="row.leaveChecked"
                           (change)="onLeaveCheckboxChange(row)"
-                          [disabled]="!isTodayOrLater(row.date) || isSunday(row.date) || row.isCompanyLeave || row.punchIn">
+                          [disabled]="isSunday(row.date) || row.isCompanyLeave || row.punchIn">
                         </mat-checkbox>
                   
                         <mat-form-field *ngIf="row.leaveChecked" appearance="outline" class="leave-select">
